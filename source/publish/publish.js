@@ -1,20 +1,17 @@
 (function () {
-  const state = {
-    importedFileName: "",
-    title: "",
-    type: "original",
-    date: formatDate(new Date()),
-    filename: "new-post",
-    tags: "",
-    excerpt: "",
-    sourceUrl: "",
-    extraFrontMatter: "",
-    body: "",
-  };
+  if (window.marked && typeof window.marked.setOptions === "function") {
+    window.marked.setOptions({
+      gfm: true,
+      breaks: true,
+    });
+  }
 
+  const state = createInitialState("original");
   const elements = {
     dropzone: document.getElementById("dropzone"),
     fileInput: document.getElementById("file-input"),
+    newOriginalButton: document.getElementById("new-original-button"),
+    newCollectionButton: document.getElementById("new-collection-button"),
     importMeta: document.getElementById("import-meta"),
     titleInput: document.getElementById("title-input"),
     typeInput: document.getElementById("type-input"),
@@ -27,24 +24,59 @@
     extraFrontMatterInput: document.getElementById("extra-front-matter-input"),
     bodyInput: document.getElementById("body-input"),
     previewOutput: document.getElementById("preview-output"),
+    previewType: document.getElementById("preview-type"),
+    previewDate: document.getElementById("preview-date"),
+    previewTitle: document.getElementById("preview-title"),
+    previewExcerpt: document.getElementById("preview-excerpt"),
+    previewBody: document.getElementById("preview-body"),
     destinationPath: document.getElementById("destination-path"),
+    writingMode: document.getElementById("writing-mode"),
+    wordCount: document.getElementById("word-count"),
+    readingTime: document.getElementById("reading-time"),
     statusBox: document.getElementById("status-box"),
     saveButton: document.getElementById("save-button"),
     downloadButton: document.getElementById("download-button"),
     copyButton: document.getElementById("copy-button"),
+    toolbarButtons: Array.from(document.querySelectorAll(".toolbar-button")),
   };
 
   bindEvents();
+  syncInputsFromState();
   refreshView();
+  renderImportMeta();
+
+  function createInitialState(type) {
+    return {
+      importedFileName: "",
+      title: "",
+      type: type || "original",
+      date: formatDate(new Date()),
+      filename: "new-post",
+      tags: "",
+      excerpt: "",
+      sourceUrl: "",
+      extraFrontMatter: "",
+      body: "",
+    };
+  }
 
   function bindEvents() {
     elements.fileInput.addEventListener("change", onFileChange);
-    ["dragenter", "dragover"].forEach((eventName) => {
+    elements.newOriginalButton.addEventListener("click", function () {
+      startBlankArticle("original");
+    });
+    elements.newCollectionButton.addEventListener("click", function () {
+      startBlankArticle("collection");
+    });
+
+    ["dragenter", "dragover"].forEach(function (eventName) {
       elements.dropzone.addEventListener(eventName, onDragEnter);
     });
-    ["dragleave", "dragend", "drop"].forEach((eventName) => {
+
+    ["dragleave", "dragend", "drop"].forEach(function (eventName) {
       elements.dropzone.addEventListener(eventName, onDragLeave);
     });
+
     elements.dropzone.addEventListener("drop", onDrop);
 
     elements.titleInput.addEventListener("input", function () {
@@ -98,9 +130,27 @@
       refreshView();
     });
 
+    elements.toolbarButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        insertSnippet(button.dataset.insert || "");
+      });
+    });
+
     elements.downloadButton.addEventListener("click", downloadMarkdown);
     elements.copyButton.addEventListener("click", copyMarkdown);
     elements.saveButton.addEventListener("click", saveToBlogRepo);
+  }
+
+  function syncInputsFromState() {
+    elements.titleInput.value = state.title;
+    elements.typeInput.value = state.type;
+    elements.dateInput.value = state.date;
+    elements.filenameInput.value = state.filename;
+    elements.tagsInput.value = state.tags;
+    elements.excerptInput.value = state.excerpt;
+    elements.sourceUrlInput.value = state.sourceUrl;
+    elements.extraFrontMatterInput.value = state.extraFrontMatter;
+    elements.bodyInput.value = state.body;
   }
 
   function onFileChange(event) {
@@ -129,6 +179,19 @@
     }
   }
 
+  function startBlankArticle(type) {
+    const nextState = createInitialState(type);
+    nextState.body = buildBodyTemplate(nextState.type);
+    Object.assign(state, nextState);
+    delete elements.filenameInput.dataset.touched;
+    syncInputsFromState();
+      refreshView();
+      renderImportMeta();
+      elements.bodyInput.focus();
+      placeCursorAtEnd(elements.bodyInput);
+      setStatus("已切换到手写模式。可以直接在正文区写文章，预览会实时更新。", "success");
+  }
+
   async function importMarkdownFile(file) {
     if (!/\.md|\.markdown$/i.test(file.name)) {
       setStatus("只支持导入 .md 或 .markdown 文件。", "error");
@@ -150,20 +213,11 @@
       state.extraFrontMatter = parsed.extraFrontMatter;
       state.body = parsed.body;
 
-      elements.titleInput.value = state.title;
-      elements.typeInput.value = state.type;
-      elements.dateInput.value = state.date;
-      elements.filenameInput.value = state.filename;
       delete elements.filenameInput.dataset.touched;
-      elements.tagsInput.value = state.tags;
-      elements.excerptInput.value = state.excerpt;
-      elements.sourceUrlInput.value = state.sourceUrl;
-      elements.extraFrontMatterInput.value = state.extraFrontMatter;
-      elements.bodyInput.value = state.body;
-
-      updateImportMeta(parsed);
+      syncInputsFromState();
       refreshView();
-      setStatus("Markdown 已导入，你可以继续调整字段后保存。", "success");
+      renderImportMeta(parsed);
+      setStatus("Markdown 已导入，右侧会实时显示渲染预览。", "success");
     } catch (error) {
       setStatus("导入失败：" + error.message, "error");
     }
@@ -191,7 +245,6 @@
       sourceUrl: parsed.sourceUrl,
       extraFrontMatter: parsed.extraFrontMatter,
       body: body || "",
-      hadFrontMatter: Boolean(frontMatterMatch),
     };
   }
 
@@ -313,8 +366,10 @@
 
   function refreshView() {
     toggleSourceUrlField();
-    const output = buildMarkdown();
-    elements.previewOutput.value = output;
+    renderImportMeta();
+    updateWritingMeta();
+    renderPreview();
+    elements.previewOutput.value = buildMarkdown();
     elements.destinationPath.textContent = buildDestinationPath();
   }
 
@@ -322,9 +377,70 @@
     elements.sourceUrlField.style.display = state.type === "collection" ? "grid" : "none";
   }
 
+  function renderImportMeta(parsed) {
+    if (state.importedFileName) {
+      const activeType = (parsed && parsed.type) || state.type;
+      elements.importMeta.innerHTML =
+        "<strong>已导入：</strong>" +
+        escapeHtml(state.importedFileName) +
+        "<br><strong>当前标题：</strong>" +
+        escapeHtml(state.title || "未命名文章") +
+        "<br><strong>当前类型：</strong>" +
+        escapeHtml(activeType === "collection" ? "收藏" : "原创") +
+        "<br><strong>当前日期：</strong>" +
+        escapeHtml(state.date);
+      return;
+    }
+
+    elements.importMeta.innerHTML =
+      "<strong>手写模式：</strong> 你可以不导入文件，直接填写标题和正文。<br><strong>建议：</strong> 点击“新建原创文章”或“新建收藏文章”后开始写，右侧会实时预览最终效果。";
+  }
+
+  function updateWritingMeta() {
+    const plainText = stripMarkdown(state.body);
+    const characterCount = plainText.replace(/\s+/g, "").length;
+    const readingMinutes = Math.max(1, Math.ceil(characterCount / 400));
+
+    elements.writingMode.textContent = state.importedFileName ? "当前模式：导入后编辑" : "当前模式：直接手写";
+    elements.wordCount.textContent = "正文长度：" + characterCount + " 字";
+    elements.readingTime.textContent = "预计阅读：" + readingMinutes + " 分钟";
+  }
+
+  function renderPreview() {
+    elements.previewType.textContent = state.type === "collection" ? "收藏" : "原创";
+    elements.previewDate.textContent = state.date || "--";
+    elements.previewTitle.textContent = state.title || "未命名文章";
+    elements.previewExcerpt.textContent = state.excerpt || "这里会显示摘要预览；如果没有填写摘要，会用一段默认提示占位。";
+
+    if (!(state.body || "").trim()) {
+      elements.previewBody.innerHTML = '<p class="preview-empty">开始输入正文后，这里会显示渲染后的 Markdown 预览。</p>';
+      return;
+    }
+
+    elements.previewBody.innerHTML = renderMarkdown(state.body);
+    elements.previewBody.querySelectorAll("a").forEach(function (link) {
+      link.target = "_blank";
+      link.rel = "noreferrer noopener";
+    });
+  }
+
+  function renderMarkdown(markdown) {
+    const safeMarkdown = markdown || "";
+
+    if (window.marked && typeof window.marked.parse === "function") {
+      const rendered = window.marked.parse(safeMarkdown);
+      if (window.DOMPurify && typeof window.DOMPurify.sanitize === "function") {
+        return window.DOMPurify.sanitize(rendered);
+      }
+      return rendered;
+    }
+
+    return "<pre>" + escapeHtml(safeMarkdown) + "</pre>";
+  }
+
   function buildDestinationPath() {
     const parts = getDateParts(state.date);
-    return "source/_posts/" + parts.year + "/" + parts.month + "/" + parts.day + "/" + ensureMarkdownExtension(state.filename) ;
+    return "source/_posts/" + parts.year + "/" + parts.month + "/" + parts.day + "/" + ensureMarkdownExtension(state.filename);
   }
 
   function buildMarkdown() {
@@ -363,7 +479,7 @@
   }
 
   function parseTags(tagsText) {
-    return tagsText
+    return String(tagsText || "")
       .split(",")
       .map(function (tag) {
         return tag.trim();
@@ -371,17 +487,111 @@
       .filter(Boolean);
   }
 
-  function updateImportMeta(parsed) {
-    const typeLabel = parsed.type === "collection" ? "收藏" : "原创";
-    elements.importMeta.innerHTML =
-      "<strong>已导入：</strong>" +
-      escapeHtml(state.importedFileName) +
-      "<br><strong>识别标题：</strong>" +
-      escapeHtml(parsed.title) +
-      "<br><strong>识别类型：</strong>" +
-      typeLabel +
-      "<br><strong>识别日期：</strong>" +
-      escapeHtml(parsed.date);
+  function insertSnippet(kind) {
+    const textarea = elements.bodyInput;
+    const selectionStart = textarea.selectionStart || 0;
+    const selectionEnd = textarea.selectionEnd || 0;
+    const selectedText = textarea.value.slice(selectionStart, selectionEnd);
+    let snippet = "";
+
+    if (kind === "h2") {
+      snippet = "## " + (selectedText || "小节标题") + "\n\n";
+    } else if (kind === "h3") {
+      snippet = "### " + (selectedText || "补充小节") + "\n\n";
+    } else if (kind === "quote") {
+      snippet = selectedText
+        ? selectedText.split("\n").map(function (line) { return "> " + line; }).join("\n") + "\n\n"
+        : "> 引用内容\n\n";
+    } else if (kind === "list") {
+      snippet = selectedText
+        ? selectedText.split("\n").map(function (line) { return "- " + line; }).join("\n") + "\n\n"
+        : "- 条目 1\n- 条目 2\n\n";
+    } else if (kind === "code") {
+      snippet = "```text\n" + selectedText + "\n```\n\n";
+    } else if (kind === "link") {
+      snippet = "[" + (selectedText || "链接标题") + "](https://example.com)\n";
+    }
+
+    if (!snippet) {
+      return;
+    }
+
+    snippet = normalizeSnippetPlacement(textarea.value, selectionStart, selectionEnd, snippet);
+
+    const nextValue = textarea.value.slice(0, selectionStart) + snippet + textarea.value.slice(selectionEnd);
+    textarea.value = nextValue;
+    state.body = nextValue.replace(/\r\n/g, "\n");
+    refreshView();
+
+    const nextCursor = selectionStart + snippet.length;
+    textarea.focus();
+    textarea.setSelectionRange(nextCursor, nextCursor);
+  }
+
+  function buildBodyTemplate(type) {
+    if (type === "collection") {
+      return [
+        "## 原文链接",
+        "",
+        "[原文标题](https://example.com/article)",
+        "",
+        "## 为什么收藏",
+        "",
+        "简单写下你为什么想保留这篇内容。",
+        "",
+        "## 我的摘录",
+        "",
+        "- ",
+        "",
+        "## 读后备注",
+        "",
+        "补充自己的理解、反思或后续行动。",
+      ].join("\n");
+    }
+
+    return [
+      "## 写在前面",
+      "",
+      "一句话说明这篇文章想解决什么问题。",
+      "",
+      "## 正文",
+      "",
+      "从这里开始写作。",
+      "",
+      "## 结尾",
+      "",
+      "补充总结、参考资料或下一步计划。",
+    ].join("\n");
+  }
+
+  function normalizeSnippetPlacement(value, start, end, snippet) {
+    const previousChar = value.slice(Math.max(0, start - 1), start);
+    const nextChar = value.slice(end, end + 1);
+    let prefix = "";
+    let suffix = "";
+
+    if (start > 0 && previousChar !== "\n") {
+      prefix = "\n\n";
+    } else if (start > 1 && value.slice(Math.max(0, start - 2), start) !== "\n\n") {
+      prefix = "\n";
+    }
+
+    if (nextChar && nextChar !== "\n") {
+      suffix = "\n\n";
+    }
+
+    return prefix + snippet + suffix;
+  }
+
+  function stripMarkdown(value) {
+    return String(value || "")
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+      .replace(/^>\s?/gm, "")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/[*_~>-]/g, " ");
   }
 
   function setStatus(message, type) {
@@ -543,5 +753,10 @@
 
   function pad(value) {
     return String(value).padStart(2, "0");
+  }
+
+  function placeCursorAtEnd(textarea) {
+    const length = textarea.value.length;
+    textarea.setSelectionRange(length, length);
   }
 })();

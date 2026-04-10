@@ -81,6 +81,9 @@ pnpm new:page -- about
 这个页面支持：
 
 - 上传或拖拽 `.md` / `.markdown` 文件
+- 实时预览导入后的 Markdown 渲染效果
+- 直接在页面里手写文章
+- 使用快捷按钮插入标题、引用、列表、代码块和链接
 - 识别已有 front matter
 - 调整标题、分类、日期、标签、摘要、原文链接
 - 生成标准的 Hexo Markdown
