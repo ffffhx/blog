@@ -1,0 +1,35 @@
+menu:
+  首页: /
+  原创: /categories/原创/
+  收藏: /categories/收藏/
+  归档: /archives/
+  关于: /about/
+rss: false
+banner: /images/banner.svg
+subtitle: 写下自己的文章，也收藏值得反复阅读的内容
+links:
+
+excerpt_link: 继续阅读
+fancybox: true
+
+copyright:
+
+sidebar: right
+widgets:
+  - recent_posts
+  - category
+  - tagcloud
+  - archive
+
+archive_type: yearly
+show_count: true
+recent_posts_limits: 6
+
+google_analytics:
+gauges_analytics:
+favicon: /images/favicon.svg
+twitter:
+fb_admins:
+fb_app_id:
+
+disqus_shortname:

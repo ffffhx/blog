@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Blog favicon</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#bg)" />
+  <path d="M22 18h10c7.18 0 12 4.46 12 10.54 0 4.6-2.54 8.12-6.82 9.54L43 46h-9.26l-5.08-6.62H29V46h-7V18zm7 15.82h3.18c3.08 0 4.82-1.82 4.82-4.36 0-2.58-1.82-4.36-4.82-4.36H29v8.72z" fill="#ffffff" />
+</svg>
