@@ -58,12 +58,39 @@ pnpm new:collection -- "值得收藏的文章" "https://example.com/article"
 pnpm new:page -- about
 ```
 
+在线导入 Markdown：
+
+```text
+/publish/
+```
+
 ## 内容组织
 
 - 原创文章默认归类到 `原创`
 - 收藏文章默认归类到 `收藏`
 - 文章文件保存在 `source/_posts/YYYY/MM/DD/`
 - 文章图片资源会跟文章一起存放，因为已开启 `post_asset_folder: true`
+
+## 发文入口
+
+站点已经新增了一个发文入口：
+
+- 本地预览时访问 `http://localhost:4000/publish/`
+- GitHub Pages 上访问 `https://ffffhx.github.io/blog/publish/`
+
+这个页面支持：
+
+- 上传或拖拽 `.md` / `.markdown` 文件
+- 识别已有 front matter
+- 调整标题、分类、日期、标签、摘要、原文链接
+- 生成标准的 Hexo Markdown
+- 直接保存到本地博客仓库
+- 或下载生成后的 `.md` 文件
+
+注意：
+
+- “直接保存到本地博客仓库” 依赖 Chromium 浏览器的 File System Access API，推荐 Chrome 或 Edge。
+- 如果浏览器不支持直接写入，可以先下载 `.md`，再手动放到 `source/_posts/YYYY/MM/DD/`。
 
 ## 上线前需要改的配置
 

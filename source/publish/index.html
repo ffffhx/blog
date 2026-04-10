@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="publish.css">
+
+<section class="publish-shell">
+  <section class="publish-hero">
+    <p class="publish-kicker">Markdown Importer</p>
+    <h1>发文章入口</h1>
+    <p class="publish-lead">上传或拖入 <code>.md</code> 文件，整理成 Hexo 文章后，直接保存到本地博客仓库，或下载为规范化的 Markdown 文件。</p>
+  </section>
+
+  <div class="publish-grid">
+    <section class="publish-card">
+      <h2>1. 导入 Markdown</h2>
+      <label class="dropzone" id="dropzone" for="file-input">
+        <input id="file-input" type="file" accept=".md,.markdown,text/markdown">
+        <strong>选择文件或拖进来</strong>
+        <span>支持带或不带 front matter 的 Markdown 文件</span>
+      </label>
+      <p class="publish-hint">如果你已经有现成文章，直接拖进来即可；如果是收藏文章，导入后可以补充原文链接。</p>
+      <div class="import-meta" id="import-meta">还没有导入文件。</div>
+    </section>
+
+    <section class="publish-card">
+      <h2>2. 调整文章信息</h2>
+      <div class="field-grid">
+        <label class="field">
+          <span>文章标题</span>
+          <input id="title-input" type="text" placeholder="例如：一篇新的文章">
+        </label>
+
+        <label class="field">
+          <span>文章类型</span>
+          <select id="type-input">
+            <option value="original">原创</option>
+            <option value="collection">收藏</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>发布日期</span>
+          <input id="date-input" type="text" placeholder="YYYY-MM-DD HH:mm:ss">
+        </label>
+
+        <label class="field">
+          <span>文件名</span>
+          <input id="filename-input" type="text" placeholder="my-post">
+        </label>
+
+        <label class="field field-wide">
+          <span>标签</span>
+          <input id="tags-input" type="text" placeholder="Hexo, 写作, 收藏">
+        </label>
+
+        <label class="field field-wide">
+          <span>摘要</span>
+          <input id="excerpt-input" type="text" placeholder="列表页显示的一段简短摘要">
+        </label>
+
+        <label class="field field-wide" id="source-url-field">
+          <span>原文链接</span>
+          <input id="source-url-input" type="url" placeholder="https://example.com/article">
+        </label>
+
+        <label class="field field-wide">
+          <span>额外 Front Matter</span>
+          <textarea id="extra-front-matter-input" rows="4" placeholder="可选，保留额外字段，例如 cover: /images/cover.png"></textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="publish-card publish-card-wide">
+      <div class="section-head">
+        <h2>3. 正文与输出</h2>
+        <div class="action-row">
+          <button id="save-button" type="button">保存到本地博客仓库</button>
+          <button id="download-button" type="button" class="secondary">下载 Markdown</button>
+          <button id="copy-button" type="button" class="ghost">复制内容</button>
+        </div>
+      </div>
+
+      <label class="field">
+        <span>正文内容</span>
+        <textarea id="body-input" rows="18" placeholder="文章正文会显示在这里。"></textarea>
+      </label>
+
+      <div class="destination-box">
+        <strong>目标路径</strong>
+        <code id="destination-path">source/_posts/YYYY/MM/DD/article.md</code>
+      </div>
+
+      <label class="field">
+        <span>生成后的 Markdown</span>
+        <textarea id="preview-output" rows="18" readonly></textarea>
+      </label>
+
+      <div class="status-box" id="status-box">准备就绪。导入一个 <code>.md</code> 文件开始。</div>
+
+      <ul class="publish-notes">
+        <li>“保存到本地博客仓库”依赖 Chromium 浏览器的文件系统访问能力。使用时请选择你的博客仓库根目录。</li>
+        <li>如果浏览器不支持直接写入，会自动提示你改用“下载 Markdown”。</li>
+        <li>保存后，回到仓库执行常规的 <code>git add</code>、<code>git commit</code>、<code>git push</code> 即可发布。</li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<script src="publish.js"></script>

@@ -1,11 +1,12 @@
 menu:
   首页: /
+  发文: /publish/
   原创: /categories/原创/
   收藏: /categories/收藏/
   归档: /archives/
   关于: /about/
 rss: false
-banner: /images/banner.svg
+banner: ../images/banner.svg
 subtitle: 写下自己的文章，也收藏值得反复阅读的内容
 links:
 
