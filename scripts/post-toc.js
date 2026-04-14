@@ -77,9 +77,11 @@ hexo.extend.filter.register("after_render:html", function (html, locals) {
   const hasSidebar = html.includes('id="sidebar"');
   const tocMarkup = [
     '<aside id="post-toc-sidebar" class="post-toc-sidebar" aria-label="文章目录">',
-    '  <div class="post-toc-card">',
-    '    <div class="post-toc-card-title">目录</div>',
-    `    <nav class="post-toc-nav">${toc}</nav>`,
+    '  <div class="widget-wrap post-toc-wrap">',
+    '    <h3 class="widget-title">目录</h3>',
+    '    <div class="widget post-toc-card">',
+    `      <nav class="post-toc-nav">${toc}</nav>`,
+    "    </div>",
     "  </div>",
     "</aside>",
   ].join("");
