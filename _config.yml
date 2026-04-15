@@ -19,7 +19,8 @@ timezone: Asia/Shanghai
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://ffffhx.github.io/blog
 root: /blog/
-permalink: posts/:year/:month/:day/:title/
+# Use a short stable hash in post URLs to avoid long percent-encoded paths for Chinese titles.
+permalink: posts/:year/:month/:day/:hash/
 permalink_defaults:
 pretty_urls:
   trailing_index: false # Set to false to remove trailing 'index.html' from permalinks

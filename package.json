@@ -7,6 +7,7 @@
     "build": "hexo generate",
     "build:pages": "node tools/build-github-pages.mjs",
     "clean": "hexo clean",
+    "dev": "hexo server",
     "deploy": "hexo deploy",
     "server": "hexo server",
     "new:post": "node tools/new-entry.mjs original",

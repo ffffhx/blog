@@ -11,7 +11,7 @@
 
 ```bash
 pnpm install
-pnpm server
+pnpm run server
 ```
 
 默认访问地址：
@@ -25,7 +25,13 @@ http://localhost:4000/
 启动本地服务：
 
 ```bash
-pnpm server
+pnpm run server
+```
+
+也可以使用：
+
+```bash
+pnpm dev
 ```
 
 生成静态文件：
