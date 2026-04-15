@@ -17,10 +17,7 @@ copyright:
 
 sidebar: right
 widgets:
-  - recent_posts
   - category
-  - tagcloud
-  - archive
 
 archive_type: yearly
 show_count: true
