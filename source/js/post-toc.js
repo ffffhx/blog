@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const toc = document.querySelector("#post-toc-sidebar");
+  const tocNav = toc?.querySelector(".post-toc-nav");
 
   if (!toc) {
     return;
@@ -29,6 +30,27 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeId = "";
   let ticking = false;
 
+  const keepActiveLinkInView = (link) => {
+    if (!tocNav || !link) {
+      return;
+    }
+
+    const navRect = tocNav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    const padding = 12;
+
+    if (linkRect.top < navRect.top + padding) {
+      const delta = linkRect.top - navRect.top - padding;
+      tocNav.scrollTop = Math.max(0, tocNav.scrollTop + delta);
+      return;
+    }
+
+    if (linkRect.bottom > navRect.bottom - padding) {
+      const delta = linkRect.bottom - navRect.bottom + padding;
+      tocNav.scrollTop += delta;
+    }
+  };
+
   const updateActive = (id) => {
     if (!id || id === activeId) {
       return;
@@ -43,9 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeLink = items.find((item) => item.id === id)?.link;
 
     if (activeLink) {
-      activeLink.scrollIntoView({
-        block: "nearest",
-      });
+      keepActiveLinkInView(activeLink);
     }
   };
 
