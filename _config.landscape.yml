@@ -1,13 +1,13 @@
 menu:
   首页: /
+  技术: /categories/技术/
+  健身: /categories/健身/
   发文: /publish/
-  原创: /categories/原创/
-  收藏: /categories/收藏/
   归档: /archives/
   关于: /about/
 rss: false
 banner: ../images/banner.svg
-subtitle: 写下自己的文章，也收藏值得反复阅读的内容
+subtitle: 记录技术学习、工程实践和健身过程
 links:
 
 excerpt_link: 继续阅读

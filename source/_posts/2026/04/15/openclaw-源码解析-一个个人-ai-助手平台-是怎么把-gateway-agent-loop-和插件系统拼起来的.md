@@ -2,7 +2,7 @@
 title: "OpenClaw 源码解析：一个个人 AI 助手平台，是怎么把 Gateway、Agent Loop 和插件系统拼起来的"
 date: 2026-04-15 10:36:00
 categories:
-  - 原创
+  - 技术
 tags:
   - AI
   - Agent

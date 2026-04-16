@@ -4,13 +4,14 @@
 
 # Site
 title: 个人博客
-subtitle: 写作与收藏
-description: 记录自己的文章，也收录值得反复阅读的内容。
+subtitle: 技术与健身
+description: 记录技术学习、工程实践和健身过程。
 keywords:
+  - 技术
+  - 健身
   - 博客
   - Hexo
   - 写作
-  - 收藏
 author: 你的名字
 language: zh-CN
 timezone: Asia/Shanghai
@@ -71,7 +72,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: 原创
+default_category: 技术
 category_map:
 tag_map:
 

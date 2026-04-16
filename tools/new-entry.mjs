@@ -3,20 +3,62 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const MODULES = {
+  tech: {
+    label: "技术",
+    examples: ['pnpm new:tech -- "我的第一篇技术文章"', 'pnpm new:post -- "我的第一篇文章"'],
+    body: [
+      "## 写在前面",
+      "",
+      "一句话说明这篇文章想解决什么技术问题。",
+      "",
+      "## 正文",
+      "",
+      "从这里开始写作。",
+      "",
+      "## 结尾",
+      "",
+      "补充总结、参考资料或下一步计划。",
+    ],
+  },
+  fitness: {
+    label: "健身",
+    examples: ['pnpm new:fitness -- "一周训练复盘"'],
+    body: [
+      "## 这次记录什么",
+      "",
+      "一句话说明这篇文章聚焦的训练、饮食或恢复主题。",
+      "",
+      "## 过程记录",
+      "",
+      "按动作、计划、饮食或时间线展开。",
+      "",
+      "## 数据与感受",
+      "",
+      "记录训练数据、体感变化或执行难点。",
+      "",
+      "## 总结",
+      "",
+      "补充阶段结论、调整计划或下一步安排。",
+    ],
+  },
+};
+
 const [, , mode, ...rest] = process.argv;
 const args = rest[0] === "--" ? rest.slice(1) : rest;
 const title = (args[0] || "").trim();
-const sourceUrl = (args[1] || "").trim();
+const moduleConfig = MODULES[mode];
 
-if (!["original", "collection"].includes(mode)) {
-  console.error('用法: node tools/new-entry.mjs <original|collection> "标题" [原文链接]');
+if (!moduleConfig) {
+  console.error('用法: node tools/new-entry.mjs <tech|fitness> "标题"');
   process.exit(1);
 }
 
 if (!title) {
   console.error("请提供文章标题。");
-  console.error('示例: pnpm new:post -- "我的第一篇文章"');
-  console.error('示例: pnpm new:collection -- "值得收藏的文章" "https://example.com"');
+  moduleConfig.examples.forEach(function (example) {
+    console.error(`示例: ${example}`);
+  });
   process.exit(1);
 }
 
@@ -28,7 +70,7 @@ const hour = String(now.getHours()).padStart(2, "0");
 const minute = String(now.getMinutes()).padStart(2, "0");
 const second = String(now.getSeconds()).padStart(2, "0");
 const timestamp = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-const category = mode === "collection" ? "收藏" : "原创";
+const category = moduleConfig.label;
 const targetDir = path.join(process.cwd(), "source", "_posts", year, month, day);
 
 fs.mkdirSync(targetDir, { recursive: true });
@@ -57,43 +99,8 @@ const frontMatter = [
   "excerpt:",
 ];
 
-if (mode === "collection") {
-  frontMatter.push(`source_url: ${JSON.stringify(sourceUrl)}`);
-}
-
 frontMatter.push("---", "");
-
-const body =
-  mode === "collection"
-    ? [
-        "## 原文链接",
-        sourceUrl ? `[${sourceUrl}](${sourceUrl})` : "请在这里填写原文链接。",
-        "",
-        "## 为什么收藏",
-        "",
-        "简单写下你为什么想长期保留这篇内容。",
-        "",
-        "## 我的摘录",
-        "",
-        "- ",
-        "",
-        "## 读后备注",
-        "",
-        "补充自己的理解、延伸阅读或后续行动。",
-      ]
-    : [
-        "## 写在前面",
-        "",
-        "一句话说明这篇文章想解决什么问题。",
-        "",
-        "## 正文",
-        "",
-        "从这里开始写作。",
-        "",
-        "## 结尾",
-        "",
-        "补充总结、参考资料或下一步计划。",
-      ];
+const body = moduleConfig.body;
 
 const filePath = path.join(targetDir, filename);
 fs.writeFileSync(filePath, `${frontMatter.join("\n")}\n${body.join("\n")}\n`, "utf8");

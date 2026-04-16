@@ -2,7 +2,7 @@
 title: "Hermes Agent 源码解析：它为什么像一个会积累经验的 Agent，以及它和 OpenClaw 的区别"
 date: 2026-04-14 17:08:00
 categories:
-  - 原创
+  - 技术
 tags:
   - AI
   - Agent

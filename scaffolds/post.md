@@ -2,7 +2,7 @@
 title: {{ title }}
 date: {{ date }}
 categories:
-  - 原创
+  - 技术
 tags:
 excerpt:
 ---

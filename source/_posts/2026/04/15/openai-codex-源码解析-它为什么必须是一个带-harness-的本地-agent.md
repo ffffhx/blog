@@ -2,7 +2,7 @@
 title: "OpenAI Codex 源码解析：它为什么必须是一个带 Harness 的本地 Agent"
 date: 2026-04-15 21:20:00
 categories:
-  - 原创
+  - 技术
 tags:
   - AI
   - Agent

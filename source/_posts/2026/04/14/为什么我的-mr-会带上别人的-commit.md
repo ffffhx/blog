@@ -2,7 +2,7 @@
 title: 为什么我的 MR 会带上别人的 commit？
 date: 2026-04-14 10:23:08
 categories:
-  - 原创
+  - 技术
 tags:
   - Git
   - Rebase

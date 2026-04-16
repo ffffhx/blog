@@ -16,10 +16,10 @@
         <span>支持带或不带 front matter 的 Markdown 文件</span>
       </label>
       <div class="quick-row">
-        <button id="new-original-button" type="button" class="secondary-action">新建原创文章</button>
-        <button id="new-collection-button" type="button" class="secondary-action">新建收藏文章</button>
+        <button id="new-tech-button" type="button" class="secondary-action">新建技术文章</button>
+        <button id="new-fitness-button" type="button" class="secondary-action">新建健身文章</button>
       </div>
-      <p class="publish-hint">如果你已经有现成文章，直接拖进来即可；如果是收藏文章，导入后可以补充原文链接。</p>
+      <p class="publish-hint">如果你已经有现成文章，直接拖进来即可；也可以从“技术”或“健身”模板开始手写。</p>
       <div class="import-meta" id="import-meta">还没有导入文件。</div>
     </section>
 
@@ -32,10 +32,10 @@
         </label>
 
         <label class="field">
-          <span>文章类型</span>
+          <span>所属模块</span>
           <select id="type-input">
-            <option value="original">原创</option>
-            <option value="collection">收藏</option>
+            <option value="tech">技术</option>
+            <option value="fitness">健身</option>
           </select>
         </label>
 
@@ -51,17 +51,12 @@
 
         <label class="field field-wide">
           <span>标签</span>
-          <input id="tags-input" type="text" placeholder="Hexo, 写作, 收藏">
+          <input id="tags-input" type="text" placeholder="AI, Agent, 训练记录">
         </label>
 
         <label class="field field-wide">
           <span>摘要</span>
           <input id="excerpt-input" type="text" placeholder="列表页显示的一段简短摘要">
-        </label>
-
-        <label class="field field-wide" id="source-url-field">
-          <span>原文链接</span>
-          <input id="source-url-input" type="url" placeholder="https://example.com/article">
         </label>
 
         <label class="field field-wide">
@@ -112,7 +107,7 @@
           </div>
           <article class="article-preview">
             <div class="article-preview__meta">
-              <span class="preview-badge" id="preview-type">原创</span>
+              <span class="preview-badge" id="preview-type">技术</span>
               <time id="preview-date">--</time>
             </div>
             <h3 id="preview-title">未命名文章</h3>

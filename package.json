@@ -4,14 +4,15 @@
   "private": true,
   "packageManager": "pnpm@10.20.0",
   "scripts": {
-    "build": "hexo generate",
+    "build": "node tools/ensure-hexo-db.mjs && hexo generate",
     "build:pages": "node tools/build-github-pages.mjs",
     "clean": "hexo clean",
-    "dev": "hexo server",
+    "dev": "node tools/ensure-hexo-db.mjs && hexo server",
     "deploy": "hexo deploy",
-    "server": "hexo server",
-    "new:post": "node tools/new-entry.mjs original",
-    "new:collection": "node tools/new-entry.mjs collection",
+    "server": "node tools/ensure-hexo-db.mjs && hexo server",
+    "new:post": "node tools/new-entry.mjs tech",
+    "new:tech": "node tools/new-entry.mjs tech",
+    "new:fitness": "node tools/new-entry.mjs fitness",
     "new:page": "hexo new page"
   },
   "hexo": {

@@ -1,9 +1,9 @@
 # 个人博客
 
-这是一个基于 [Hexo 官方文档](https://hexo.io/zh-cn/docs/) 初始化的个人博客，主要用来放两类内容：
+这是一个基于 [Hexo 官方文档](https://hexo.io/zh-cn/docs/) 初始化的个人博客，当前按两个大模块组织内容：
 
-- 原创文章
-- 收藏文章
+- 技术：源码解析、工程实践、工具使用和问题排查
+- 健身：训练记录、动作笔记、饮食复盘和阶段总结
 
 ## 本地开发
 
@@ -46,16 +46,17 @@ pnpm build
 pnpm clean
 ```
 
-新建原创文章：
+新建技术文章：
 
 ```bash
 pnpm new:post -- "我的第一篇文章"
 ```
 
-新建收藏文章：
+也可以显式指定模块：
 
 ```bash
-pnpm new:collection -- "值得收藏的文章" "https://example.com/article"
+pnpm new:tech -- "我的第一篇技术文章"
+pnpm new:fitness -- "一周训练复盘"
 ```
 
 新建独立页面：
@@ -72,8 +73,8 @@ pnpm new:page -- about
 
 ## 内容组织
 
-- 原创文章默认归类到 `原创`
-- 收藏文章默认归类到 `收藏`
+- 文章默认归类到 `技术`
+- 健身相关文章归类到 `健身`
 - 文章文件保存在 `source/_posts/YYYY/MM/DD/`
 - 文章图片资源会跟文章一起存放，因为已开启 `post_asset_folder: true`
 
@@ -91,7 +92,7 @@ pnpm new:page -- about
 - 直接在页面里手写文章
 - 使用快捷按钮插入标题、引用、列表、代码块和链接
 - 识别已有 front matter
-- 调整标题、分类、日期、标签、摘要、原文链接
+- 调整标题、所属模块、日期、标签、摘要
 - 生成标准的 Hexo Markdown
 - 直接保存到本地博客仓库
 - 或下载生成后的 `.md` 文件

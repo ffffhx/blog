@@ -6,12 +6,12 @@
     });
   }
 
-  const state = createInitialState("original");
+  const state = createInitialState("tech");
   const elements = {
     dropzone: document.getElementById("dropzone"),
     fileInput: document.getElementById("file-input"),
-    newOriginalButton: document.getElementById("new-original-button"),
-    newCollectionButton: document.getElementById("new-collection-button"),
+    newTechButton: document.getElementById("new-tech-button"),
+    newFitnessButton: document.getElementById("new-fitness-button"),
     importMeta: document.getElementById("import-meta"),
     titleInput: document.getElementById("title-input"),
     typeInput: document.getElementById("type-input"),
@@ -19,8 +19,6 @@
     filenameInput: document.getElementById("filename-input"),
     tagsInput: document.getElementById("tags-input"),
     excerptInput: document.getElementById("excerpt-input"),
-    sourceUrlField: document.getElementById("source-url-field"),
-    sourceUrlInput: document.getElementById("source-url-input"),
     extraFrontMatterInput: document.getElementById("extra-front-matter-input"),
     bodyInput: document.getElementById("body-input"),
     previewOutput: document.getElementById("preview-output"),
@@ -49,12 +47,11 @@
     return {
       importedFileName: "",
       title: "",
-      type: type || "original",
+      type: type || "tech",
       date: formatDate(new Date()),
       filename: "new-post",
       tags: "",
       excerpt: "",
-      sourceUrl: "",
       extraFrontMatter: "",
       body: "",
     };
@@ -62,11 +59,11 @@
 
   function bindEvents() {
     elements.fileInput.addEventListener("change", onFileChange);
-    elements.newOriginalButton.addEventListener("click", function () {
-      startBlankArticle("original");
+    elements.newTechButton.addEventListener("click", function () {
+      startBlankArticle("tech");
     });
-    elements.newCollectionButton.addEventListener("click", function () {
-      startBlankArticle("collection");
+    elements.newFitnessButton.addEventListener("click", function () {
+      startBlankArticle("fitness");
     });
 
     ["dragenter", "dragover"].forEach(function (eventName) {
@@ -115,11 +112,6 @@
       refreshView();
     });
 
-    elements.sourceUrlInput.addEventListener("input", function () {
-      state.sourceUrl = elements.sourceUrlInput.value.trim();
-      refreshView();
-    });
-
     elements.extraFrontMatterInput.addEventListener("input", function () {
       state.extraFrontMatter = elements.extraFrontMatterInput.value.trim();
       refreshView();
@@ -148,7 +140,6 @@
     elements.filenameInput.value = state.filename;
     elements.tagsInput.value = state.tags;
     elements.excerptInput.value = state.excerpt;
-    elements.sourceUrlInput.value = state.sourceUrl;
     elements.extraFrontMatterInput.value = state.extraFrontMatter;
     elements.bodyInput.value = state.body;
   }
@@ -185,11 +176,11 @@
     Object.assign(state, nextState);
     delete elements.filenameInput.dataset.touched;
     syncInputsFromState();
-      refreshView();
-      renderImportMeta();
-      elements.bodyInput.focus();
-      placeCursorAtEnd(elements.bodyInput);
-      setStatus("已切换到手写模式。可以直接在正文区写文章，预览会实时更新。", "success");
+    refreshView();
+    renderImportMeta();
+    elements.bodyInput.focus();
+    placeCursorAtEnd(elements.bodyInput);
+    setStatus("已切换到手写模式。可以直接在正文区写文章，预览会实时更新。", "success");
   }
 
   async function importMarkdownFile(file) {
@@ -209,7 +200,6 @@
       state.filename = parsed.filename;
       state.tags = parsed.tags.join(", ");
       state.excerpt = parsed.excerpt;
-      state.sourceUrl = parsed.sourceUrl;
       state.extraFrontMatter = parsed.extraFrontMatter;
       state.body = parsed.body;
 
@@ -242,7 +232,6 @@
       filename: filename,
       tags: parsed.tags,
       excerpt: parsed.excerpt,
-      sourceUrl: parsed.sourceUrl,
       extraFrontMatter: parsed.extraFrontMatter,
       body: body || "",
     };
@@ -255,7 +244,6 @@
       tags: [],
       categories: [],
       excerpt: "",
-      sourceUrl: "",
       extraFrontMatter: "",
     };
 
@@ -318,8 +306,6 @@
           result.date = value;
         } else if (key === "excerpt") {
           result.excerpt = value;
-        } else if (key === "source_url") {
-          result.sourceUrl = value;
         } else if (key === "tags") {
           result.tags = parseInlineList(value);
         } else if (key === "categories") {
@@ -339,11 +325,19 @@
   }
 
   function inferType(parsed) {
-    if (parsed.categories.indexOf("收藏") >= 0 || parsed.sourceUrl) {
-      return "collection";
+    if (parsed.categories.indexOf("健身") >= 0) {
+      return "fitness";
     }
 
-    return "original";
+    if (parsed.categories.indexOf("技术") >= 0) {
+      return "tech";
+    }
+
+    if (parsed.categories.indexOf("原创") >= 0 || parsed.categories.indexOf("收藏") >= 0) {
+      return "tech";
+    }
+
+    return "tech";
   }
 
   function parseInlineList(value) {
@@ -365,16 +359,11 @@
   }
 
   function refreshView() {
-    toggleSourceUrlField();
     renderImportMeta();
     updateWritingMeta();
     renderPreview();
     elements.previewOutput.value = buildMarkdown();
     elements.destinationPath.textContent = buildDestinationPath();
-  }
-
-  function toggleSourceUrlField() {
-    elements.sourceUrlField.style.display = state.type === "collection" ? "grid" : "none";
   }
 
   function renderImportMeta(parsed) {
@@ -385,15 +374,15 @@
         escapeHtml(state.importedFileName) +
         "<br><strong>当前标题：</strong>" +
         escapeHtml(state.title || "未命名文章") +
-        "<br><strong>当前类型：</strong>" +
-        escapeHtml(activeType === "collection" ? "收藏" : "原创") +
+        "<br><strong>当前模块：</strong>" +
+        escapeHtml(getModuleLabel(activeType)) +
         "<br><strong>当前日期：</strong>" +
         escapeHtml(state.date);
       return;
     }
 
     elements.importMeta.innerHTML =
-      "<strong>手写模式：</strong> 你可以不导入文件，直接填写标题和正文。<br><strong>建议：</strong> 点击“新建原创文章”或“新建收藏文章”后开始写，右侧会实时预览最终效果。";
+      "<strong>手写模式：</strong> 你可以不导入文件，直接填写标题和正文。<br><strong>建议：</strong> 点击“新建技术文章”或“新建健身文章”后开始写，右侧会实时预览最终效果。";
   }
 
   function updateWritingMeta() {
@@ -407,7 +396,7 @@
   }
 
   function renderPreview() {
-    elements.previewType.textContent = state.type === "collection" ? "收藏" : "原创";
+    elements.previewType.textContent = getModuleLabel(state.type);
     elements.previewDate.textContent = state.date || "--";
     elements.previewTitle.textContent = state.title || "未命名文章";
     elements.previewExcerpt.textContent = state.excerpt || "这里会显示摘要预览；如果没有填写摘要，会用一段默认提示占位。";
@@ -449,7 +438,7 @@
       "title: " + quoteYaml(state.title || "未命名文章"),
       "date: " + normalizeDate(state.date || formatDate(new Date())),
       "categories:",
-      "  - " + quoteYaml(state.type === "collection" ? "收藏" : "原创"),
+      "  - " + quoteYaml(getModuleLabel(state.type)),
       "tags:",
     ];
 
@@ -461,10 +450,6 @@
       lines.push("excerpt: " + quoteYaml(state.excerpt));
     } else {
       lines.push("excerpt:");
-    }
-
-    if (state.type === "collection" && state.sourceUrl) {
-      lines.push("source_url: " + quoteYaml(state.sourceUrl));
     }
 
     if (state.extraFrontMatter) {
@@ -529,30 +514,30 @@
   }
 
   function buildBodyTemplate(type) {
-    if (type === "collection") {
+    if (type === "fitness") {
       return [
-        "## 原文链接",
+        "## 这次记录什么",
         "",
-        "[原文标题](https://example.com/article)",
+        "一句话说明这篇文章聚焦的训练、饮食或恢复主题。",
         "",
-        "## 为什么收藏",
+        "## 过程记录",
         "",
-        "简单写下你为什么想保留这篇内容。",
+        "按动作、计划、饮食或时间线展开。",
         "",
-        "## 我的摘录",
+        "## 数据与感受",
         "",
-        "- ",
+        "记录训练数据、体感变化或执行难点。",
         "",
-        "## 读后备注",
+        "## 总结",
         "",
-        "补充自己的理解、反思或后续行动。",
+        "补充阶段结论、调整计划或下一步安排。",
       ].join("\n");
     }
 
     return [
       "## 写在前面",
       "",
-      "一句话说明这篇文章想解决什么问题。",
+      "一句话说明这篇文章想解决什么技术问题。",
       "",
       "## 正文",
       "",
@@ -758,5 +743,9 @@
   function placeCursorAtEnd(textarea) {
     const length = textarea.value.length;
     textarea.setSelectionRange(length, length);
+  }
+
+  function getModuleLabel(type) {
+    return type === "fitness" ? "健身" : "技术";
   }
 })();

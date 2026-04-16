@@ -2,7 +2,7 @@
 title: Pretext 源码解析：为什么它能脱离 DOM 做高性能文本测量与布局
 date: 2026-04-14 13:42:00
 categories:
-  - 原创
+  - 技术
 tags:
   - 前端
   - 性能优化

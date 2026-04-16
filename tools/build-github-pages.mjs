@@ -18,6 +18,11 @@ const isUserOrOrgSite = repoName.toLowerCase() === `${owner}.github.io`;
 const siteUrl = isUserOrOrgSite ? `https://${owner}.github.io` : `https://${owner}.github.io/${repoName}`;
 const siteRoot = isUserOrOrgSite ? "/" : `/${repoName}/`;
 const tempConfigPath = path.join(os.tmpdir(), `hexo-pages-${process.pid}.yml`);
+const dbPath = path.join(process.cwd(), "db.json");
+
+if (!fs.existsSync(dbPath)) {
+  fs.writeFileSync(dbPath, "", "utf8");
+}
 
 fs.writeFileSync(tempConfigPath, `url: ${siteUrl}\nroot: ${siteRoot}\n`, "utf8");
 
