@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg02" x1="80" y1="60" x2="1120" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDF7EE"/>
+      <stop offset="1" stop-color="#EEF7FF"/>
+    </linearGradient>
+    <linearGradient id="fat02" x1="320" y1="240" x2="470" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFBF97"/>
+      <stop offset="1" stop-color="#FF8F5E"/>
+    </linearGradient>
+    <linearGradient id="muscle02" x1="730" y1="220" x2="880" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7AC0FF"/>
+      <stop offset="1" stop-color="#4E7AD6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg02)"/>
+  <circle cx="1030" cy="540" r="126" fill="#FFE8D6" opacity=".7"/>
+  <circle cx="154" cy="126" r="98" fill="#D9F2FF" opacity=".8"/>
+  <rect x="90" y="70" width="1020" height="535" rx="42" fill="#FFFDFB" stroke="#E1E8F5" stroke-width="2"/>
+  <circle cx="172" cy="150" r="42" fill="#22304A"/>
+  <text x="172" y="161" text-anchor="middle" font-size="28" font-weight="700" fill="#FFFFFF" font-family="Arial, sans-serif">02</text>
+
+  <text x="600" y="182" text-anchor="middle" font-size="76" font-weight="700" fill="#22304A" font-family="Arial, sans-serif">=</text>
+  <path d="M600 210V488" stroke="#E8EEF5" stroke-width="6" stroke-dasharray="12 18"/>
+
+  <circle cx="395" cy="222" r="34" fill="#FFD9C7"/>
+  <rect x="346" y="260" width="98" height="124" rx="40" fill="#22304A"/>
+  <ellipse cx="395" cy="332" rx="54" ry="44" fill="#FF9D6B"/>
+  <rect x="330" y="418" width="130" height="28" rx="14" fill="#FFD9C7"/>
+
+  <circle cx="805" cy="222" r="34" fill="#FFD9C7"/>
+  <rect x="756" y="260" width="98" height="124" rx="40" fill="#22304A"/>
+  <path d="M774 300L794 322L842 274" stroke="#7AC0FF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M780 346H832" stroke="#7AC0FF" stroke-width="12" stroke-linecap="round"/>
+  <rect x="740" y="418" width="130" height="28" rx="14" fill="#DDE8FF"/>
+
+  <rect x="320" y="240" width="150" height="260" rx="26" fill="#FFF4EC" stroke="#F5D4C0" stroke-width="4"/>
+  <rect x="350" y="282" width="90" height="172" rx="20" fill="url(#fat02)"/>
+  <rect x="350" y="234" width="90" height="62" rx="20" fill="#7FA2F5"/>
+
+  <rect x="730" y="240" width="150" height="260" rx="26" fill="#F3F7FF" stroke="#D2DDF8" stroke-width="4"/>
+  <rect x="760" y="344" width="90" height="110" rx="20" fill="#FFB287"/>
+  <rect x="760" y="214" width="90" height="156" rx="20" fill="url(#muscle02)"/>
+
+  <rect x="320" y="520" width="150" height="38" rx="19" fill="#22304A"/>
+  <rect x="730" y="520" width="150" height="38" rx="19" fill="#22304A"/>
+  <circle cx="345" cy="539" r="12" fill="#7AC0FF"/>
+  <circle cx="855" cy="539" r="12" fill="#7AC0FF"/>
+  <circle cx="365" cy="539" r="12" fill="#FF9D6B"/>
+  <circle cx="835" cy="539" r="12" fill="#FF9D6B"/>
+</svg>
+
