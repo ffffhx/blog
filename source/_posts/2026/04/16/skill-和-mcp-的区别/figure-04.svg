@@ -1,0 +1,49 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .frame { fill: #ffffff; stroke: #dbe2ea; stroke-width: 2; }
+      .title { font: 700 34px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 18px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #475569; }
+      .h { font: 700 24px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .t { font: 500 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #334155; }
+    </style>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" rx="24"/>
+  <rect class="frame" x="40" y="40" width="1120" height="680" rx="20"/>
+
+  <text class="title" x="72" y="92">为什么它们是互补关系</text>
+  <text class="subtitle" x="72" y="126">Skill 管工作流，MCP 管系统接入，叠起来才像一个完整的 agent 解决方案</text>
+
+  <rect x="480" y="164" width="240" height="112" rx="24" fill="#fff1d6" stroke="#f2b84b" stroke-width="3"/>
+  <text class="h" x="600" y="212" text-anchor="middle">Skill</text>
+  <text class="t" x="600" y="246" text-anchor="middle">规定顺序、格式、质量标准</text>
+
+  <rect x="480" y="332" width="240" height="112" rx="24" fill="#ffffff" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="h" x="600" y="380" text-anchor="middle">Agent</text>
+  <text class="t" x="600" y="414" text-anchor="middle">运行时把两边拼起来</text>
+
+  <rect x="480" y="500" width="240" height="112" rx="24" fill="#e8f0fe" stroke="#8bb3ff" stroke-width="3"/>
+  <text class="h" x="600" y="548" text-anchor="middle">MCP</text>
+  <text class="t" x="600" y="582" text-anchor="middle">暴露数据源、工具与外部系统</text>
+
+  <line x1="600" y1="276" x2="600" y2="324" stroke="#64748b" stroke-width="4" marker-end="url(#arrow4)"/>
+  <line x1="600" y1="444" x2="600" y2="492" stroke="#64748b" stroke-width="4" marker-end="url(#arrow4)"/>
+
+  <rect x="120" y="298" width="240" height="136" rx="22" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text class="h" x="240" y="352" text-anchor="middle">示例一</text>
+  <text class="t" x="240" y="388" text-anchor="middle">发布助手 skill</text>
+  <text class="t" x="240" y="416" text-anchor="middle">+ GitHub / Jira MCP</text>
+
+  <rect x="840" y="298" width="240" height="136" rx="22" fill="#f3e8ff" stroke="#c084fc" stroke-width="2"/>
+  <text class="h" x="960" y="352" text-anchor="middle">示例二</text>
+  <text class="t" x="960" y="388" text-anchor="middle">设计转代码 skill</text>
+  <text class="t" x="960" y="416" text-anchor="middle">+ Figma MCP</text>
+
+  <line x1="360" y1="366" x2="472" y2="366" stroke="#64748b" stroke-width="4" marker-end="url(#arrow4)"/>
+  <line x1="720" y1="366" x2="832" y2="366" stroke="#64748b" stroke-width="4" marker-end="url(#arrow4)"/>
+</svg>

@@ -1,0 +1,47 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .frame { fill: #fffdf9; stroke: #ddd6c8; stroke-width: 2; }
+      .title { font: 700 34px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #1f2937; }
+      .subtitle { font: 500 18px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #6b7280; }
+      .h { font: 700 24px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #111827; }
+      .t { font: 500 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #374151; }
+    </style>
+    <marker id="arrowc" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" rx="24"/>
+  <rect class="frame" x="40" y="40" width="1120" height="680" rx="20"/>
+
+  <text class="title" x="72" y="92">控制权和执行路径不同</text>
+  <text class="subtitle" x="72" y="126">Skill 更靠上下文塑造行为，MCP 更靠协议把外部能力接到 agent 面前</text>
+
+  <rect x="100" y="206" width="430" height="348" rx="28" fill="#fff1d6" stroke="#f2b84b" stroke-width="3"/>
+  <text class="h" x="315" y="258" text-anchor="middle">Skill 路径</text>
+  <rect x="150" y="300" width="330" height="66" rx="16" fill="#fffdfa" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="315" y="340" text-anchor="middle">description 被发现</text>
+  <rect x="150" y="396" width="330" height="66" rx="16" fill="#fffdfa" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="315" y="436" text-anchor="middle">加载 SKILL.md 与资源</text>
+  <rect x="150" y="492" width="330" height="66" rx="16" fill="#fffdfa" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="315" y="532" text-anchor="middle">影响模型的规划与输出</text>
+
+  <line x1="315" y1="366" x2="315" y2="392" stroke="#9ca3af" stroke-width="4" marker-end="url(#arrowc)"/>
+  <line x1="315" y1="462" x2="315" y2="488" stroke="#9ca3af" stroke-width="4" marker-end="url(#arrowc)"/>
+
+  <rect x="670" y="206" width="430" height="348" rx="28" fill="#e8f0fe" stroke="#8bb3ff" stroke-width="3"/>
+  <text class="h" x="885" y="258" text-anchor="middle">MCP 路径</text>
+  <rect x="720" y="300" width="330" height="66" rx="16" fill="#ffffff" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="885" y="340" text-anchor="middle">client 连接 server</text>
+  <rect x="720" y="396" width="330" height="66" rx="16" fill="#ffffff" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="885" y="436" text-anchor="middle">server 暴露工具 / 资源</text>
+  <rect x="720" y="492" width="330" height="66" rx="16" fill="#ffffff" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="885" y="532" text-anchor="middle">agent 按统一接口调用</text>
+
+  <line x1="885" y1="366" x2="885" y2="392" stroke="#9ca3af" stroke-width="4" marker-end="url(#arrowc)"/>
+  <line x1="885" y1="462" x2="885" y2="488" stroke="#9ca3af" stroke-width="4" marker-end="url(#arrowc)"/>
+
+  <text class="t" x="600" y="652" text-anchor="middle">总结：Skill 更像“影响模型怎么想”，MCP 更像“决定模型能碰到什么”</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .frame { fill: #ffffff; stroke: #dbe2ea; stroke-width: 2; }
+      .title { font: 700 34px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 18px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #475569; }
+      .h { font: 700 24px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .t { font: 500 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" rx="24"/>
+  <rect class="frame" x="40" y="40" width="1120" height="680" rx="20"/>
+
+  <text class="title" x="72" y="92">两者解决的问题不同</text>
+  <text class="subtitle" x="72" y="126">先问清楚你缺的是“方法”还是“连接”，很多选型问题会立刻简单下来</text>
+
+  <rect x="92" y="192" width="470" height="430" rx="28" fill="#fff1d6" stroke="#f2b84b" stroke-width="3"/>
+  <text class="h" x="327" y="252" text-anchor="middle">更像 Skill 的问题</text>
+  <text class="t" x="327" y="310" text-anchor="middle">这件事的步骤是什么</text>
+  <text class="t" x="327" y="346" text-anchor="middle">输出格式应该长什么样</text>
+  <text class="t" x="327" y="382" text-anchor="middle">团队规范有哪些不能破</text>
+  <text class="t" x="327" y="456" text-anchor="middle">关键词：流程、规范、模板、顺序、风格</text>
+  <text class="t" x="327" y="532" text-anchor="middle">典型场景：代码审查、文档摘要、发布说明</text>
+
+  <rect x="638" y="192" width="470" height="430" rx="28" fill="#e8f0fe" stroke="#8bb3ff" stroke-width="3"/>
+  <text class="h" x="873" y="252" text-anchor="middle">更像 MCP 的问题</text>
+  <text class="t" x="873" y="310" text-anchor="middle">可以访问哪些外部系统</text>
+  <text class="t" x="873" y="346" text-anchor="middle">有哪些工具、资源或数据源</text>
+  <text class="t" x="873" y="382" text-anchor="middle">如何通过统一协议接入它们</text>
+  <text class="t" x="873" y="456" text-anchor="middle">关键词：数据库、Figma、GitHub、日历、API</text>
+  <text class="t" x="873" y="532" text-anchor="middle">典型场景：连系统取数、远程操作、统一接入</text>
+</svg>

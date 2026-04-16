@@ -1,0 +1,42 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .frame { fill: #fffdf9; stroke: #ddd6c8; stroke-width: 2; }
+      .title { font: 700 34px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #1f2937; }
+      .subtitle { font: 500 18px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #6b7280; }
+      .h { font: 700 24px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #111827; }
+      .t { font: 500 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #374151; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="760" rx="24"/>
+  <rect class="frame" x="40" y="40" width="1120" height="680" rx="20"/>
+
+  <text class="title" x="72" y="92">怎么选：Skill、MCP，还是两者一起</text>
+  <text class="subtitle" x="72" y="126">先按问题类型决策，再按复杂度判断是不是需要更重的编排层</text>
+
+  <rect x="120" y="210" width="270" height="330" rx="28" fill="#fff1d6" stroke="#f2b84b" stroke-width="3"/>
+  <text class="h" x="255" y="268" text-anchor="middle">优先 Skill</text>
+  <text class="t" x="255" y="330" text-anchor="middle">团队规范</text>
+  <text class="t" x="255" y="366" text-anchor="middle">固定输出格式</text>
+  <text class="t" x="255" y="402" text-anchor="middle">可复用流程</text>
+  <text class="t" x="255" y="474" text-anchor="middle">核心问题是“怎么做”</text>
+
+  <rect x="465" y="210" width="270" height="330" rx="28" fill="#e8f0fe" stroke="#8bb3ff" stroke-width="3"/>
+  <text class="h" x="600" y="268" text-anchor="middle">优先 MCP</text>
+  <text class="t" x="600" y="330" text-anchor="middle">接数据库</text>
+  <text class="t" x="600" y="366" text-anchor="middle">接 SaaS / API</text>
+  <text class="t" x="600" y="402" text-anchor="middle">接本地或远程服务</text>
+  <text class="t" x="600" y="474" text-anchor="middle">核心问题是“怎么连”</text>
+
+  <rect x="810" y="210" width="270" height="330" rx="28" fill="#dcfce7" stroke="#4ade80" stroke-width="3"/>
+  <text class="h" x="945" y="268" text-anchor="middle">两者一起</text>
+  <text class="t" x="945" y="330" text-anchor="middle">既要规范流程</text>
+  <text class="t" x="945" y="366" text-anchor="middle">又要读写外部系统</text>
+  <text class="t" x="945" y="402" text-anchor="middle">最常见于成熟 agent</text>
+  <text class="t" x="945" y="474" text-anchor="middle">核心问题是“两者都缺”</text>
+
+  <rect x="188" y="592" width="824" height="74" rx="20" fill="#fffdfa" stroke="#d6d3d1" stroke-width="2"/>
+  <text class="t" x="600" y="636" text-anchor="middle">如果还要求审批、重试、长事务和显式状态机，通常要再往上加 workflow / orchestrator</text>
+</svg>
