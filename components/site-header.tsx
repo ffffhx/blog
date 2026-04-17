@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 import { CATEGORY_DEFINITIONS, SITE } from "@/lib/content/config";
@@ -30,7 +31,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-950 hover:text-white"
+              className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-amber-100 hover:text-slate-950 hover:ring-1 hover:ring-amber-200"
             >
               {item.label}
             </Link>
