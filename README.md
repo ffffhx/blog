@@ -1,49 +1,56 @@
 # 个人博客
 
-这是一个基于 [Hexo 官方文档](https://hexo.io/zh-cn/docs/) 初始化的个人博客，当前按两个大模块组织内容：
+这是一个基于 `Next.js + React + TypeScript + Tailwind CSS` 的个人博客，部署目标是 `Vercel`。
+
+内容仍然按两个大模块组织：
 
 - 技术：源码解析、工程实践、工具使用和问题排查
 - 健身：训练记录、动作笔记、饮食复盘和阶段总结
 
+文章和页面内容继续保存在仓库里的 Markdown 文件中：
+
+- 文章：`source/_posts/YYYY/MM/DD/*.md`
+- 关于页：`source/about/index.md`
+
 ## 本地开发
 
-推荐使用 `pnpm`，当前仓库已经包含 `pnpm-lock.yaml`。
+推荐使用 `pnpm`。
 
 ```bash
 pnpm install
-pnpm run server
+pnpm dev
 ```
 
-默认访问地址：
+默认开发地址：
 
 ```text
-http://localhost:4000/
+http://localhost:3000
 ```
 
 ## 常用命令
 
-启动本地服务：
-
-```bash
-pnpm run server
-```
-
-也可以使用：
+启动开发环境：
 
 ```bash
 pnpm dev
 ```
 
-生成静态文件：
+运行测试：
+
+```bash
+pnpm test
+```
+
+构建生产版本：
 
 ```bash
 pnpm build
 ```
 
-清理生成目录：
+启动生产服务：
 
 ```bash
-pnpm clean
+pnpm start
 ```
 
 新建技术文章：
@@ -59,47 +66,25 @@ pnpm new:tech -- "我的第一篇技术文章"
 pnpm new:fitness -- "一周训练复盘"
 ```
 
-新建独立页面：
+## 内容兼容说明
 
-```bash
-pnpm new:page -- about
-```
+这次重构保留了现有 Markdown 内容和本地文章资源文件夹结构。
 
-## 内容组织
+新站点会在内容编译阶段兼容这些能力：
 
-- 文章默认归类到 `技术`
-- 健身相关文章归类到 `健身`
-- 文章文件保存在 `source/_posts/YYYY/MM/DD/`
-- 文章图片资源会跟文章一起存放，因为已开启 `post_asset_folder: true`
+- front matter：`title`、`date`、`categories`、`tags`、`excerpt`
+- 标准 Markdown：标题、列表、引用、代码块、表格、链接、图片
+- Hexo 风格的 `{% asset_img ... %}` 文章资源图片标签
 
-## 上线前需要改的配置
+文章图片会在开发和构建前自动同步到 `public/post-assets/`，不需要手动复制。
 
-发布前，至少检查这些配置：
+## 部署到 Vercel
 
-- `/Users/bytedance/Code/blog/_config.yml` 里的 `title`
-- `/Users/bytedance/Code/blog/_config.yml` 里的 `author`
-- `/Users/bytedance/Code/blog/_config.yml` 里的 `url`
+推荐直接使用 Vercel 的 Git 集成：
 
-如果后续要部署到 GitHub Pages、Vercel 或其他静态托管平台，可以继续参考：
+1. 在 Vercel 中导入这个仓库。
+2. 保持默认的 Next.js 构建设置。
+3. 生产分支指向 `main`。
+4. 如需自定义域名，在 Vercel 项目设置里绑定即可。
 
-- [配置](https://hexo.io/zh-cn/docs/configuration)
-- [写作](https://hexo.io/zh-cn/docs/writing)
-- [前置数据](https://hexo.io/zh-cn/docs/front-matter)
-
-## GitHub Pages
-
-这个仓库已经按 GitHub Actions 的方式接好了 GitHub Pages。
-
-- 如果仓库名是 `<你的 GitHub 用户名>.github.io`，博客地址会是 `https://<你的 GitHub 用户名>.github.io/`
-- 如果仓库名是普通项目名，比如 `blog`，博客地址会是 `https://<你的 GitHub 用户名>.github.io/blog/`
-
-工作流会在 GitHub 上自动判断这两种情况，并为 Hexo 生成正确的 `url` 和 `root`，所以不需要每次手动改 `/_config.yml`。
-
-接入步骤：
-
-1. 在 GitHub 创建一个仓库。
-2. 把当前目录 push 到仓库的 `main` 分支。
-3. 进入 GitHub 仓库的 `Settings > Pages`，将 `Source` 设为 `GitHub Actions`。
-4. 等待 `.github/workflows/pages.yml` 跑完，GitHub Pages 就会发布。
-
-如果后续要绑定自定义域名，再在 `source/` 下增加 `CNAME` 文件，并在 GitHub Pages 设置里配置域名。
+当前仓库不再使用 GitHub Pages 和 Hexo 构建链路。

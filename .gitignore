@@ -1,9 +1,12 @@
 .DS_Store
 Thumbs.db
-db.json
 *.log
 node_modules/
+.next/
+coverage/
 public/
+db.json
+.vercel/
 .deploy*/
 _multiconfig.yml
 .playwright-cli/

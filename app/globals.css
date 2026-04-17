@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #fffaf1;
+  --ink: #1f2937;
+  --brand: #0f172a;
+  --accent: #b45309;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background-color: var(--paper);
+  font-family: "Iowan Old Style", "Palatino Linotype", "Source Han Serif SC",
+    "Noto Serif SC", serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.article-content {
+  color: rgb(51 65 85);
+  font-size: 1.05rem;
+  line-height: 1.95;
+}
+
+.article-content > * + * {
+  margin-top: 1.35rem;
+}
+
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  color: rgb(15 23 42);
+  font-weight: 700;
+  line-height: 1.25;
+  scroll-margin-top: 6rem;
+}
+
+.article-content h2 {
+  margin-top: 3rem;
+  font-size: 2rem;
+}
+
+.article-content h3 {
+  margin-top: 2.25rem;
+  font-size: 1.5rem;
+}
+
+.article-content h4 {
+  margin-top: 1.75rem;
+  font-size: 1.2rem;
+}
+
+.article-content p code,
+.article-content li code {
+  border-radius: 0.5rem;
+  background: rgb(241 245 249);
+  padding: 0.2rem 0.45rem;
+  font-size: 0.95em;
+}
+
+.article-content pre {
+  overflow-x: auto;
+  border-radius: 1.5rem;
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+  padding: 1.25rem 1.4rem;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.article-content blockquote {
+  border-left: 4px solid rgb(180 83 9);
+  background: rgb(255 251 235);
+  padding: 1rem 1.25rem;
+  color: rgb(71 85 105);
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 1.5rem;
+}
+
+.article-content li + li {
+  margin-top: 0.55rem;
+}
+
+.article-content a {
+  color: rgb(180 83 9);
+  text-decoration: underline;
+  text-decoration-color: rgb(245 158 11 / 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.article-content img {
+  display: block;
+  width: 100%;
+  border-radius: 1.5rem;
+  border: 1px solid rgb(15 23 42 / 0.08);
+  margin: 2rem auto;
+  box-shadow: 0 30px 80px -55px rgba(15, 23, 42, 0.5);
+}
+
+.article-content table {
+  width: 100%;
+  overflow: hidden;
+  border-collapse: collapse;
+  border-radius: 1rem;
+  border: 1px solid rgb(226 232 240);
+}
+
+.article-content th,
+.article-content td {
+  border: 1px solid rgb(226 232 240);
+  padding: 0.75rem 0.9rem;
+  text-align: left;
+}
+
+.article-content th {
+  background: rgb(248 250 252);
+  color: rgb(15 23 42);
+}
