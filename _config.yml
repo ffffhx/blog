@@ -31,7 +31,6 @@ pretty_urls:
 source_dir: source
 public_dir: public
 tag_dir: tags
-archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -70,6 +69,9 @@ index_generator:
   path: ''
   per_page: 8
   order_by: -date
+
+archive_generator:
+  enabled: false
 
 # Category & Tag
 default_category: 技术

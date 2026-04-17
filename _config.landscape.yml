@@ -2,8 +2,6 @@ menu:
   首页: /
   技术: /categories/技术/
   健身: /categories/健身/
-  发文: /publish/
-  归档: /archives/
   关于: /about/
 rss: false
 banner: ../images/banner.svg

@@ -65,42 +65,12 @@ pnpm new:fitness -- "一周训练复盘"
 pnpm new:page -- about
 ```
 
-在线导入 Markdown：
-
-```text
-/publish/
-```
-
 ## 内容组织
 
 - 文章默认归类到 `技术`
 - 健身相关文章归类到 `健身`
 - 文章文件保存在 `source/_posts/YYYY/MM/DD/`
 - 文章图片资源会跟文章一起存放，因为已开启 `post_asset_folder: true`
-
-## 发文入口
-
-站点已经新增了一个发文入口：
-
-- 本地预览时访问 `http://localhost:4000/publish/`
-- GitHub Pages 上访问 `https://ffffhx.github.io/blog/publish/`
-
-这个页面支持：
-
-- 上传或拖拽 `.md` / `.markdown` 文件
-- 实时预览导入后的 Markdown 渲染效果
-- 直接在页面里手写文章
-- 使用快捷按钮插入标题、引用、列表、代码块和链接
-- 识别已有 front matter
-- 调整标题、所属模块、日期、标签、摘要
-- 生成标准的 Hexo Markdown
-- 直接保存到本地博客仓库
-- 或下载生成后的 `.md` 文件
-
-注意：
-
-- “直接保存到本地博客仓库” 依赖 Chromium 浏览器的 File System Access API，推荐 Chrome 或 Edge。
-- 如果浏览器不支持直接写入，可以先下载 `.md`，再手动放到 `source/_posts/YYYY/MM/DD/`。
 
 ## 上线前需要改的配置
 

@@ -1,21 +1,21 @@
 hexo.extend.filter.register("before_generate", function () {
   const themeConfig = this.theme?.config;
+  const siteThemeConfig = this.config?.theme_config;
 
   if (!themeConfig || typeof themeConfig !== "object") {
     return;
   }
 
-  const menu = themeConfig.menu;
-
-  if (menu && typeof menu === "object" && "首页" in menu) {
-    delete menu.Home;
-  }
-
-  if (menu && typeof menu === "object" && "归档" in menu) {
-    delete menu.Archives;
-  }
+  // Hexo deep-merges theme config, so theme defaults like "Home" and
+  // "Archives" remain unless we replace the menu object explicitly.
+  themeConfig.menu =
+    siteThemeConfig?.menu && typeof siteThemeConfig.menu === "object"
+      ? { ...siteThemeConfig.menu }
+      : {};
 
   // Hexo merges theme widget arrays instead of replacing them, so enforce
   // the sidebar composition explicitly during generation.
-  themeConfig.widgets = ["category"];
+  themeConfig.widgets = Array.isArray(siteThemeConfig?.widgets)
+    ? [...siteThemeConfig.widgets]
+    : ["category"];
 });
