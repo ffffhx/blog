@@ -1,5 +1,7 @@
 import path from "node:path";
 
+import { withBasePath } from "@/lib/utils/site-path";
+
 function toPosix(value: string) {
   return value.split(path.sep).join("/");
 }
@@ -13,5 +15,5 @@ export function normalizeAssetUrl(assetBasePath: string, assetName: string) {
 export function getPostAssetBasePath(relativeMarkdownPath: string) {
   const normalized = toPosix(relativeMarkdownPath);
   const parsed = path.posix.parse(normalized);
-  return `/post-assets/${parsed.dir}/${parsed.name}`;
+  return withBasePath(`/post-assets/${parsed.dir}/${parsed.name}`);
 }

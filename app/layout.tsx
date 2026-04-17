@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { SiteShell } from "@/components/site-shell";
 import { SITE } from "@/lib/content/config";
+import { withBasePath } from "@/lib/utils/site-path";
 
 import "./globals.css";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   icons: {
-    icon: "/images/favicon.svg",
+    icon: withBasePath("/images/favicon.svg"),
   },
 };
 

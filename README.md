@@ -1,6 +1,6 @@
 # 个人博客
 
-这是一个基于 `Next.js + React + TypeScript + Tailwind CSS` 的个人博客，部署目标是 `Vercel`。
+这是一个基于 `Next.js + React + TypeScript + Tailwind CSS` 的个人博客，部署目标是 `GitHub Pages`。
 
 内容仍然按两个大模块组织：
 
@@ -78,13 +78,24 @@ pnpm new:fitness -- "一周训练复盘"
 
 文章图片会在开发和构建前自动同步到 `public/post-assets/`，不需要手动复制。
 
-## 部署到 Vercel
+## 部署到 GitHub Pages
 
-推荐直接使用 Vercel 的 Git 集成：
+仓库已经包含 GitHub Pages 的 Actions 工作流：
 
-1. 在 Vercel 中导入这个仓库。
-2. 保持默认的 Next.js 构建设置。
-3. 生产分支指向 `main`。
-4. 如需自定义域名，在 Vercel 项目设置里绑定即可。
+- 工作流文件：`.github/workflows/pages.yml`
+- 构建输出：`out/`
+- 发布方式：推送到 `main` 后由 GitHub Actions 自动构建并部署
 
-当前仓库不再使用 GitHub Pages 和 Hexo 构建链路。
+首次启用时需要在 GitHub 仓库里做一次设置：
+
+1. 打开仓库 `Settings > Pages`
+2. 在 `Build and deployment` 中把 `Source` 设为 `GitHub Actions`
+3. 推送一次 `main` 分支，等待 `Deploy To GitHub Pages` 工作流完成
+
+如果当前仓库保持 `ffffhx/blog` 这个项目仓库形式，默认访问地址会是：
+
+```text
+https://ffffhx.github.io/blog/
+```
+
+如果后续绑定了自定义域名，GitHub Pages 会给工作流注入新的站点基路径，当前配置不需要再手动改代码。

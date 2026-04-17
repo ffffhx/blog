@@ -5,6 +5,7 @@ import { PostCard } from "@/components/post-card";
 import { getAllCategories } from "@/lib/content/categories";
 import { SITE } from "@/lib/content/config";
 import { getAllPosts } from "@/lib/content/posts";
+import { withBasePath } from "@/lib/utils/site-path";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -16,7 +17,7 @@ export default function HomePage() {
       <section className="overflow-hidden rounded-[2rem] border border-slate-900/10 bg-slate-950 text-white shadow-[0_36px_120px_-64px_rgba(15,23,42,0.8)]">
         <div
           className="grid gap-8 bg-cover bg-center px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)] lg:px-12 lg:py-14"
-          style={{ backgroundImage: "url('/images/banner.svg')" }}
+          style={{ backgroundImage: `url('${withBasePath("/images/banner.svg")}')` }}
         >
           <div className="space-y-6 rounded-[1.75rem] bg-slate-950/55 p-6 backdrop-blur-sm">
             <p className="text-sm uppercase tracking-[0.28em] text-white/70">{SITE.subtitle}</p>
