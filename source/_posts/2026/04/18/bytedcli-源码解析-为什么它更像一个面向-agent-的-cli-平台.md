@@ -12,6 +12,8 @@ tags:
   - 源码解析
   - 平台架构
 excerpt: "从“内部工具箱”和“Agent 友好型 CLI 平台”的区别讲起，拆解 bytedcli 的命令分层、启动装配、认证与多站点、统一 HTTP/输出底座、MCP/Skills 桥接，以及它为什么能在能力越来越多时仍然继续长大。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要
