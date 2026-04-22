@@ -42,17 +42,28 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const showToc = post.headings.length >= TOC_MIN_HEADINGS;
+  const coverImage = post.cover ? (
+    <div className="overflow-hidden rounded-[1.75rem] border border-slate-900/10 bg-slate-100 shadow-[0_24px_80px_-52px_rgba(15,23,42,0.55)]">
+      <img
+        src={post.cover}
+        alt={`${post.title} 封面`}
+        className="block h-auto w-full"
+      />
+    </div>
+  ) : null;
 
   return (
     <main className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem]">
       <article className="rounded-[2rem] border border-slate-900/10 bg-white/90 p-7 shadow-[0_32px_120px_-68px_rgba(15,23,42,0.65)] sm:p-10">
         <div className="space-y-5">
+          {post.coverPosition === "above-title" ? coverImage : null}
           <div className="space-y-3">
             <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Post</p>
             <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
               {post.title}
             </h1>
           </div>
+          {post.coverPosition === "below-title" ? coverImage : null}
           <PostMeta
             categories={post.categories}
             dateText={post.dateText}

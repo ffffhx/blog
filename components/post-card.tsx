@@ -13,14 +13,27 @@ export function PostCard({ post }: { post: PostSummary }) {
           readingTimeText={post.readingTimeText}
           tags={post.tags}
         />
-        <div className="space-y-3">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
-            <Link href={`/post/${post.slug}`} className="hover:text-amber-700">
-              {post.title}
-            </Link>
-          </h2>
-          <p className="text-base leading-8 text-slate-700">{post.excerpt}</p>
-        </div>
+        {post.cover ? (
+          <Link
+            href={`/post/${post.slug}`}
+            className="block overflow-hidden rounded-[1.75rem] border border-slate-900/10 bg-slate-100 shadow-[0_24px_80px_-52px_rgba(15,23,42,0.5)]"
+          >
+            <img
+              src={post.cover}
+              alt={`${post.title} 封面`}
+              className="block h-auto w-full transition duration-300 group-hover:scale-[1.015]"
+            />
+          </Link>
+        ) : (
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+              <Link href={`/post/${post.slug}`} className="hover:text-amber-700">
+                {post.title}
+              </Link>
+            </h2>
+            <p className="text-base leading-8 text-slate-700">{post.excerpt}</p>
+          </div>
+        )}
         <div className="mt-auto">
           <Link
             href={`/post/${post.slug}`}

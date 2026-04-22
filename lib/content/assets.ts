@@ -12,6 +12,22 @@ export function normalizeAssetUrl(assetBasePath: string, assetName: string) {
   return `${cleanedBase}/${cleanedName}`;
 }
 
+export function resolvePostAssetUrl(assetBasePath: string, assetPath: unknown) {
+  const normalized = String(assetPath ?? "")
+    .trim()
+    .replace(/^['"]|['"]$/g, "");
+
+  if (!normalized) {
+    return null;
+  }
+
+  if (normalized.startsWith("/")) {
+    return withBasePath(normalized);
+  }
+
+  return normalizeAssetUrl(assetBasePath, normalized);
+}
+
 export function getPostAssetBasePath(relativeMarkdownPath: string) {
   const normalized = toPosix(relativeMarkdownPath);
   const parsed = path.posix.parse(normalized);

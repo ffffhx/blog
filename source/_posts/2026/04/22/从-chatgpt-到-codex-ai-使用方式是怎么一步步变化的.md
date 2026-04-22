@@ -13,6 +13,8 @@ tags:
   - Trae
   - Agent
 excerpt: "按官方资料把这几年 AI 的使用方式串起来回看一遍：网页对话、Tab 补全、仓库级 IDE Agent、CLI Agent，以及多代理和自动化开始进入主流工作流的新阶段。"
+cover: "cover-v2.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

@@ -13,6 +13,8 @@ export type Heading = {
   depth: 2 | 3 | 4;
 };
 
+export type CoverPosition = "above-title" | "below-title";
+
 export type PostSummary = {
   slug: string;
   title: string;
@@ -23,6 +25,8 @@ export type PostSummary = {
   dateText: string;
   readingTimeText: string;
   assetBasePath: string;
+  cover: string | null;
+  coverPosition: CoverPosition;
 };
 
 export type Post = PostSummary & {
