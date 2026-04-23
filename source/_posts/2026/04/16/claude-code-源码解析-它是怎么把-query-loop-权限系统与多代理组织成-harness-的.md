@@ -14,6 +14,8 @@ tags:
   - Harness Engineering
   - 源码解析
 excerpt: "从术语预备讲起，拆解 Claude Code 的 query loop、工具系统、权限判定、上下文治理与 subagent 机制，并与 openai/codex 的 thread/turn/item、AGENTS.md、exec policy 与 app-server 控制面做对照。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要
