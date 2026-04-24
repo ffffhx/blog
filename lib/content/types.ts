@@ -1,4 +1,4 @@
-export type CategoryKey = "tech" | "fitness";
+export type CategoryKey = "tech" | "fitness" | "dailyNews";
 
 export type CategoryDefinition = {
   key: CategoryKey;

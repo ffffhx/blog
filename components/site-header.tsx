@@ -10,6 +10,10 @@ const NAV_LINKS = [
     href: `/category/${CATEGORY_DEFINITIONS.fitness.slug}`,
     label: CATEGORY_DEFINITIONS.fitness.label,
   },
+  {
+    href: `/category/${CATEGORY_DEFINITIONS.dailyNews.slug}`,
+    label: CATEGORY_DEFINITIONS.dailyNews.label,
+  },
   { href: "/about", label: "关于" },
 ];
 

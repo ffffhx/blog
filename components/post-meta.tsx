@@ -4,6 +4,7 @@ import type { CategoryKey } from "@/lib/content/types";
 const categoryLabels: Record<CategoryKey, string> = {
   tech: CATEGORY_DEFINITIONS.tech.label,
   fitness: CATEGORY_DEFINITIONS.fitness.label,
+  dailyNews: CATEGORY_DEFINITIONS.dailyNews.label,
 };
 
 type PostMetaProps = {

@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "new:post": "node tools/new-entry.mjs tech",
     "new:tech": "node tools/new-entry.mjs tech",
-    "new:fitness": "node tools/new-entry.mjs fitness"
+    "new:fitness": "node tools/new-entry.mjs fitness",
+    "new:daily-news": "node tools/new-entry.mjs daily-news"
   },
   "dependencies": {
     "clsx": "^2.1.1",

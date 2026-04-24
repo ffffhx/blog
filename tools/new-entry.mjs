@@ -42,6 +42,27 @@ const MODULES = {
       "补充阶段结论、调整计划或下一步安排。",
     ],
   },
+  "daily-news": {
+    label: "每日新闻",
+    examples: ['pnpm new:daily-news -- "2026-04-24 AI 与前端热点速览"'],
+    body: [
+      "## 今日重点",
+      "",
+      "用几句话概括今天最值得关注的技术新闻。",
+      "",
+      "## 新闻速览",
+      "",
+      "按热度或影响排序记录 3 到 5 条新闻。",
+      "",
+      "## 我的观察",
+      "",
+      "补充对开发者、产品或行业趋势的判断。",
+      "",
+      "## 参考链接",
+      "",
+      "- [来源名称](https://example.com)",
+    ],
+  },
 };
 
 const [, , mode, ...rest] = process.argv;
@@ -50,7 +71,7 @@ const title = (args[0] || "").trim();
 const moduleConfig = MODULES[mode];
 
 if (!moduleConfig) {
-  console.error('用法: node tools/new-entry.mjs <tech|fitness> "标题"');
+  console.error('用法: node tools/new-entry.mjs <tech|fitness|daily-news> "标题"');
   process.exit(1);
 }
 
