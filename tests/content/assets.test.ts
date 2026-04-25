@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import { getPostAssetBasePath, resolvePostAssetUrl } from "../../lib/content/assets";
+import {
+  getPostAssetBasePath,
+  resolveOptimizedAssetUrl,
+  resolveOptimizedPostAssetUrl,
+  resolvePostAssetUrl,
+} from "../../lib/content/assets";
 
 const ORIGINAL_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
 
@@ -29,6 +34,34 @@ describe("resolvePostAssetUrl", () => {
   it("resolves relative cover assets against the post asset directory", () => {
     expect(resolvePostAssetUrl("/post-assets/demo", "cover-v2.png")).toBe(
       "/post-assets/demo/cover-v2.png"
+    );
+  });
+});
+
+describe("resolveOptimizedAssetUrl", () => {
+  it("rewrites local png and jpeg assets to generated webp variants", () => {
+    expect(resolveOptimizedAssetUrl("/post-assets/demo/cover-v2.png")).toBe(
+      "/post-assets/demo/cover-v2.webp"
+    );
+    expect(resolveOptimizedAssetUrl("/post-assets/demo/figure-01.jpg")).toBe(
+      "/post-assets/demo/figure-01.webp"
+    );
+  });
+
+  it("keeps external and data urls unchanged", () => {
+    expect(resolveOptimizedAssetUrl("https://example.com/cover.png")).toBe(
+      "https://example.com/cover.png"
+    );
+    expect(resolveOptimizedAssetUrl("data:image/png;base64,abc")).toBe(
+      "data:image/png;base64,abc"
+    );
+  });
+});
+
+describe("resolveOptimizedPostAssetUrl", () => {
+  it("resolves relative post assets to generated webp urls", () => {
+    expect(resolveOptimizedPostAssetUrl("/post-assets/demo", "cover-v2.png")).toBe(
+      "/post-assets/demo/cover-v2.webp"
     );
   });
 });

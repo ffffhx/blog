@@ -3,7 +3,12 @@ import Link from "next/link";
 import { PostMeta } from "@/components/post-meta";
 import type { PostSummary } from "@/lib/content/types";
 
-export function PostCard({ post }: { post: PostSummary }) {
+type PostCardProps = {
+  post: PostSummary;
+  priority?: boolean;
+};
+
+export function PostCard({ post, priority = false }: PostCardProps) {
   return (
     <article className="group rounded-[2rem] border border-slate-900/10 bg-white/85 p-6 shadow-[0_24px_80px_-48px_rgba(15,23,42,0.45)] transition hover:-translate-y-1 hover:shadow-[0_32px_96px_-48px_rgba(15,23,42,0.55)]">
       <div className="flex h-full flex-col gap-5">
@@ -21,6 +26,9 @@ export function PostCard({ post }: { post: PostSummary }) {
             <img
               src={post.cover}
               alt={`${post.title} 封面`}
+              loading={priority ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={priority ? "high" : "low"}
               className="block h-auto w-full transition duration-300 group-hover:scale-[1.015]"
             />
           </Link>

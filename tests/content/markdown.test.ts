@@ -11,6 +11,15 @@ describe("transformHexoAssetTags", () => {
 
     expect(result).toContain("![](/post-assets/demo/figure-01.svg)");
   });
+
+  it("rewrites relative png images to generated webp variants", () => {
+    const result = transformHexoAssetTags(
+      '![Figure](figure-01.png "Example")',
+      "/post-assets/demo"
+    );
+
+    expect(result).toBe('![Figure](/post-assets/demo/figure-01.webp "Example")');
+  });
 });
 
 describe("compileMarkdown", () => {
@@ -19,5 +28,14 @@ describe("compileMarkdown", () => {
 
     expect(result.headings.map((item) => item.text)).toEqual(["A", "B", "C"]);
     expect(result.contentHtml).toContain("<h2");
+  });
+
+  it("adds lazy image loading attributes to article images", () => {
+    const result = compileMarkdown("![Figure](figure-01.png)", "/post-assets/demo");
+
+    expect(result.contentHtml).toContain('src="/post-assets/demo/figure-01.webp"');
+    expect(result.contentHtml).toContain('loading="lazy"');
+    expect(result.contentHtml).toContain('decoding="async"');
+    expect(result.contentHtml).toContain('fetchpriority="low"');
   });
 });

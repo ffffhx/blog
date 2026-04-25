@@ -11,6 +11,7 @@ export default function HomePage() {
   const posts = getAllPosts();
   const categories = getAllCategories();
   const featuredPosts = posts.slice(0, 8);
+  const priorityCoverSlug = featuredPosts.find((post) => post.cover)?.slug;
 
   return (
     <main className="space-y-10">
@@ -63,7 +64,11 @@ export default function HomePage() {
         {featuredPosts.length > 0 ? (
           <div className="grid gap-5 lg:grid-cols-2">
             {featuredPosts.map((post) => (
-              <PostCard key={post.slug} post={post} />
+              <PostCard
+                key={post.slug}
+                post={post}
+                priority={post.slug === priorityCoverSlug}
+              />
             ))}
           </div>
         ) : (

@@ -8,7 +8,10 @@ import {
   CATEGORY_LABEL_TO_KEY,
   CATEGORY_DEFINITIONS,
 } from "@/lib/content/config";
-import { getPostAssetBasePath, resolvePostAssetUrl } from "@/lib/content/assets";
+import {
+  getPostAssetBasePath,
+  resolveOptimizedPostAssetUrl,
+} from "@/lib/content/assets";
 import { compileMarkdown } from "@/lib/content/markdown";
 import { ensureUniqueSlug, slugifyPostStem } from "@/lib/content/slug";
 import type {
@@ -119,7 +122,7 @@ function loadPosts() {
       );
       const categories = normalizeCategories(parsed.data.categories);
       const tags = normalizeTags(parsed.data.tags);
-      const cover = resolvePostAssetUrl(assetBasePath, parsed.data.cover);
+      const cover = resolveOptimizedPostAssetUrl(assetBasePath, parsed.data.cover);
       const coverPosition = normalizeCoverPosition(parsed.data.coverPosition);
       const reading = readingTime(compiled.content);
 

@@ -8,7 +8,7 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
 
-import { normalizeAssetUrl } from "@/lib/content/assets";
+import { resolveOptimizedPostAssetUrl } from "@/lib/content/assets";
 import type { Heading } from "@/lib/content/types";
 
 const HEXO_ASSET_IMAGE_RE =
@@ -17,18 +17,45 @@ const HEXO_ASSET_IMAGE_RE =
 const RELATIVE_MARKDOWN_IMAGE_RE =
   /!\[([^\]]*)\]\((?!https?:\/\/|\/|data:)([^)\s]+)(?:\s+"([^"]*)")?\)/g;
 
+type HastElement = {
+  type: string;
+  tagName?: string;
+  properties?: Record<string, unknown>;
+};
+
+type UnistTree = Parameters<typeof visit>[0];
+
+function rehypeImageAttributes() {
+  return (tree: UnistTree) => {
+    visit(tree, "element", (node) => {
+      const element = node as HastElement;
+
+      if (element.tagName !== "img") {
+        return;
+      }
+
+      element.properties = {
+        ...element.properties,
+        loading: element.properties?.loading ?? "lazy",
+        decoding: element.properties?.decoding ?? "async",
+        fetchPriority: element.properties?.fetchPriority ?? "low",
+      };
+    });
+  };
+}
+
 export function transformHexoAssetTags(source: string, assetBasePath: string) {
   let transformed = source.replace(HEXO_ASSET_IMAGE_RE, (_match, assetName) => {
-    return `![](${normalizeAssetUrl(assetBasePath, String(assetName))})`;
+    return `![](${resolveOptimizedPostAssetUrl(assetBasePath, assetName)})`;
   });
 
   transformed = transformed.replace(
     RELATIVE_MARKDOWN_IMAGE_RE,
     (_match, alt, assetName, title) => {
       const titlePart = title ? ` "${title}"` : "";
-      return `![${alt}](${normalizeAssetUrl(
+      return `![${alt}](${resolveOptimizedPostAssetUrl(
         assetBasePath,
-        String(assetName)
+        assetName
       )}${titlePart})`;
     }
   );
@@ -70,6 +97,7 @@ export function compileMarkdown(source: string, assetBasePath: string) {
       .use(remarkGfm)
       .use(remarkRehype)
       .use(rehypeSlug)
+      .use(rehypeImageAttributes)
       .use(rehypeStringify)
       .processSync(content)
   );

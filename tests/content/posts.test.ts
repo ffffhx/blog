@@ -27,7 +27,7 @@ describe("getPostBySlug", () => {
     );
 
     expect(post).not.toBeNull();
-    expect(post?.cover).toContain("/cover-v2.png");
+    expect(post?.cover).toContain("/cover-v2.webp");
     expect(post?.coverPosition).toBe("below-title");
   });
 });

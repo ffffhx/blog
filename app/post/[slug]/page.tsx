@@ -47,6 +47,9 @@ export default async function PostPage({ params }: PostPageProps) {
       <img
         src={post.cover}
         alt={`${post.title} 封面`}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
         className="block h-auto w-full"
       />
     </div>
