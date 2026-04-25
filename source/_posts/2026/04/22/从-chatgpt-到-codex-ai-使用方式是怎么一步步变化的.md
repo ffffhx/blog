@@ -10,9 +10,10 @@ tags:
   - Cursor
   - Claude Code
   - Codex
-  - Trae
   - Agent
-excerpt: "按官方资料把这几年 AI 的使用方式串起来回看一遍：网页对话、Tab 补全、仓库级 IDE Agent、CLI Agent，以及多代理和自动化开始进入主流工作流的新阶段。"
+  - Browser
+  - Computer Use
+excerpt: "按官方资料把这几年 AI 的使用方式串起来回看一遍：网页对话、Tab 补全、仓库级 IDE Agent、CLI Agent、多代理和自动化，以及浏览器和电脑操作开始扩展 AI 执行边界的新阶段。"
 cover: "cover-v2.png"
 coverPosition: "below-title"
 ---
@@ -26,6 +27,7 @@ coverPosition: "below-title"
 - 再往后，把 `Cursor` 这类能读整个仓库的 AI IDE 当成副驾驶
 - 然后进入 `Claude Code`、`Codex CLI` 这种命令行 Agent 阶段
 - 到现在，工具已经开始往“多代理并行、后台执行、自动化协作”的方向发展
+- 再往后，AI 开始进入浏览器、网页系统和桌面环境
 
 但这里要先说清楚一个容易混淆的事实：
 
@@ -198,29 +200,9 @@ OpenAI 在 `2025-05-16` 的 [Introducing Codex](https://openai.com/index/introdu
 - 开始在后台持续运行
 - 开始接手可重复的日常工程动作
 
-如果看官方资料，这条线其实已经很清楚。
+如果看官方资料，这条线在 `Cursor` 和 `OpenAI Codex` 上已经很清楚。
 
-以 `Trae` 为例，官方首页 [TRAE](https://www.trae.ai/) 现在的定位已经是：
-
-- `TRAE is your 10x AI Engineer who can independently build software solutions for you`
-
-再看官方博客 [TRAE Blog](https://www.trae.ai/blog) 里的时间线，会很清楚：
-
-- `2025-04-21`：`Collaborate with Intelligence`，强调统一的 `Chat-Builder` 界面、`@Agent` 系统、`MCP` 和多代理协作
-- `2025-05-26`：`More Agentic`
-- `2025-06-17`：`Trae Agent 2.0: Smarter Architecture, Tools, and Memory`，进一步强调工具编排和长期记忆
-- `2025-11-04`：`TRAE SOLO GA Release`
-- `2026-03-31`：`Introducing The New SOLO`
-
-这些名字虽然不完全一样，但它们背后的方向非常一致：
-
-- 让 AI 拿到更完整的上下文
-- 让 AI 能调用更多工具
-- 让 AI 能把任务拆开并行推进
-- 让 AI 有规则、记忆和更长的工作时长
-- 让一个 Agent 体系同时覆盖交互式工作和后台工作
-
-`Cursor` 这边同样如此。到 `2026-04-02` 的 `Agents Window`，官方已经在强调：
+到 `2026-04-02` 的 `Agents Window`，`Cursor` 官方已经在强调：
 
 - 多代理并行
 - 多 repo / 多环境
@@ -261,32 +243,104 @@ OpenAI 在 `2025-05-16` 的 [Introducing Codex](https://openai.com/index/introdu
 
 {% asset_img figure-05.svg %}
 
-## 6. 这几年真正变了什么
+## 6. 第六阶段：浏览器和电脑操作，AI 开始进入真实工作环境
 
-如果只挑最本质的变化，我觉得是下面四件事。
+如果说第五阶段解决的是“任务能不能并行、后台、持续地跑”，那接下来这一步解决的是另一个问题：
 
-### 6.1 上下文来源变了
+**AI 能不能进入人真正工作的那些界面。**
+
+这里的界面，不只是代码编辑器和终端，而是：
+
+- 浏览器
+- 网页后台
+- DevTools 和请求链路
+- 公司内部研发平台
+- 桌面应用
+- 系统窗口和本机文件
+
+OpenAI 在 `2026-04-16` 的 [Codex for (almost) everything](https://openai.com/index/codex-for-almost-everything/) 里，把这条线写得很直接：Codex 开始通过 `background computer use` 看屏幕、点击、输入，并且在 Codex app 里加入内置浏览器。官方同时提到，这类能力对前端迭代、应用测试，以及那些没有 API 的工具尤其有用。
+
+这一步的变化很大。
+
+以前即使 AI 能把代码改好，很多工程动作还是会卡在网页系统里：
+
+- 要去平台上创建一个研发任务
+- 要去需求系统里新建一个 Meego
+- 要打开 BITS 绑定分支、触发流水线、查看构建结果
+- 要进网页控制台复现一次操作
+- 要看浏览器里真实发出的请求
+- 要在一个没有开放 API 的后台系统里点几个按钮
+
+这些动作很长一段时间都还是“人自己打开网页去做”。因为它们不在仓库里，也不在终端里，更不是一个可以直接 `curl` 的稳定接口。
+
+现在这个边界开始松动了。
+
+对 `Claude Code` 来说，官方文档已经把它描述成一个可以运行在终端、IDE、桌面应用和浏览器里的编码工具；同时通过 [MCP](https://code.claude.com/docs/en/mcp)，它可以接到 issue tracker、监控平台、数据库、设计工具、Slack、Google Drive 这类外部系统。更底层一点，Anthropic 的 [Computer use tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool) 也已经把“通过截图理解界面、再用鼠标和键盘操作桌面环境”定义成一类工具能力。
+
+所以这一阶段我不会把它简单理解成“AI 又多了一个浏览器”。更准确地说，它意味着：
+
+**AI 开始从软件工程环境，扩展到真实工作环境。**
+
+这会让很多过去不适合交给 AI 的事情，开始进入可协作范围：
+
+- 前端页面改完后，让 AI 自己打开页面检查视觉和交互
+- 让 AI 在浏览器里复现一个 bug，再回到代码里修
+- 让 AI 在网页平台上创建任务、绑定分支、触发流程
+- 让 AI 抓取一次真实请求，反推前后端接口关系
+- 让 AI 操作一个只有 GUI、没有 API 的工具
+
+但这一步也更需要边界。
+
+因为浏览器和电脑操作一旦接上真实账号、真实系统、真实数据，风险就不再只是“代码改错了”。它可能变成：
+
+- 点错按钮
+- 提交错误表单
+- 触发错误流程
+- 泄露敏感页面信息
+- 被网页内容里的 prompt injection 误导
+
+所以这一阶段真正成熟的标志，不只是“AI 能点鼠标”，而是下面这些能力一起出现：
+
+- 操作前有权限确认
+- 高风险动作有人审查
+- 浏览器和桌面环境有沙箱
+- 登录态和敏感数据有隔离
+- 操作过程可以回放和追踪
+- 规则能明确告诉 AI 什么不能做
+
+也就是说，AI 进入浏览器和电脑，并不是为了把人完全挤出流程，而是把更多过去只能由人手动完成的界面操作，纳入一个可观察、可审查、可回滚的协作链路里。
+
+{% asset_img figure-06.svg %}
+
+## 7. 这几年真正变了什么
+
+如果只挑最本质的变化，我觉得是下面五件事。
+
+### 7.1 上下文来源变了
 
 - 网页对话时代：上下文靠手工粘贴
 - Tab 补全时代：上下文主要来自当前文件和光标附近
 - 仓库级 IDE 时代：上下文扩展到整个代码库
-- CLI / 多代理 / 自动化时代：上下文已经扩展到仓库、终端、测试、PR、规则、历史任务、外部工具
+- CLI / 多代理 / 自动化时代：上下文扩展到仓库、终端、测试、PR、规则、历史任务、外部工具
+- 浏览器 / 电脑操作时代：上下文继续扩展到网页、请求、后台系统、桌面应用和真实操作结果
 
-### 6.2 动作能力变了
+### 7.2 动作能力变了
 
 - 一开始，AI 只能回答
 - 后来，它能补全
 - 再后来，它能改文件
-- 现在，它已经可以读代码、跑命令、过测试、提 PR、并行做多件事
+- 再往后，它能读代码、跑命令、过测试、提 PR、并行做多件事
+- 现在，它开始能打开网页、填写表单、查看请求、操作桌面应用
 
-### 6.3 人的角色变了
+### 7.3 人的角色变了
 
 - 最开始，开发者是“提问的人”
 - 然后是“接收补全的人”
 - 接着变成“给任务、审改动的人”
 - 再往后，更像是“给目标、设边界、做 review、做仲裁的人”
+- 到浏览器和电脑操作阶段，人还要负责审批高风险动作、保护账号和敏感数据
 
-### 6.4 工具形态也变了
+### 7.4 工具形态也变了
 
 过去我们会问：
 
@@ -299,10 +353,31 @@ OpenAI 在 `2025-05-16` 的 [Introducing Codex](https://openai.com/index/introdu
 - 它能不能调用终端和外部工具？
 - 它有没有规则、记忆、审批和沙箱？
 - 它能不能和 IDE、CLI、云端任务、后台自动化打通？
+- 它能不能进入浏览器和桌面应用，完成那些没有 API 的真实流程？
 
 也就是说，竞争点已经从“回答质量”逐步转向“上下文组织能力 + 执行能力 + 安全边界 + 工作流整合能力”。
 
-## 7. 我的结论
+### 7.5 执行边界变了
+
+过去 AI 编程工具的边界基本围绕代码展开：
+
+- 代码文件
+- 终端命令
+- 测试结果
+- Git 历史
+- PR 评论
+
+但很多真实工作流并不只在这些地方发生。
+
+一个软件工程任务从想法到上线，中间往往还会穿过需求系统、项目管理平台、CI/CD 页面、监控后台、权限系统、工单系统、设计稿、文档和各种内部网页。
+
+浏览器和电脑操作的意义就在这里：
+
+**AI 开始有机会把这些原本断开的界面串起来。**
+
+这也解释了为什么我会把它单独列成第六阶段。它不是第五阶段“后台执行”的重复，而是把执行范围从工程工具链继续往外推了一层。
+
+## 8. 我的结论
 
 回头看这条路，我会把每一阶段概括成一句话：
 
@@ -310,7 +385,8 @@ OpenAI 在 `2025-05-16` 的 [Introducing Codex](https://openai.com/index/introdu
 - `GitHub Copilot` 让 AI 进入了击键流，变成随时可用的补全器
 - `Cursor` 让 AI 从“写下一行”升级成“先读仓库再改代码”的 IDE Agent
 - `Claude Code`、`Codex CLI` 让 AI 真正进入终端，成为工程执行面上的协作者
-- `Trae`、`Codex`、`Cursor` 等新一代产品，则开始把多代理、后台执行、自动化、规则、记忆和工具系统拼成一套完整工作流
+- `Codex`、`Cursor` 等新一代产品，则开始把多代理、后台执行、自动化、规则、记忆和工具系统拼成一套完整工作流
+- 带有浏览器和 `Computer Use` 能力的 Agent，让 AI 开始进入网页系统和桌面环境，连接真实工作流
 
 所以，今天再看“我在用哪个 AI 编程工具”这个问题，已经不太够了。
 
@@ -336,5 +412,7 @@ OpenAI 在 `2025-05-16` 的 [Introducing Codex](https://openai.com/index/introdu
 - Anthropic：[Claude Code Product Page](https://www.anthropic.com/product/claude-code)
 - OpenAI, `2025-05-16`：[Introducing Codex](https://openai.com/index/introducing-codex/)
 - OpenAI, `2026-02-02`：[Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/)
-- TRAE：[TRAE Home](https://www.trae.ai/)
-- TRAE：[TRAE Blog](https://www.trae.ai/blog)
+- OpenAI, `2026-04-16`：[Codex for (almost) everything](https://openai.com/index/codex-for-almost-everything/)
+- Anthropic Docs：[Claude Code overview](https://code.claude.com/docs)
+- Anthropic Docs：[Connect Claude Code to tools via MCP](https://code.claude.com/docs/en/mcp)
+- Anthropic Docs：[Computer use tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool)
