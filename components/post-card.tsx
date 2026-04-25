@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 
 import { PostMeta } from "@/components/post-meta";
-import type { PostSummary } from "@/lib/content/types";
+import type { PostCardSummary } from "@/lib/content/types";
 
 type PostCardProps = {
-  post: PostSummary;
+  post: PostCardSummary;
   priority?: boolean;
 };
 

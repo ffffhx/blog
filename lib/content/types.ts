@@ -29,6 +29,8 @@ export type PostSummary = {
   coverPosition: CoverPosition;
 };
 
+export type PostCardSummary = Omit<PostSummary, "date">;
+
 export type Post = PostSummary & {
   content: string;
   contentHtml: string;

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import { CATEGORY_DEFINITIONS, SITE } from "@/lib/content/config";
+import { withBasePath } from "@/lib/utils/site-path";
 
 const NAV_LINKS = [
   { href: "/", label: "首页" },
@@ -14,6 +15,7 @@ const NAV_LINKS = [
     href: `/category/${CATEGORY_DEFINITIONS.dailyNews.slug}`,
     label: CATEGORY_DEFINITIONS.dailyNews.label,
   },
+  { href: "/search", label: "搜索" },
   { href: "/about", label: "关于" },
 ];
 
@@ -30,17 +32,41 @@ export function SiteHeader() {
           </Link>
           <p className="text-sm text-slate-600">{SITE.description}</p>
         </div>
-        <nav className="flex flex-wrap items-center gap-2">
-          {NAV_LINKS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-amber-100 hover:text-slate-950 hover:ring-1 hover:ring-amber-200"
+        <div className="flex flex-col gap-3 lg:items-end">
+          <nav className="flex flex-wrap items-center gap-2">
+            {NAV_LINKS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-amber-100 hover:text-slate-950 hover:ring-1 hover:ring-amber-200"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <form
+            action={withBasePath("/search/")}
+            role="search"
+            className="flex w-full min-w-0 max-w-md gap-2"
+          >
+            <label className="sr-only" htmlFor="site-title-search">
+              按标题搜索
+            </label>
+            <input
+              id="site-title-search"
+              name="q"
+              type="search"
+              placeholder="搜索标题"
+              className="min-h-10 min-w-0 flex-1 rounded-full border border-slate-300 bg-white/85 px-4 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/70"
+            />
+            <button
+              type="submit"
+              className="min-h-10 rounded-full bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-amber-800 focus:outline-none focus:ring-4 focus:ring-amber-200"
             >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+              搜索
+            </button>
+          </form>
+        </div>
       </div>
     </header>
   );
