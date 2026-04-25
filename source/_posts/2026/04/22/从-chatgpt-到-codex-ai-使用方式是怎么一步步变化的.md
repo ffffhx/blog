@@ -79,7 +79,36 @@ coverPosition: "below-title"
 
 `GitHub` 在 `2021-06-29` 发布的 [Introducing GitHub Copilot: your AI pair programmer](https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/) 中，把 Copilot 定义成一个能“根据你正在写的代码，建议整行甚至整个函数”的 AI pair programmer。
 
-这一步最关键的变化不是模型更强，而是**交互位置变了**：
+这里有个地方很容易混淆：`Tab` 补全这个交互本身并不是 `GitHub Copilot` 发明的。
+
+在 Copilot 之前，命令行、IDE、`IntelliSense`、`LSP`、代码片段工具，早就可以用 `Tab` 或回车来接受补全了。传统补全更多依赖的是：
+
+- 语法分析
+- 类型信息
+- 符号表
+- 已导入模块
+- API 列表
+- snippet 模板
+
+这些能力当然很重要，但它们不一定是 AI。它们回答的更多是：“当前位置有哪些合法的变量、方法、参数或模板？”
+
+`Copilot` 真正改变的不是“按 `Tab` 接受建议”，而是**灰色建议背后的生成机制变了**。
+
+也就是说，开发者看到的还是一个熟悉的编辑器交互：
+
+```plaintext
+灰色建议出现 -> 按 Tab 接受 -> 代码进入文件
+```
+
+但背后已经从规则、索引和 snippet，变成了由模型根据上下文生成整行甚至整个函数。
+
+所以，`2021-06-29` 这个时间点当然已经有 AI。只是那时还没有 `ChatGPT` 这种大众化对话入口。`GitHub` 在 `2025-08-29` 的 [Under the hood: Exploring the AI models powering GitHub Copilot](https://github.blog/ai-and-ml/github-copilot/under-the-hood-exploring-the-ai-models-powering-github-copilot/) 里回顾得很清楚：`Copilot` 刚发布技术预览时，`OpenAI` 还没有推出 `ChatGPT`；当时的 `Copilot` 由单一模型 `Codex` 驱动，而 `Codex` 是 `GPT-3` 的后代模型。
+
+换句话说：
+
+**2021 年的 Copilot 已经是 AI 补全；`Tab` 只是接受建议的交互方式，真正变化的是补全内容开始由代码大模型生成。**
+
+如果放在开发者的使用方式这条线里看，这一步最关键的变化还不只是模型更强，而是**交互位置变了**：
 
 - AI 不再待在浏览器标签页里
 - 它进入了编辑器
