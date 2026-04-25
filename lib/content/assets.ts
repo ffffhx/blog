@@ -9,10 +9,27 @@ function toPosix(value: string) {
   return value.split(path.sep).join("/");
 }
 
+function encodePathSegment(segment: string) {
+  try {
+    return encodeURIComponent(decodeURIComponent(segment));
+  } catch {
+    return encodeURIComponent(segment);
+  }
+}
+
+function encodeLocalUrlPath(assetUrl: string) {
+  if (ABSOLUTE_URL_RE.test(assetUrl) || assetUrl.startsWith("data:")) {
+    return assetUrl;
+  }
+
+  const [, pathname = "", suffix = ""] = assetUrl.match(/^([^?#]*)(.*)$/) ?? [];
+  return `${pathname.split("/").map(encodePathSegment).join("/")}${suffix}`;
+}
+
 export function normalizeAssetUrl(assetBasePath: string, assetName: string) {
   const cleanedBase = assetBasePath.replace(/\/+$/, "");
   const cleanedName = assetName.trim().replace(/^\.?\//, "");
-  return `${cleanedBase}/${cleanedName}`;
+  return encodeLocalUrlPath(`${cleanedBase}/${cleanedName}`);
 }
 
 export function resolvePostAssetUrl(assetBasePath: string, assetPath: unknown) {
@@ -25,7 +42,7 @@ export function resolvePostAssetUrl(assetBasePath: string, assetPath: unknown) {
   }
 
   if (normalized.startsWith("/")) {
-    return withBasePath(normalized);
+    return encodeLocalUrlPath(withBasePath(normalized));
   }
 
   return normalizeAssetUrl(assetBasePath, normalized);
@@ -36,7 +53,7 @@ export function resolveOptimizedAssetUrl(assetUrl: string) {
     return assetUrl;
   }
 
-  return assetUrl.replace(OPTIMIZABLE_IMAGE_EXTENSION_RE, ".webp");
+  return encodeLocalUrlPath(assetUrl.replace(OPTIMIZABLE_IMAGE_EXTENSION_RE, ".webp"));
 }
 
 export function resolveOptimizedPostAssetUrl(

@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 import { PostMeta } from "@/components/post-meta";
@@ -16,8 +17,19 @@ export function PostCard({ post, priority = false }: PostCardProps) {
           categories={post.categories}
           dateText={post.dateText}
           readingTimeText={post.readingTimeText}
+          showTags={false}
           tags={post.tags}
         />
+        <div className={post.cover ? "space-y-4" : "space-y-3"}>
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+            <Link href={`/post/${post.slug}`} className="hover:text-amber-700">
+              {post.title}
+            </Link>
+          </h2>
+          {post.cover ? null : (
+            <p className="text-base leading-8 text-slate-700">{post.excerpt}</p>
+          )}
+        </div>
         {post.cover ? (
           <Link
             href={`/post/${post.slug}`}
@@ -32,16 +44,7 @@ export function PostCard({ post, priority = false }: PostCardProps) {
               className="block h-auto w-full transition duration-300 group-hover:scale-[1.015]"
             />
           </Link>
-        ) : (
-          <div className="space-y-3">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
-              <Link href={`/post/${post.slug}`} className="hover:text-amber-700">
-                {post.title}
-              </Link>
-            </h2>
-            <p className="text-base leading-8 text-slate-700">{post.excerpt}</p>
-          </div>
-        )}
+        ) : null}
         <div className="mt-auto">
           <Link
             href={`/post/${post.slug}`}

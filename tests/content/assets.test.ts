@@ -36,6 +36,12 @@ describe("resolvePostAssetUrl", () => {
       "/post-assets/demo/cover-v2.png"
     );
   });
+
+  it("encodes non-ascii local asset urls for browser and header safety", () => {
+    expect(resolvePostAssetUrl("/post-assets/中文目录", "封面 图.png")).toBe(
+      "/post-assets/%E4%B8%AD%E6%96%87%E7%9B%AE%E5%BD%95/%E5%B0%81%E9%9D%A2%20%E5%9B%BE.png"
+    );
+  });
 });
 
 describe("resolveOptimizedAssetUrl", () => {
@@ -54,6 +60,18 @@ describe("resolveOptimizedAssetUrl", () => {
     );
     expect(resolveOptimizedAssetUrl("data:image/png;base64,abc")).toBe(
       "data:image/png;base64,abc"
+    );
+  });
+
+  it("optimizes and encodes local image urls", () => {
+    expect(resolveOptimizedAssetUrl("/post-assets/中文目录/封面.png")).toBe(
+      "/post-assets/%E4%B8%AD%E6%96%87%E7%9B%AE%E5%BD%95/%E5%B0%81%E9%9D%A2.webp"
+    );
+  });
+
+  it("preserves query strings and hashes while encoding local paths", () => {
+    expect(resolveOptimizedAssetUrl("/post-assets/中文目录/封面.png?size=large#hero")).toBe(
+      "/post-assets/%E4%B8%AD%E6%96%87%E7%9B%AE%E5%BD%95/%E5%B0%81%E9%9D%A2.webp?size=large#hero"
     );
   });
 });

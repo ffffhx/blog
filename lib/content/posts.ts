@@ -87,6 +87,14 @@ function deriveExcerpt(explicitExcerpt: unknown, content: string) {
     .trim();
 }
 
+function decodeContentForReadingTime(content: string) {
+  try {
+    return decodeURI(content);
+  } catch {
+    return content;
+  }
+}
+
 function toSummary(post: Post): PostSummary {
   return {
     slug: post.slug,
@@ -124,7 +132,7 @@ function loadPosts() {
       const tags = normalizeTags(parsed.data.tags);
       const cover = resolveOptimizedPostAssetUrl(assetBasePath, parsed.data.cover);
       const coverPosition = normalizeCoverPosition(parsed.data.coverPosition);
-      const reading = readingTime(compiled.content);
+      const reading = readingTime(decodeContentForReadingTime(compiled.content));
 
       return {
         slug,

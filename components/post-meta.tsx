@@ -1,3 +1,5 @@
+import React from "react";
+
 import { CATEGORY_DEFINITIONS } from "@/lib/content/config";
 import type { CategoryKey } from "@/lib/content/types";
 
@@ -11,6 +13,7 @@ type PostMetaProps = {
   categories: CategoryKey[];
   dateText: string;
   readingTimeText: string;
+  showTags?: boolean;
   tags: string[];
 };
 
@@ -18,6 +21,7 @@ export function PostMeta({
   categories,
   dateText,
   readingTimeText,
+  showTags = true,
   tags,
 }: PostMetaProps) {
   return (
@@ -34,7 +38,7 @@ export function PostMeta({
       </div>
       <span>{dateText}</span>
       <span>{readingTimeText}</span>
-      {tags.length > 0 ? (
+      {showTags && tags.length > 0 ? (
         <span className="text-slate-500">{tags.map((tag) => `#${tag}`).join(" ")}</span>
       ) : null}
     </div>
