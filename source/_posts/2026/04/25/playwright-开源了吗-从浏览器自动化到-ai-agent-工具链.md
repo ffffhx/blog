@@ -93,6 +93,18 @@ Playwright 的核心价值就在这里：它把浏览器自动化里最常见的
 
 `Locator` 则是 Playwright 可靠性的入口。它不是“现在立刻查一个元素出来”，而是“描述我要操作哪个元素”。当你调用 `click()`、`fill()`、`toBeVisible()` 时，Playwright 会在动作发生前重新解析 locator，并做一系列 actionability checks。
 
+更具体地说，`const input = page.getByPlaceholder('What needs to be done?')` 拿到的不是某个固定的 DOM 节点句柄，而是一条可重复执行的查询规则。真正执行 `fill()` 时，Playwright 才会按当时页面里的最新 DOM 去找这个输入框；如果中间发生了 React 或 Vue 的重渲染，旧节点被替换掉，locator 也会面向新 DOM 重新解析。
+
+```ts
+const input = page.getByPlaceholder('What needs to be done?'); // 保存“怎么找输入框”的规则，不保存当前 DOM 节点
+await input.fill('读 Playwright 文档'); // 执行动作前重新定位元素，并等待它变成可编辑状态
+await expect(input).toHaveValue('读 Playwright 文档'); // 断言继续复用同一条定位规则，并在超时前自动重试
+```
+
+这和一次性拿 `ElementHandle` 不一样。`ElementHandle` 更像“此刻这个节点的引用”，页面重渲染后可能变成过期引用；`Locator` 更像“用户视角下我要找的那个控件”。所以 Playwright 推荐优先使用 `getByRole()`、`getByText()`、`getByLabel()`、`getByPlaceholder()`、`getByTestId()` 这类可读 locator，把“用户看到什么、测试依赖什么”写进代码里，而不是把测试绑死在脆弱的 CSS 层级上。
+
+Locator 还有一个容易忽略的特性：对 `click()`、`fill()` 这类单元素动作，它默认要求定位结果唯一。如果一个 locator 同时匹配多个按钮，Playwright 会报 strictness violation，逼你把定位条件收窄到真正想操作的元素。这比“随便点第一个匹配项”更适合长期维护的端到端测试。
+
 一个最小测试大概长这样：
 
 ```ts
