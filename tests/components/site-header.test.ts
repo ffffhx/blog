@@ -13,4 +13,11 @@ describe("SiteHeader", () => {
     expect(markup).not.toContain("hover:bg-slate-950");
     expect(markup).not.toContain("hover:text-white");
   });
+
+  it("includes the games entry in the primary navigation", () => {
+    const markup = renderToStaticMarkup(createElement(SiteHeader));
+
+    expect(markup).toContain('href="/games"');
+    expect(markup).toContain(">游戏入口</a>");
+  });
 });

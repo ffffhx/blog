@@ -15,6 +15,7 @@ const NAV_LINKS = [
     href: `/category/${CATEGORY_DEFINITIONS.dailyNews.slug}`,
     label: CATEGORY_DEFINITIONS.dailyNews.label,
   },
+  { href: "/games", label: "游戏入口" },
   { href: "/search", label: "搜索" },
   { href: "/about", label: "关于" },
 ];

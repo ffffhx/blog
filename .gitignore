@@ -5,6 +5,7 @@ node_modules/
 .next/
 out/
 coverage/
+tmp/
 public/
 db.json
 .vercel/
