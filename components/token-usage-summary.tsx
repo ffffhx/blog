@@ -5,10 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { TokenUsagePeriodKey, TokenUsageSnapshot } from "@/lib/content/token-usage";
 import { withBasePath } from "@/lib/utils/site-path";
 
-const PERIODS: Array<{ key: TokenUsagePeriodKey; label: string }> = [
-  { key: "today", label: "今日" },
-  { key: "week", label: "本周" },
-  { key: "month", label: "本月" },
+const PERIODS: Array<{ key: TokenUsagePeriodKey; label: string; range: string }> = [
+  { key: "today", label: "今日", range: "今天 00:00 到现在" },
+  { key: "week", label: "本周", range: "本周一 00:00 到现在" },
+  { key: "month", label: "本月", range: "本月 1 日 00:00 到现在" },
 ];
 
 export function TokenUsageSummary({
@@ -62,6 +62,14 @@ export function TokenUsageSummary({
             </p>
             <p className="mt-2 text-xs font-medium text-white/58">tokens</p>
           </div>
+        ))}
+      </div>
+      <div className="rounded-2xl border border-white/12 bg-slate-950/35 px-4 py-3 font-mono text-sm leading-7 text-white/72">
+        {PERIODS.map((period) => (
+          <p key={`${period.key}-range`} className="flex flex-wrap gap-x-3">
+            <span className="min-w-14 font-semibold text-white/90">{period.key}:</span>
+            <span>{period.range}</span>
+          </p>
         ))}
       </div>
       <p className="text-xs leading-5 text-white/58">更新于 {updatedAt}</p>
