@@ -2,14 +2,17 @@ import Link from "next/link";
 
 import { EmptyState } from "@/components/empty-state";
 import { PostCard } from "@/components/post-card";
+import { TokenUsageSummary } from "@/components/token-usage-summary";
 import { getAllCategories } from "@/lib/content/categories";
 import { SITE } from "@/lib/content/config";
 import { getAllPosts } from "@/lib/content/posts";
+import { getTokenUsageSnapshot } from "@/lib/content/token-usage";
 import { withBasePath } from "@/lib/utils/site-path";
 
 export default function HomePage() {
   const posts = getAllPosts();
   const categories = getAllCategories();
+  const tokenUsage = getTokenUsageSnapshot();
   const featuredPosts = posts.slice(0, 8);
   const priorityCoverSlug = featuredPosts.find((post) => post.cover)?.slug;
 
@@ -23,11 +26,12 @@ export default function HomePage() {
           <div className="space-y-6 rounded-[1.75rem] bg-slate-950/55 p-6 backdrop-blur-sm">
             <p className="text-sm uppercase tracking-[0.28em] text-white/70">{SITE.subtitle}</p>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-              一个用 React 重新搭起来的长文博客
+              我用了多少 Token
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
               {SITE.description}
             </p>
+            <TokenUsageSummary initialSnapshot={tokenUsage} />
           </div>
           <div className="rounded-[1.75rem] bg-white/12 p-6 backdrop-blur">
             <p className="text-sm uppercase tracking-[0.24em] text-white/70">内容分区</p>

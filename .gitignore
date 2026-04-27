@@ -6,7 +6,9 @@ node_modules/
 out/
 coverage/
 tmp/
-public/
+public/*
+!public/stats/
+!public/stats/token-usage.json
 db.json
 .vercel/
 .deploy*/

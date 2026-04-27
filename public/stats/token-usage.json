@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-04-27T07:09:46.032Z",
+  "timezone": "Asia/Shanghai",
+  "source": "local-codex-jsonl",
+  "filesScanned": 1840,
+  "periods": {
+    "today": {
+      "startAt": "2026-04-26T16:00:00.000Z",
+      "totalTokens": 70620255,
+      "inputTokens": 70324517,
+      "cachedInputTokens": 65844736,
+      "outputTokens": 295738,
+      "reasoningOutputTokens": 130138,
+      "events": 732
+    },
+    "week": {
+      "startAt": "2026-04-26T16:00:00.000Z",
+      "totalTokens": 70620255,
+      "inputTokens": 70324517,
+      "cachedInputTokens": 65844736,
+      "outputTokens": 295738,
+      "reasoningOutputTokens": 130138,
+      "events": 732
+    },
+    "month": {
+      "startAt": "2026-03-31T16:00:00.000Z",
+      "totalTokens": 1109200792,
+      "inputTokens": 1101538335,
+      "cachedInputTokens": 1018994688,
+      "outputTokens": 7053295,
+      "reasoningOutputTokens": 3351647,
+      "events": 11634
+    }
+  }
+}
