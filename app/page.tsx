@@ -26,10 +26,10 @@ export default function HomePage() {
           <div className="space-y-6 rounded-[1.75rem] bg-slate-950/55 p-6 backdrop-blur-sm">
             <p className="text-sm uppercase tracking-[0.28em] text-white/70">{SITE.subtitle}</p>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-              我用了多少 Token
+              {SITE.description}
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
-              {SITE.description}
+              我用了多少 Token
             </p>
             <TokenUsageSummary initialSnapshot={tokenUsage} />
           </div>

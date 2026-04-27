@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-04-27T07:20:47.640Z",
+  "updatedAt": "2026-04-27T07:50:32.957Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
-  "filesScanned": 1842,
+  "filesScanned": 1844,
   "periods": {
     "today": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 74214151,
-      "inputTokens": 73898003,
-      "cachedInputTokens": 69164416,
-      "outputTokens": 316148,
-      "reasoningOutputTokens": 140842,
-      "events": 781
+      "totalTokens": 88448261,
+      "inputTokens": 88081624,
+      "cachedInputTokens": 82856832,
+      "outputTokens": 366637,
+      "reasoningOutputTokens": 164748,
+      "events": 921
     },
     "week": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 74214151,
-      "inputTokens": 73898003,
-      "cachedInputTokens": 69164416,
-      "outputTokens": 316148,
-      "reasoningOutputTokens": 140842,
-      "events": 781
+      "totalTokens": 88448261,
+      "inputTokens": 88081624,
+      "cachedInputTokens": 82856832,
+      "outputTokens": 366637,
+      "reasoningOutputTokens": 164748,
+      "events": 921
     },
     "month": {
       "startAt": "2026-03-31T16:00:00.000Z",
-      "totalTokens": 1112794688,
-      "inputTokens": 1105111821,
-      "cachedInputTokens": 1022314368,
-      "outputTokens": 7073705,
-      "reasoningOutputTokens": 3362351,
-      "events": 11683
+      "totalTokens": 1127028798,
+      "inputTokens": 1119295442,
+      "cachedInputTokens": 1036006784,
+      "outputTokens": 7124194,
+      "reasoningOutputTokens": 3386257,
+      "events": 11823
     }
   }
 }
