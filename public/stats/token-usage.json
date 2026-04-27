@@ -1,36 +1,174 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-04-27T08:09:10.836Z",
+  "updatedAt": "2026-04-27T08:16:07.576Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
-  "filesScanned": 1845,
+  "filesScanned": 1846,
+  "pricing": {
+    "currency": "USD",
+    "basis": "estimated-api-equivalent",
+    "note": "Estimated from local Codex token logs and public model rates. This is not an invoice.",
+    "pricesPerMillionTokens": {
+      "gpt-5.5": {
+        "input": 5,
+        "cachedInput": 0.5,
+        "output": 30
+      },
+      "gpt-5.4-mini": {
+        "input": 0.75,
+        "cachedInput": 0.075,
+        "output": 4.5
+      },
+      "gpt-5.4": {
+        "input": 2.5,
+        "cachedInput": 0.25,
+        "output": 15
+      },
+      "gpt-5.3-codex": {
+        "input": 1.75,
+        "cachedInput": 0.175,
+        "output": 14
+      },
+      "gpt-5.2-codex": {
+        "input": 1.75,
+        "cachedInput": 0.175,
+        "output": 14
+      },
+      "gpt-5.2": {
+        "input": 1.75,
+        "cachedInput": 0.175,
+        "output": 14
+      },
+      "gpt-5.1-codex-mini": {
+        "input": 0.25,
+        "cachedInput": 0.025,
+        "output": 2
+      },
+      "gpt-5.1-codex": {
+        "input": 1.25,
+        "cachedInput": 0.125,
+        "output": 10
+      },
+      "gpt-5.1": {
+        "input": 1.25,
+        "cachedInput": 0.125,
+        "output": 10
+      },
+      "gpt-5-codex": {
+        "input": 1.25,
+        "cachedInput": 0.125,
+        "output": 10
+      },
+      "gpt-5": {
+        "input": 1.25,
+        "cachedInput": 0.125,
+        "output": 10
+      }
+    }
+  },
   "periods": {
     "today": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 96720273,
-      "inputTokens": 96330549,
-      "cachedInputTokens": 90748672,
-      "outputTokens": 389724,
-      "reasoningOutputTokens": 177333,
-      "events": 978
+      "totalTokens": 101010311,
+      "inputTokens": 100602166,
+      "cachedInputTokens": 94799360,
+      "outputTokens": 408145,
+      "reasoningOutputTokens": 184386,
+      "events": 1016,
+      "estimatedCostUsd": 88.491,
+      "estimatedCost": {
+        "inputUsd": 28.9341,
+        "cachedInputUsd": 47.3413,
+        "outputUsd": 12.2156,
+        "unpricedTokens": 0
+      },
+      "models": {
+        "gpt-5.5": {
+          "inputTokens": 100336862,
+          "cachedInputTokens": 94566016,
+          "outputTokens": 406226,
+          "estimatedCostUsd": 88.324,
+          "events": 1007
+        },
+        "gpt-5.4": {
+          "inputTokens": 265304,
+          "cachedInputTokens": 233344,
+          "outputTokens": 1919,
+          "estimatedCostUsd": 0.167,
+          "events": 9
+        }
+      }
     },
     "week": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 96720273,
-      "inputTokens": 96330549,
-      "cachedInputTokens": 90748672,
-      "outputTokens": 389724,
-      "reasoningOutputTokens": 177333,
-      "events": 978
+      "totalTokens": 101010311,
+      "inputTokens": 100602166,
+      "cachedInputTokens": 94799360,
+      "outputTokens": 408145,
+      "reasoningOutputTokens": 184386,
+      "events": 1016,
+      "estimatedCostUsd": 88.491,
+      "estimatedCost": {
+        "inputUsd": 28.9341,
+        "cachedInputUsd": 47.3413,
+        "outputUsd": 12.2156,
+        "unpricedTokens": 0
+      },
+      "models": {
+        "gpt-5.5": {
+          "inputTokens": 100336862,
+          "cachedInputTokens": 94566016,
+          "outputTokens": 406226,
+          "estimatedCostUsd": 88.324,
+          "events": 1007
+        },
+        "gpt-5.4": {
+          "inputTokens": 265304,
+          "cachedInputTokens": 233344,
+          "outputTokens": 1919,
+          "estimatedCostUsd": 0.167,
+          "events": 9
+        }
+      }
     },
     "month": {
       "startAt": "2026-03-31T16:00:00.000Z",
-      "totalTokens": 1135300810,
-      "inputTokens": 1127544367,
-      "cachedInputTokens": 1043898624,
-      "outputTokens": 7147281,
-      "reasoningOutputTokens": 3398842,
-      "events": 11880
+      "totalTokens": 1139590848,
+      "inputTokens": 1131815984,
+      "cachedInputTokens": 1047949312,
+      "outputTokens": 7165702,
+      "reasoningOutputTokens": 3405895,
+      "events": 11918,
+      "estimatedCostUsd": 739.7379,
+      "estimatedCost": {
+        "inputUsd": 264.1266,
+        "cachedInputUsd": 346.1281,
+        "outputUsd": 129.4833,
+        "unpricedTokens": 0
+      },
+      "models": {
+        "gpt-5.4": {
+          "inputTokens": 773044616,
+          "cachedInputTokens": 711133056,
+          "outputTokens": 5684063,
+          "estimatedCostUsd": 417.8231,
+          "events": 8478
+        },
+        "gpt-5.5": {
+          "inputTokens": 358521697,
+          "cachedInputTokens": 336667264,
+          "outputTokens": 1472744,
+          "estimatedCostUsd": 321.7881,
+          "events": 3432
+        },
+        "gpt-5.4-mini": {
+          "inputTokens": 249671,
+          "cachedInputTokens": 148992,
+          "outputTokens": 8895,
+          "estimatedCostUsd": 0.1267,
+          "events": 8
+        }
+      }
     }
   }
 }

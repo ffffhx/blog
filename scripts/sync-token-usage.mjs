@@ -7,6 +7,20 @@ const TIMEZONE = "Asia/Shanghai";
 const TIMEZONE_OFFSET_MS = 8 * 60 * 60 * 1000;
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
 const OUTPUT_FILE = path.join(process.cwd(), "public", "stats", "token-usage.json");
+const TOKENS_PER_MILLION = 1_000_000;
+const MODEL_PRICES = [
+  { id: "gpt-5.5", input: 5, cachedInput: 0.5, output: 30 },
+  { id: "gpt-5.4-mini", input: 0.75, cachedInput: 0.075, output: 4.5 },
+  { id: "gpt-5.4", input: 2.5, cachedInput: 0.25, output: 15 },
+  { id: "gpt-5.3-codex", input: 1.75, cachedInput: 0.175, output: 14 },
+  { id: "gpt-5.2-codex", input: 1.75, cachedInput: 0.175, output: 14 },
+  { id: "gpt-5.2", input: 1.75, cachedInput: 0.175, output: 14 },
+  { id: "gpt-5.1-codex-mini", input: 0.25, cachedInput: 0.025, output: 2 },
+  { id: "gpt-5.1-codex", input: 1.25, cachedInput: 0.125, output: 10 },
+  { id: "gpt-5.1", input: 1.25, cachedInput: 0.125, output: 10 },
+  { id: "gpt-5-codex", input: 1.25, cachedInput: 0.125, output: 10 },
+  { id: "gpt-5", input: 1.25, cachedInput: 0.125, output: 10 },
+];
 
 function getShanghaiParts(date) {
   const shifted = new Date(date.getTime() + TIMEZONE_OFFSET_MS);
@@ -42,12 +56,20 @@ function createBucket(startAt) {
     outputTokens: 0,
     reasoningOutputTokens: 0,
     events: 0,
+    estimatedCostUsd: 0,
+    estimatedCost: {
+      inputUsd: 0,
+      cachedInputUsd: 0,
+      outputUsd: 0,
+      unpricedTokens: 0,
+    },
+    models: {},
   };
 }
 
-function addUsage(bucket, usage) {
+function addUsage(bucket, usage, model) {
   const inputTokens = toNumber(usage.input_tokens);
-  const cachedInputTokens = toNumber(usage.cached_input_tokens);
+  const cachedInputTokens = Math.min(inputTokens, toNumber(usage.cached_input_tokens));
   const outputTokens = toNumber(usage.output_tokens);
   const reasoningOutputTokens = toNumber(usage.reasoning_output_tokens);
   const explicitTotal = toNumber(usage.total_tokens);
@@ -61,6 +83,60 @@ function addUsage(bucket, usage) {
   bucket.outputTokens += outputTokens;
   bucket.reasoningOutputTokens += reasoningOutputTokens;
   bucket.events += 1;
+
+  addCost(bucket, {
+    model,
+    inputTokens,
+    cachedInputTokens,
+    outputTokens,
+  });
+}
+
+function addCost(bucket, { model, inputTokens, cachedInputTokens, outputTokens }) {
+  const price = getModelPrice(model);
+  const modelKey = price?.id || model || "unknown";
+  const modelBucket = bucket.models[modelKey] || {
+    inputTokens: 0,
+    cachedInputTokens: 0,
+    outputTokens: 0,
+    estimatedCostUsd: 0,
+    events: 0,
+  };
+
+  modelBucket.inputTokens += inputTokens;
+  modelBucket.cachedInputTokens += cachedInputTokens;
+  modelBucket.outputTokens += outputTokens;
+  modelBucket.events += 1;
+
+  if (!price) {
+    const unpricedTokens = inputTokens + outputTokens;
+    bucket.estimatedCost.unpricedTokens += unpricedTokens;
+    bucket.models[modelKey] = modelBucket;
+    return;
+  }
+
+  const uncachedInputTokens = Math.max(0, inputTokens - cachedInputTokens);
+  const inputUsd = (uncachedInputTokens / TOKENS_PER_MILLION) * price.input;
+  const cachedInputUsd = (cachedInputTokens / TOKENS_PER_MILLION) * price.cachedInput;
+  const outputUsd = (outputTokens / TOKENS_PER_MILLION) * price.output;
+  const estimatedCostUsd = inputUsd + cachedInputUsd + outputUsd;
+
+  bucket.estimatedCostUsd += estimatedCostUsd;
+  bucket.estimatedCost.inputUsd += inputUsd;
+  bucket.estimatedCost.cachedInputUsd += cachedInputUsd;
+  bucket.estimatedCost.outputUsd += outputUsd;
+  modelBucket.estimatedCostUsd += estimatedCostUsd;
+  bucket.models[modelKey] = modelBucket;
+}
+
+function getModelPrice(model) {
+  if (!model) {
+    return undefined;
+  }
+
+  const normalizedModel = model.toLowerCase();
+
+  return MODEL_PRICES.find((price) => normalizedModel.startsWith(price.id));
 }
 
 function toNumber(value) {
@@ -120,9 +196,10 @@ async function readUsageEvents(file, onEvent) {
     input: stream,
     crlfDelay: Infinity,
   });
+  let currentModel = "unknown";
 
   for await (const line of lines) {
-    if (!line.includes("\"token_count\"")) {
+    if (!line.includes("\"token_count\"") && !line.includes("\"model\"")) {
       continue;
     }
 
@@ -132,6 +209,13 @@ async function readUsageEvents(file, onEvent) {
       entry = JSON.parse(line);
     } catch {
       continue;
+    }
+
+    if (
+      (entry?.type === "turn_context" || entry?.type === "session_meta") &&
+      typeof entry?.payload?.model === "string"
+    ) {
+      currentModel = entry.payload.model;
     }
 
     const usage = entry?.payload?.info?.last_token_usage;
@@ -146,8 +230,29 @@ async function readUsageEvents(file, onEvent) {
       continue;
     }
 
-    onEvent(new Date(timestamp), usage);
+    onEvent(new Date(timestamp), usage, currentModel);
   }
+}
+
+function finalizeBucket(bucket) {
+  bucket.estimatedCostUsd = roundUsd(bucket.estimatedCostUsd);
+  bucket.estimatedCost.inputUsd = roundUsd(bucket.estimatedCost.inputUsd);
+  bucket.estimatedCost.cachedInputUsd = roundUsd(bucket.estimatedCost.cachedInputUsd);
+  bucket.estimatedCost.outputUsd = roundUsd(bucket.estimatedCost.outputUsd);
+
+  for (const model of Object.values(bucket.models)) {
+    model.estimatedCostUsd = roundUsd(model.estimatedCostUsd);
+  }
+
+  bucket.models = Object.fromEntries(
+    Object.entries(bucket.models).sort((a, b) => b[1].estimatedCostUsd - a[1].estimatedCostUsd)
+  );
+
+  return bucket;
+}
+
+function roundUsd(value) {
+  return Number(value.toFixed(4));
 }
 
 async function main() {
@@ -176,7 +281,7 @@ async function main() {
   const nowWithSkew = now.getTime() + 5 * 60 * 1000;
 
   for (const file of files) {
-    await readUsageEvents(file, (timestamp, usage) => {
+    await readUsageEvents(file, (timestamp, usage, model) => {
       const time = timestamp.getTime();
 
       if (time < oldestStart || time > nowWithSkew) {
@@ -184,15 +289,19 @@ async function main() {
       }
 
       if (time >= starts.today.getTime()) {
-        addUsage(periods.today, usage);
+        addUsage(periods.today, usage, model);
       }
 
       if (time >= starts.week.getTime()) {
-        addUsage(periods.week, usage);
+        addUsage(periods.week, usage, model);
       }
 
-      addUsage(periods.month, usage);
+      addUsage(periods.month, usage, model);
     });
+  }
+
+  for (const key of Object.keys(periods)) {
+    periods[key] = finalizeBucket(periods[key]);
   }
 
   const snapshot = {
@@ -201,6 +310,21 @@ async function main() {
     timezone: TIMEZONE,
     source: "local-codex-jsonl",
     filesScanned: files.length,
+    pricing: {
+      currency: "USD",
+      basis: "estimated-api-equivalent",
+      note: "Estimated from local Codex token logs and public model rates. This is not an invoice.",
+      pricesPerMillionTokens: Object.fromEntries(
+        MODEL_PRICES.map((price) => [
+          price.id,
+          {
+            input: price.input,
+            cachedInput: price.cachedInput,
+            output: price.output,
+          },
+        ])
+      ),
+    },
     periods,
   };
 
@@ -208,7 +332,7 @@ async function main() {
   await fs.promises.writeFile(OUTPUT_FILE, `${JSON.stringify(snapshot, null, 2)}\n`);
 
   console.log(
-    `Synced token usage: today=${periods.today.totalTokens}, week=${periods.week.totalTokens}, month=${periods.month.totalTokens}`
+    `Synced token usage: today=${periods.today.totalTokens}, week=${periods.week.totalTokens}, month=${periods.month.totalTokens}, monthCost=$${periods.month.estimatedCostUsd}`
   );
 }
 

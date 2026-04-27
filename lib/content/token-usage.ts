@@ -11,6 +11,23 @@ export type TokenUsagePeriod = {
   outputTokens: number;
   reasoningOutputTokens: number;
   events: number;
+  estimatedCostUsd: number;
+  estimatedCost: {
+    inputUsd: number;
+    cachedInputUsd: number;
+    outputUsd: number;
+    unpricedTokens: number;
+  };
+  models: Record<
+    string,
+    {
+      inputTokens: number;
+      cachedInputTokens: number;
+      outputTokens: number;
+      estimatedCostUsd: number;
+      events: number;
+    }
+  >;
 };
 
 export type TokenUsageSnapshot = {
@@ -19,6 +36,19 @@ export type TokenUsageSnapshot = {
   timezone: string;
   source: string;
   filesScanned: number;
+  pricing?: {
+    currency: string;
+    basis: string;
+    note: string;
+    pricesPerMillionTokens: Record<
+      string,
+      {
+        input: number;
+        cachedInput: number;
+        output: number;
+      }
+    >;
+  };
   periods: Record<TokenUsagePeriodKey, TokenUsagePeriod>;
 };
 
@@ -30,6 +60,14 @@ const EMPTY_PERIOD: TokenUsagePeriod = {
   outputTokens: 0,
   reasoningOutputTokens: 0,
   events: 0,
+  estimatedCostUsd: 0,
+  estimatedCost: {
+    inputUsd: 0,
+    cachedInputUsd: 0,
+    outputUsd: 0,
+    unpricedTokens: 0,
+  },
+  models: {},
 };
 
 export const EMPTY_TOKEN_USAGE_SNAPSHOT: TokenUsageSnapshot = {
@@ -70,6 +108,7 @@ function normalizeTokenUsageSnapshot(value: unknown): TokenUsageSnapshot {
     timezone: typeof snapshot.timezone === "string" ? snapshot.timezone : "Asia/Shanghai",
     source: typeof snapshot.source === "string" ? snapshot.source : "unknown",
     filesScanned: toFiniteNumber(snapshot.filesScanned),
+    pricing: normalizePricing(snapshot.pricing),
     periods: {
       today: normalizePeriod(snapshot.periods?.today),
       week: normalizePeriod(snapshot.periods?.week),
@@ -93,6 +132,78 @@ function normalizePeriod(value: unknown): TokenUsagePeriod {
     outputTokens: toFiniteNumber(period.outputTokens),
     reasoningOutputTokens: toFiniteNumber(period.reasoningOutputTokens),
     events: toFiniteNumber(period.events),
+    estimatedCostUsd: toFiniteNumber(period.estimatedCostUsd),
+    estimatedCost: normalizeEstimatedCost(period.estimatedCost),
+    models: normalizeModels(period.models),
+  };
+}
+
+function normalizeEstimatedCost(value: unknown): TokenUsagePeriod["estimatedCost"] {
+  if (!value || typeof value !== "object") {
+    return EMPTY_PERIOD.estimatedCost;
+  }
+
+  const cost = value as Partial<TokenUsagePeriod["estimatedCost"]>;
+
+  return {
+    inputUsd: toFiniteNumber(cost.inputUsd),
+    cachedInputUsd: toFiniteNumber(cost.cachedInputUsd),
+    outputUsd: toFiniteNumber(cost.outputUsd),
+    unpricedTokens: toFiniteNumber(cost.unpricedTokens),
+  };
+}
+
+function normalizeModels(value: unknown): TokenUsagePeriod["models"] {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([model, modelValue]) => {
+      if (!modelValue || typeof modelValue !== "object") {
+        return [
+          model,
+          {
+            inputTokens: 0,
+            cachedInputTokens: 0,
+            outputTokens: 0,
+            estimatedCostUsd: 0,
+            events: 0,
+          },
+        ];
+      }
+
+      const modelUsage = modelValue as Partial<TokenUsagePeriod["models"][string]>;
+
+      return [
+        model,
+        {
+          inputTokens: toFiniteNumber(modelUsage.inputTokens),
+          cachedInputTokens: toFiniteNumber(modelUsage.cachedInputTokens),
+          outputTokens: toFiniteNumber(modelUsage.outputTokens),
+          estimatedCostUsd: toFiniteNumber(modelUsage.estimatedCostUsd),
+          events: toFiniteNumber(modelUsage.events),
+        },
+      ];
+    })
+  );
+}
+
+function normalizePricing(value: unknown): TokenUsageSnapshot["pricing"] {
+  if (!value || typeof value !== "object") {
+    return undefined;
+  }
+
+  const pricing = value as Partial<NonNullable<TokenUsageSnapshot["pricing"]>>;
+
+  return {
+    currency: typeof pricing.currency === "string" ? pricing.currency : "USD",
+    basis: typeof pricing.basis === "string" ? pricing.basis : "estimated-api-equivalent",
+    note: typeof pricing.note === "string" ? pricing.note : "",
+    pricesPerMillionTokens:
+      pricing.pricesPerMillionTokens && typeof pricing.pricesPerMillionTokens === "object"
+        ? pricing.pricesPerMillionTokens
+        : {},
   };
 }
 
