@@ -1,0 +1,107 @@
+name: Sync Token Usage
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */2 * * *"
+
+permissions: {}
+
+concurrency:
+  group: token-usage-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync from local Codex logs
+    runs-on:
+      - self-hosted
+      - macOS
+      - blog-token-usage
+    permissions:
+      contents: write
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
+      commit-sha: ${{ steps.commit.outputs.commit-sha }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Sync token usage
+        env:
+          CODEX_HOME: ${{ vars.CODEX_HOME }}
+        run: node scripts/sync-token-usage.mjs --preserve-updated-at-if-unchanged
+
+      - name: Commit token usage snapshot
+        id: commit
+        run: |
+          if git diff --quiet -- public/stats/token-usage.json; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            echo "commit-sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "No token usage changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/stats/token-usage.json
+          git commit -m "chore: sync token usage"
+          git push origin HEAD:main
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+          echo "commit-sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Build and deploy updated blog
+    needs: sync
+    if: needs.sync.outputs.committed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout synced commit
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.sync.outputs.commit-sha }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: pnpm build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

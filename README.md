@@ -80,6 +80,31 @@ pnpm new:daily-news -- "2026-04-24 AI 与前端热点速览"
 
 文章图片会在开发和构建前自动同步到 `public/post-assets/`，不需要手动复制。
 
+## Token 使用量同步
+
+首页的「我用了多少 Token」读取 `public/stats/token-usage.json`。这个文件由本机 Codex 会话日志生成，不适合放在 GitHub 托管 runner 上采集，所以仓库提供了一个专门跑在 Mac self-hosted runner 上的工作流：
+
+- 工作流文件：`.github/workflows/token-usage-sync.yml`
+- 执行频率：每 2 小时一次，也可以在 GitHub Actions 页面选择 `main` 手动运行
+- 读取来源：默认读取 runner 用户的 `~/.codex/sessions` 和 `~/.codex/archived_sessions`
+- 写入目标：`public/stats/token-usage.json`
+- 调度标签：`self-hosted`、`macOS`、`blog-token-usage`
+
+首次启用时需要在 GitHub 仓库里添加一台 macOS self-hosted runner：
+
+1. 打开仓库 `Settings > Actions > Runners`
+2. 选择 `New self-hosted runner`，按页面命令在 Mac 上下载并配置 runner
+3. 确认 runner 带有默认标签 `self-hosted`、`macOS`，并额外添加 `blog-token-usage`
+4. 用拥有 Codex 日志的同一个 macOS 用户启动 runner
+
+如果 runner 运行用户不是平时使用 Codex 的用户，可以在仓库 `Settings > Secrets and variables > Actions > Variables` 里新增变量：
+
+```text
+CODEX_HOME=/Users/你的用户名/.codex
+```
+
+工作流会在 token 统计有实际变化时提交 `public/stats/token-usage.json`。因为 GitHub Actions 使用 `GITHUB_TOKEN` 推送的 commit 不会再触发新的 Pages 构建，这个工作流在提交后会继续构建并部署 GitHub Pages，保证线上博客同步更新。
+
 ## 部署到 GitHub Pages
 
 仓库已经包含 GitHub Pages 的 Actions 工作流：

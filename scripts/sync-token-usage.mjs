@@ -8,6 +8,9 @@ const TIMEZONE_OFFSET_MS = 8 * 60 * 60 * 1000;
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
 const OUTPUT_FILE = path.join(process.cwd(), "public", "stats", "token-usage.json");
 const TOKENS_PER_MILLION = 1_000_000;
+const PRESERVE_UPDATED_AT_IF_UNCHANGED = process.argv.includes(
+  "--preserve-updated-at-if-unchanged"
+);
 const MODEL_PRICES = [
   { id: "gpt-5.5", input: 5, cachedInput: 0.5, output: 30 },
   { id: "gpt-5.4-mini", input: 0.75, cachedInput: 0.075, output: 4.5 },
@@ -255,6 +258,20 @@ function roundUsd(value) {
   return Number(value.toFixed(4));
 }
 
+async function readExistingSnapshot() {
+  try {
+    return JSON.parse(await fs.promises.readFile(OUTPUT_FILE, "utf8"));
+  } catch {
+    return undefined;
+  }
+}
+
+function withoutUpdatedAt(snapshot) {
+  return JSON.stringify(snapshot, (key, value) =>
+    key === "updatedAt" ? undefined : value
+  );
+}
+
 async function main() {
   const now = new Date();
   const starts = getPeriodStarts(now);
@@ -327,6 +344,20 @@ async function main() {
     },
     periods,
   };
+
+  if (PRESERVE_UPDATED_AT_IF_UNCHANGED) {
+    const existingSnapshot = await readExistingSnapshot();
+
+    if (
+      existingSnapshot &&
+      withoutUpdatedAt(existingSnapshot) === withoutUpdatedAt(snapshot)
+    ) {
+      console.log(
+        `No token usage changes since ${existingSnapshot.updatedAt}; kept existing token usage file.`
+      );
+      return;
+    }
+  }
 
   await fs.promises.mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
   await fs.promises.writeFile(OUTPUT_FILE, `${JSON.stringify(snapshot, null, 2)}\n`);
