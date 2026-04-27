@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-04-27T07:50:32.957Z",
+  "updatedAt": "2026-04-27T07:56:28.500Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
   "filesScanned": 1844,
   "periods": {
     "today": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 88448261,
-      "inputTokens": 88081624,
-      "cachedInputTokens": 82856832,
-      "outputTokens": 366637,
-      "reasoningOutputTokens": 164748,
-      "events": 921
+      "totalTokens": 92122983,
+      "inputTokens": 91748259,
+      "cachedInputTokens": 86451328,
+      "outputTokens": 374724,
+      "reasoningOutputTokens": 169238,
+      "events": 947
     },
     "week": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 88448261,
-      "inputTokens": 88081624,
-      "cachedInputTokens": 82856832,
-      "outputTokens": 366637,
-      "reasoningOutputTokens": 164748,
-      "events": 921
+      "totalTokens": 92122983,
+      "inputTokens": 91748259,
+      "cachedInputTokens": 86451328,
+      "outputTokens": 374724,
+      "reasoningOutputTokens": 169238,
+      "events": 947
     },
     "month": {
       "startAt": "2026-03-31T16:00:00.000Z",
-      "totalTokens": 1127028798,
-      "inputTokens": 1119295442,
-      "cachedInputTokens": 1036006784,
-      "outputTokens": 7124194,
-      "reasoningOutputTokens": 3386257,
-      "events": 11823
+      "totalTokens": 1130703520,
+      "inputTokens": 1122962077,
+      "cachedInputTokens": 1039601280,
+      "outputTokens": 7132281,
+      "reasoningOutputTokens": 3390747,
+      "events": 11849
     }
   }
 }

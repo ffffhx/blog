@@ -57,7 +57,8 @@ function walk(dir, visitor) {
   }
 }
 
-fs.rmSync(publicRoot, { recursive: true, force: true });
+fs.rmSync(publicImagesRoot, { recursive: true, force: true });
+fs.rmSync(publicPostAssetsRoot, { recursive: true, force: true });
 ensureDir(publicImagesRoot);
 ensureDir(publicPostAssetsRoot);
 

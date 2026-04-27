@@ -160,9 +160,16 @@ async function main() {
   };
   const files = await collectJsonlFiles(CODEX_HOME);
 
-  if (files.length === 0 && fs.existsSync(OUTPUT_FILE)) {
-    console.log(`No Codex session logs found under ${CODEX_HOME}; kept existing token usage file.`);
-    return;
+  if (files.length === 0) {
+    if (fs.existsSync(OUTPUT_FILE)) {
+      console.log(`No Codex session logs found under ${CODEX_HOME}; kept existing token usage file.`);
+      return;
+    }
+
+    if (process.env.CI) {
+      console.log(`No Codex session logs found under ${CODEX_HOME}; skipped token usage sync in CI.`);
+      return;
+    }
   }
 
   const oldestStart = starts.month.getTime();
