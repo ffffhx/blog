@@ -12,6 +12,8 @@ tags:
   - 论文解读
   - arXiv
 excerpt: "解读 arXiv:2602.22983《Obscure but Effective: Classical Chinese Jailbreak Prompt Optimization via Bio-Inspired Search》，用通俗语言解释这篇论文为什么认为文言文会形成大模型安全盲区、CC-BOS 的方法本质是什么、实验结果应该怎么看，以及开发者能得到哪些防御启发。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

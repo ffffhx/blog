@@ -12,6 +12,8 @@ tags:
   - TypeScript
   - 源码解析
 excerpt: "确认 bb-browser 是一个 MIT 许可证的开源项目之后，从源码拆解它怎样把真实 Chrome、Daemon、CDP、MCP 和 site adapter 组织成一套给 AI Agent 使用的浏览器能力层。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

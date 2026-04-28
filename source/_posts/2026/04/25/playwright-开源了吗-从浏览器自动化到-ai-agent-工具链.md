@@ -11,6 +11,8 @@ tags:
   - Agent
   - 开源工具
 excerpt: "Playwright 是 Microsoft 维护的开源浏览器自动化与端到端测试框架，官方仓库以 Apache-2.0 许可证发布。本文从开源状态、核心抽象、自动等待、Trace Viewer、测试报告、CI 和 AI Agent 场景，拆解它为什么会成为今天 Web 自动化里的基础工具。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

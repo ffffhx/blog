@@ -12,6 +12,8 @@ tags:
   - 浏览器自动化
   - 源码解析
 excerpt: "基于 ChromeDevTools/chrome-devtools-mcp 开源仓库，拆解它怎样把 MCP stdio 服务、Puppeteer、Chrome DevTools Protocol、DevTools 前端模型、页面快照、性能 Trace 和本地 CLI 串成一套给 Agent 使用的浏览器调试工具箱。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

@@ -12,6 +12,8 @@ tags:
   - Python
   - TypeScript
 excerpt: "从一条请求如何跑完整个系统讲起，拆解 Hermes Agent 的 agent loop、memory、session search、skill manager 和 delegate 设计，并对比 OpenClaw 更偏平台化、插件化、渠道化的实现重心。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

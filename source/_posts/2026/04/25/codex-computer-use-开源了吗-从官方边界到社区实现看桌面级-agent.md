@@ -12,6 +12,8 @@ tags:
   - Accessibility
   - 源码解析
 excerpt: "官方 Codex 已经发布 Computer Use，但截至 2026-04-25，openai/codex 开源的是 feature flag、plugin、tool_search 和 dynamic tool 接入边界，实际桌面执行器仍以 proprietary bundled plugin 形态分发。本文对照官方边界和社区实现，拆解 Computer Use 的通用工程形态。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 > 结论先行：截至 2026-04-25，我没有在官方 `openai/codex` 仓库里看到 Computer Use 桌面执行器的源码。官方开源的是 Codex Runtime 里的接入边界：feature flag、插件发现、tool_search 特判、Dynamic Tool/App Server 协议。真正控制 macOS 桌面的执行器，在我本机看到的是 `computer-use@openai-bundled` 插件包里的 proprietary app binary。

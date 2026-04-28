@@ -10,6 +10,8 @@ tags:
   - macOS
   - 路由
 excerpt: "当本地代理和公司 VPN 同时开启时，外网站点到底走哪条链路？这篇笔记用 macOS 上的默认路由、系统代理和 VPN 虚拟网卡排查过程，把代理、VPN、默认网关、网卡与路由之间的关系梳理清楚。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

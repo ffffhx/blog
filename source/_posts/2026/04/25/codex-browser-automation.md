@@ -11,6 +11,8 @@ tags:
   - Lark CLI
   - Agent
 excerpt: "与浏览器交互是开发流程中极为重要的一环。这篇文章把专用业务 CLI、浏览器协议类工具和桌面级 Computer Use 放在一起，对比它们的信息来源、动作方式、稳定性和适用场景。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 与浏览器交互是我们开发流程中极为重要的一环，这里总结了我与浏览器交互的几种方法。

@@ -11,6 +11,8 @@ tags:
   - 源码解析
   - Unicode
 excerpt: "从 `getBoundingClientRect()` 为什么会触发 reflow 讲起，系统拆解 `chenglou/pretext` 的 `prepare/layout` 两阶段设计、文本分析、Canvas 测量、换行热路径、多语言边界和验证体系，并说明它什么时候适合用、什么时候不适合用。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

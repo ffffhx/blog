@@ -11,6 +11,8 @@ tags:
   - Plugin
   - Sandbox
 excerpt: "Codex 的 Browser Use 目前不是完整开源形态：公开的 openai/codex 仓库能看到 App Server、插件加载、feature gate 和沙箱 socket 放行，但看不到 browser-use 插件本体与 browser-client 浏览器控制运行时。这篇文章把公开源码能证明的边界、可推导的执行链路和不能过度解读的部分分开讲清楚。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要

@@ -11,6 +11,8 @@ tags:
   - 端到端测试
   - TypeScript
 excerpt: "这篇文章从 Playwright 官方源码拆解 CLI 的实现：bin 入口怎样转交给 commander，playwright-core 和 @playwright/test 怎样共同装配命令，test 命令怎样进入配置加载、测试发现、任务编排、worker 调度和报告产物链路。"
+cover: "cover-v1.png"
+coverPosition: "below-title"
 ---
 
 ## 摘要
