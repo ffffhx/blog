@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-04-28T10:26:35.054Z",
+  "updatedAt": "2026-04-28T11:18:37.594Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
   "filesScanned": 1902,
@@ -69,51 +69,51 @@
   "periods": {
     "today": {
       "startAt": "2026-04-27T16:00:00.000Z",
-      "totalTokens": 137328689,
-      "inputTokens": 136724237,
-      "cachedInputTokens": 127080832,
-      "outputTokens": 551720,
-      "reasoningOutputTokens": 231453,
-      "events": 1224,
-      "estimatedCostUsd": 128.309,
+      "totalTokens": 149758606,
+      "inputTokens": 149090604,
+      "cachedInputTokens": 138653568,
+      "outputTokens": 593201,
+      "reasoningOutputTokens": 246685,
+      "events": 1333,
+      "estimatedCostUsd": 139.308,
       "estimatedCost": {
-        "inputUsd": 48.217,
-        "cachedInputUsd": 63.5404,
-        "outputUsd": 16.5516,
+        "inputUsd": 52.1852,
+        "cachedInputUsd": 69.3268,
+        "outputUsd": 17.796,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 136724237,
-          "cachedInputTokens": 127080832,
-          "outputTokens": 551720,
-          "estimatedCostUsd": 128.309,
-          "events": 1224
+          "inputTokens": 149090604,
+          "cachedInputTokens": 138653568,
+          "outputTokens": 593201,
+          "estimatedCostUsd": 139.308,
+          "events": 1333
         }
       }
     },
     "week": {
       "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 308345202,
-      "inputTokens": 306957924,
-      "cachedInputTokens": 286439680,
-      "outputTokens": 1317704,
-      "reasoningOutputTokens": 552814,
-      "events": 2926,
-      "estimatedCostUsd": 284.6791,
+      "totalTokens": 320775119,
+      "inputTokens": 319324291,
+      "cachedInputTokens": 298012416,
+      "outputTokens": 1359185,
+      "reasoningOutputTokens": 568046,
+      "events": 3035,
+      "estimatedCostUsd": 295.678,
       "estimatedCost": {
-        "inputUsd": 102.2779,
-        "cachedInputUsd": 142.9727,
-        "outputUsd": 39.4284,
+        "inputUsd": 106.246,
+        "cachedInputUsd": 148.7591,
+        "outputUsd": 40.6729,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 305844168,
-          "cachedInputTokens": 285451264,
-          "outputTokens": 1310859,
-          "estimatedCostUsd": 284.0159,
-          "events": 2888
+          "inputTokens": 318210535,
+          "cachedInputTokens": 297024000,
+          "outputTokens": 1352340,
+          "estimatedCostUsd": 295.0149,
+          "events": 2997
         },
         "gpt-5.4": {
           "inputTokens": 1113756,
@@ -126,26 +126,26 @@
     },
     "month": {
       "startAt": "2026-03-31T16:00:00.000Z",
-      "totalTokens": 1346925739,
-      "inputTokens": 1338171742,
-      "cachedInputTokens": 1239589632,
-      "outputTokens": 8075261,
-      "reasoningOutputTokens": 3774323,
-      "events": 13828,
-      "estimatedCostUsd": 935.9259,
+      "totalTokens": 1359355656,
+      "inputTokens": 1350538109,
+      "cachedInputTokens": 1251162368,
+      "outputTokens": 8116742,
+      "reasoningOutputTokens": 3789555,
+      "events": 13937,
+      "estimatedCostUsd": 946.9249,
       "estimatedCost": {
-        "inputUsd": 337.4703,
-        "cachedInputUsd": 441.7595,
-        "outputUsd": 156.6962,
+        "inputUsd": 341.4385,
+        "cachedInputUsd": 447.5458,
+        "outputUsd": 157.9406,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 564029003,
-          "cachedInputTokens": 527552512,
-          "outputTokens": 2377377,
-          "estimatedCostUsd": 517.48,
-          "events": 5313
+          "inputTokens": 576395370,
+          "cachedInputTokens": 539125248,
+          "outputTokens": 2418858,
+          "estimatedCostUsd": 528.479,
+          "events": 5422
         },
         "gpt-5.4": {
           "inputTokens": 773893068,

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
 import { SiteShell } from "@/components/site-shell";
+import { WebMcpTools } from "@/components/webmcp-tools";
+import { buildAgentPostIndex } from "@/lib/content/agent-tools";
 import { SITE } from "@/lib/content/config";
+import { getAllPosts } from "@/lib/content/posts";
 import { withBasePath } from "@/lib/utils/site-path";
 
 import "./globals.css";
@@ -22,9 +25,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const agentPosts = buildAgentPostIndex(
+    getAllPosts().map(({ date, ...post }) => post)
+  );
+
   return (
     <html lang="zh-CN">
       <body>
+        <WebMcpTools posts={agentPosts} />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

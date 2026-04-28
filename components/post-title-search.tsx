@@ -11,6 +11,10 @@ import {
 import { EmptyState } from "@/components/empty-state";
 import { PostCard } from "@/components/post-card";
 import {
+  buildAgentPostIndex,
+  searchAgentPosts,
+} from "@/lib/content/agent-tools";
+import {
   filterPostsByTitle,
   normalizeTitleSearchQuery,
 } from "@/lib/content/search";
@@ -18,6 +22,11 @@ import type { PostCardSummary } from "@/lib/content/types";
 
 type PostTitleSearchProps = {
   posts: PostCardSummary[];
+};
+
+type AgentSubmitEvent = SubmitEvent & {
+  agentInvoked?: boolean;
+  respondWith?: (value: unknown) => void;
 };
 
 function getQueryFromLocation() {
@@ -69,7 +78,27 @@ export function PostTitleSearch({ posts }: PostTitleSearchProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    syncQueryToLocation(query);
+
+    const submittedQuery = String(
+      new FormData(event.currentTarget).get("q") ?? ""
+    );
+    setQuery(submittedQuery);
+    syncQueryToLocation(submittedQuery);
+
+    const nativeEvent = event.nativeEvent as AgentSubmitEvent;
+
+    if (nativeEvent.agentInvoked && nativeEvent.respondWith) {
+      const agentPosts = buildAgentPostIndex(posts);
+      const agentResults = searchAgentPosts(agentPosts, {
+        query: submittedQuery,
+      });
+
+      nativeEvent.respondWith({
+        query: submittedQuery.trim(),
+        totalResults: agentResults.length,
+        results: agentResults,
+      });
+    }
   }
 
   return (
@@ -81,6 +110,9 @@ export function PostTitleSearch({ posts }: PostTitleSearchProps) {
         </h1>
         <form
           role="search"
+          toolname="search_blog_posts_on_page"
+          tooldescription="Search this blog by article keyword and return matching posts on the search page."
+          toolautosubmit=""
           className="mt-6 flex w-full flex-col gap-3 sm:flex-row"
           onSubmit={handleSubmit}
         >
@@ -93,6 +125,8 @@ export function PostTitleSearch({ posts }: PostTitleSearchProps) {
             type="search"
             value={query}
             onChange={handleChange}
+            toolparamtitle="query"
+            toolparamdescription="Keywords to search in article title, excerpt, tags, and categories."
             placeholder="输入标题关键词"
             className="min-h-12 min-w-0 flex-1 rounded-full border border-slate-300 bg-white px-5 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/70"
           />

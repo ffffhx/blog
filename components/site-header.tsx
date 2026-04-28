@@ -48,6 +48,9 @@ export function SiteHeader() {
           <form
             action={withBasePath("/search/")}
             role="search"
+            toolname="search_blog_posts_form"
+            tooldescription="Search this blog by article title keyword and open the search results page."
+            toolautosubmit=""
             className="flex w-full min-w-0 max-w-md gap-2"
           >
             <label className="sr-only" htmlFor="site-title-search">
@@ -57,6 +60,8 @@ export function SiteHeader() {
               id="site-title-search"
               name="q"
               type="search"
+              toolparamtitle="query"
+              toolparamdescription="Article title keywords to search for."
               placeholder="搜索标题"
               className="min-h-10 min-w-0 flex-1 rounded-full border border-slate-300 bg-white/85 px-4 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/70"
             />
