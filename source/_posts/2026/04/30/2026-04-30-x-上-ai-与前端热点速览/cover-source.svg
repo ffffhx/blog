@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101820"/>
+      <stop offset="0.48" stop-color="#16202a"/>
+      <stop offset="1" stop-color="#1d2c35"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f0dc"/>
+      <stop offset="1" stop-color="#d8efe4"/>
+    </linearGradient>
+    <linearGradient id="cursor" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#47f0a6"/>
+      <stop offset="1" stop-color="#4ab8ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <rect width="1672" height="941" fill="url(#bg)"/>
+
+  <g opacity="0.22" stroke="#d8efe4" stroke-width="2">
+    <path d="M120 164 H560 C650 164 650 290 740 290 H1030"/>
+    <path d="M180 744 H548 C656 744 656 606 764 606 H1420"/>
+    <path d="M1120 182 H1392 C1478 182 1478 328 1560 328"/>
+    <path d="M96 472 H312 C386 472 386 386 460 386 H728"/>
+  </g>
+
+  <g transform="translate(122 112)" filter="url(#shadow)">
+    <rect width="1428" height="716" rx="34" fill="url(#panel)"/>
+    <rect x="42" y="44" width="1344" height="628" rx="24" fill="#111a22"/>
+  </g>
+
+  <g transform="translate(214 204)">
+    <rect x="0" y="0" width="1244" height="96" rx="18" fill="#1f2b34" stroke="#3e5962"/>
+    <circle cx="48" cy="48" r="13" fill="#ff6b6b"/>
+    <circle cx="88" cy="48" r="13" fill="#ffd166"/>
+    <circle cx="128" cy="48" r="13" fill="#47f0a6"/>
+    <text x="196" y="58" font-family="Inter, Arial, sans-serif" font-size="30" fill="#d8efe4">x.com/search · AI coding · frontend</text>
+  </g>
+
+  <g transform="translate(214 348)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="38" fill="#8fd3ff" font-weight="700">2026-04-30</text>
+    <text x="0" y="78" font-family="Inter, Arial, sans-serif" font-size="86" fill="#f6f2df" font-weight="800">X 上 AI 与前端热点</text>
+    <text x="0" y="144" font-family="Inter, Arial, sans-serif" font-size="34" fill="#b9d5ce">Cursor SDK · GPT-5.5 · Claude Code / OpenClaw</text>
+  </g>
+
+  <g transform="translate(220 574)">
+    <rect x="0" y="0" width="360" height="132" rx="18" fill="#203340" stroke="#47f0a6" stroke-width="3"/>
+    <text x="30" y="48" font-family="Inter, Arial, sans-serif" font-size="30" fill="#47f0a6" font-weight="800">01 Cursor SDK</text>
+    <text x="30" y="92" font-family="Inter, Arial, sans-serif" font-size="25" fill="#f6f2df">agent 进入 TypeScript</text>
+  </g>
+
+  <g transform="translate(656 574)">
+    <rect x="0" y="0" width="360" height="132" rx="18" fill="#203340" stroke="#8fd3ff" stroke-width="3"/>
+    <text x="30" y="48" font-family="Inter, Arial, sans-serif" font-size="30" fill="#8fd3ff" font-weight="800">02 GPT-5.5</text>
+    <text x="30" y="92" font-family="Inter, Arial, sans-serif" font-size="25" fill="#f6f2df">Codex 走向公开活动</text>
+  </g>
+
+  <g transform="translate(1092 574)">
+    <rect x="0" y="0" width="360" height="132" rx="18" fill="#203340" stroke="#ffd166" stroke-width="3"/>
+    <text x="30" y="48" font-family="Inter, Arial, sans-serif" font-size="30" fill="#ffd166" font-weight="800">03 Claude Code</text>
+    <text x="30" y="92" font-family="Inter, Arial, sans-serif" font-size="25" fill="#f6f2df">上下文与计费边界</text>
+  </g>
+
+  <g transform="translate(1186 302)">
+    <path d="M0 0 L168 62 L88 92 L56 174 Z" fill="url(#cursor)" opacity="0.95"/>
+    <path d="M88 92 L145 180" stroke="#f6f2df" stroke-width="20" stroke-linecap="round"/>
+    <circle cx="158" cy="44" r="15" fill="#ffd166"/>
+    <circle cx="194" cy="85" r="8" fill="#47f0a6"/>
+  </g>
+</svg>
