@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-01T08:26:21.264Z",
+  "updatedAt": "2026-05-02T02:29:59.092Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
   "filesScanned": 1983,
@@ -68,29 +68,21 @@
   },
   "periods": {
     "today": {
-      "startAt": "2026-04-30T16:00:00.000Z",
-      "totalTokens": 5639214,
-      "inputTokens": 5606858,
-      "cachedInputTokens": 5081600,
-      "outputTokens": 14538,
-      "reasoningOutputTokens": 9011,
-      "events": 37,
-      "estimatedCostUsd": 5.6032,
+      "startAt": "2026-05-01T16:00:00.000Z",
+      "totalTokens": 0,
+      "inputTokens": 0,
+      "cachedInputTokens": 0,
+      "outputTokens": 0,
+      "reasoningOutputTokens": 0,
+      "events": 0,
+      "estimatedCostUsd": 0,
       "estimatedCost": {
-        "inputUsd": 2.6263,
-        "cachedInputUsd": 2.5408,
-        "outputUsd": 0.4361,
+        "inputUsd": 0,
+        "cachedInputUsd": 0,
+        "outputUsd": 0,
         "unpricedTokens": 0
       },
-      "models": {
-        "gpt-5.5": {
-          "inputTokens": 5606858,
-          "cachedInputTokens": 5081600,
-          "outputTokens": 14538,
-          "estimatedCostUsd": 5.6032,
-          "events": 37
-        }
-      }
+      "models": {}
     },
     "week": {
       "startAt": "2026-04-26T16:00:00.000Z",
