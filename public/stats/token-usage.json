@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-03T11:09:07.730Z",
+  "updatedAt": "2026-05-03T17:10:31.694Z",
   "timezone": "Asia/Shanghai",
   "source": "local-codex-jsonl",
-  "filesScanned": 1994,
+  "filesScanned": 1998,
   "pricing": {
     "currency": "USD",
     "basis": "estimated-api-equivalent",
@@ -68,77 +68,77 @@
   },
   "periods": {
     "today": {
-      "startAt": "2026-05-02T16:00:00.000Z",
-      "totalTokens": 85916674,
-      "inputTokens": 85531199,
-      "cachedInputTokens": 79571328,
-      "outputTokens": 343671,
-      "reasoningOutputTokens": 111309,
-      "events": 699,
-      "estimatedCostUsd": 79.8951,
+      "startAt": "2026-05-03T16:00:00.000Z",
+      "totalTokens": 43116496,
+      "inputTokens": 42973265,
+      "cachedInputTokens": 41352320,
+      "outputTokens": 101334,
+      "reasoningOutputTokens": 43872,
+      "events": 325,
+      "estimatedCostUsd": 31.8209,
       "estimatedCost": {
-        "inputUsd": 29.7994,
-        "cachedInputUsd": 39.7857,
-        "outputUsd": 10.3101,
+        "inputUsd": 8.1047,
+        "cachedInputUsd": 20.6762,
+        "outputUsd": 3.04,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 85531199,
-          "cachedInputTokens": 79571328,
-          "outputTokens": 343671,
-          "estimatedCostUsd": 79.8951,
-          "events": 699
+          "inputTokens": 42973265,
+          "cachedInputTokens": 41352320,
+          "outputTokens": 101334,
+          "estimatedCostUsd": 31.8209,
+          "events": 325
         }
       }
     },
     "week": {
-      "startAt": "2026-04-26T16:00:00.000Z",
-      "totalTokens": 121296385,
-      "inputTokens": 120750023,
-      "cachedInputTokens": 112271360,
-      "outputTokens": 486740,
-      "reasoningOutputTokens": 173787,
-      "events": 971,
-      "estimatedCostUsd": 113.1312,
+      "startAt": "2026-05-03T16:00:00.000Z",
+      "totalTokens": 43116496,
+      "inputTokens": 42973265,
+      "cachedInputTokens": 41352320,
+      "outputTokens": 101334,
+      "reasoningOutputTokens": 43872,
+      "events": 325,
+      "estimatedCostUsd": 31.8209,
       "estimatedCost": {
-        "inputUsd": 42.3933,
-        "cachedInputUsd": 56.1357,
-        "outputUsd": 14.6022,
+        "inputUsd": 8.1047,
+        "cachedInputUsd": 20.6762,
+        "outputUsd": 3.04,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 120750023,
-          "cachedInputTokens": 112271360,
-          "outputTokens": 486740,
-          "estimatedCostUsd": 113.1312,
-          "events": 971
+          "inputTokens": 42973265,
+          "cachedInputTokens": 41352320,
+          "outputTokens": 101334,
+          "estimatedCostUsd": 31.8209,
+          "events": 325
         }
       }
     },
     "month": {
       "startAt": "2026-04-30T16:00:00.000Z",
-      "totalTokens": 121296385,
-      "inputTokens": 120750023,
-      "cachedInputTokens": 112271360,
-      "outputTokens": 486740,
-      "reasoningOutputTokens": 173787,
-      "events": 971,
-      "estimatedCostUsd": 113.1312,
+      "totalTokens": 182470414,
+      "inputTokens": 181743531,
+      "cachedInputTokens": 171190144,
+      "outputTokens": 625364,
+      "reasoningOutputTokens": 230309,
+      "events": 1398,
+      "estimatedCostUsd": 157.1229,
       "estimatedCost": {
-        "inputUsd": 42.3933,
-        "cachedInputUsd": 56.1357,
-        "outputUsd": 14.6022,
+        "inputUsd": 52.7669,
+        "cachedInputUsd": 85.5951,
+        "outputUsd": 18.7609,
         "unpricedTokens": 0
       },
       "models": {
         "gpt-5.5": {
-          "inputTokens": 120750023,
-          "cachedInputTokens": 112271360,
-          "outputTokens": 486740,
-          "estimatedCostUsd": 113.1312,
-          "events": 971
+          "inputTokens": 181743531,
+          "cachedInputTokens": 171190144,
+          "outputTokens": 625364,
+          "estimatedCostUsd": 157.1229,
+          "events": 1398
         }
       }
     }
