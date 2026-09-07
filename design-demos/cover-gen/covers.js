@@ -367,7 +367,7 @@ window.COVERS = (function () {
       kw: ["90 秒开场", "30 秒项目版", "常见追问", "数字口径", "表达边界"],
     },
     {
-      slug: "internship-defense", dir: "2026/08/21/实习答辩-冯鸿鑫",
+      slug: "internship-defense", dir: "2026/08/21/面试准备",
       scene: "flow", cat: "实习答辩", en: "INTERNSHIP DEFENSE · COZE", accent: "teal",
       titleSize: 78, title: `把一段实习<br>写成<span class="ht">可答辩的系统</span>`,
       sub: "扣子前端商业化：把分散的权益拦截收成统一能力，把历史包拆成可维护的领域结构，再给人和 Agent 补上账号切换与浏览器控制面。",

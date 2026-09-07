@@ -13,7 +13,7 @@ const targetDir = path.resolve(
   "2026",
   "08",
   "21",
-  "实习答辩-冯鸿鑫"
+  "面试准备"
 );
 
 function generateProfilePilotArchSvg() {

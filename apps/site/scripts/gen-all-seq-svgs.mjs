@@ -1,4 +1,4 @@
-// Generator script for all sequence diagrams in 实习答辩-冯鸿鑫
+// Generator script for all sequence diagrams in 面试准备
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,7 +12,7 @@ const targetDir = path.resolve(
   "2026",
   "08",
   "21",
-  "实习答辩-冯鸿鑫"
+  "面试准备"
 );
 
 function getTextWidth(text) {
