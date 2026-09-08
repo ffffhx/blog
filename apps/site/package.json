@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.20.0",
   "scripts": {
     "predev": "pnpm run sync:assets && pnpm run gen:agent-index",
-    "dev": "next dev",
+    "dev": "node scripts/dev.mjs",
     "farm:assets": "node games/farm-life/scripts/generate-assets.mjs",
     "farm:dev": "pnpm run farm:assets && vite --config games/farm-life/vite.config.ts --host 127.0.0.1",
     "farm:build": "pnpm run farm:assets && vite build --config games/farm-life/vite.config.ts",
