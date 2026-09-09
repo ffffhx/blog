@@ -31,7 +31,7 @@ ID 支持 1–80 个字母、数字、下划线和连字符，首字符为字母
 
 1. 在 Garden API 部署环境设置 `GARDEN_SITE_URL` 和随机生成的 `GARDEN_SNAPSHOT_UPLOAD_TOKEN`，重建 `deploy/garden-api` 镜像。镜像包含共享协议包。
 2. 本地工具配置相同 token 和 Garden API 地址；已有 macOS daemon 需重新运行安装命令，替换旧 plist 里的地址。
-3. 发布站点前端。两份 Pages 工作流均使用 Garden API 地址；登录及文章 AI 功能也不再回退旧排行榜后端。
+3. 发布站点前端。两份 Pages 工作流均使用 Garden API 地址；登录功能也不再回退旧排行榜后端。
 
 Garden 现有 `snapshots.json` 中的 `data: snapshot` 和 `data: { snapshot, ... }` 均可读取，不改变原分享 ID。不含 `turns` 的任意 JSON 不再被视为合法快照。早期匿名记录继续公开读取，但不会被新发布者冒领更新或删除，需维护者在服务器处理。
 

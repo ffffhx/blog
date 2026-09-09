@@ -373,12 +373,8 @@ export function DailyNewsModule({ entries, post }: DailyNewsModuleProps) {
           <div className="mt-7">
             <ArticleBody
               contentImageSize={post.contentImageSize}
-              enableAiChat
-              excerpt={post.excerpt}
-              headings={post.headings}
               html={post.contentHtml}
               slug={post.slug}
-              title={post.title}
             />
           </div>
         </article>

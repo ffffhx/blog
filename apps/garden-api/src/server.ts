@@ -21,7 +21,6 @@ import {
   handleListPrivatePosts,
   handlePrivateBlog,
 } from "./private-blog.js";
-import { handleArticleChat, handleExplainSelection } from "./selection-explainer.js";
 import {
   handleCreateSnapshot,
   handleDeleteSnapshot,
@@ -253,20 +252,6 @@ async function routeRequest(req: IncomingMessage, res: ServerResponse): Promise<
   if (method === "GET" && privatePostMatch) {
     const slug = privatePostMatch[1];
     await handleGetPrivatePostJson(req, res, slug);
-    return;
-  }
-
-  // 7. AI: Explain selection
-  if (method === "POST" && pathname === "/api/explain-selection") {
-    const body = await readJsonBody(req);
-    await handleExplainSelection(req, res, body);
-    return;
-  }
-
-  // 8. AI: Chat article
-  if (method === "POST" && pathname === "/api/chat-article") {
-    const body = await readJsonBody(req);
-    await handleArticleChat(req, res, body);
     return;
   }
 

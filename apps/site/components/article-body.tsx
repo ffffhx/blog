@@ -1,23 +1,16 @@
 import React from "react";
 
-import { ArticleAiChat } from "@/components/article-ai-chat";
 import { ArticleImageLightbox } from "@/components/article-image-lightbox";
 import { ArticleQuizEnhancer } from "@/components/article-quiz-enhancer";
-import { ArticleSelectionTooltip } from "@/components/article-selection-tooltip";
 import { BenchHeatmapTooltip } from "@/components/bench-heatmap-tooltip";
 import { BenchReveal } from "@/components/bench-reveal";
-import { PrivateFeatureGate } from "@/components/private-feature-access";
 import { RequestGatesLab } from "@/components/request-gates-lab";
-import type { ContentImageSize, Heading } from "@/lib/content/types";
+import type { ContentImageSize } from "@/lib/content/types";
 
 type ArticleBodyProps = {
-  enableAiChat?: boolean;
   contentImageSize?: ContentImageSize;
-  excerpt?: string;
-  headings?: Heading[];
   html: string;
   slug: string;
-  title: string;
 };
 
 function toArticleContentId(slug: string) {
@@ -28,41 +21,24 @@ function toArticleContentId(slug: string) {
 
 export function ArticleBody({
   contentImageSize = "default",
-  enableAiChat = false,
-  excerpt,
-  headings = [],
   html,
   slug,
-  title,
 }: ArticleBodyProps) {
   const articleContentId = toArticleContentId(slug);
 
   return (
     <>
-      <ArticleSelectionTooltip slug={slug} title={title}>
-        <div
-          className="article-content"
-          data-content-image-size={contentImageSize}
-          dangerouslySetInnerHTML={{ __html: html }}
-          id={articleContentId}
-        />
-      </ArticleSelectionTooltip>
+      <div
+        className="article-content"
+        data-content-image-size={contentImageSize}
+        dangerouslySetInnerHTML={{ __html: html }}
+        id={articleContentId}
+      />
       <ArticleQuizEnhancer articleContentId={articleContentId} />
       <BenchHeatmapTooltip articleContentId={articleContentId} />
       <BenchReveal articleContentId={articleContentId} />
       <RequestGatesLab articleContentId={articleContentId} />
       <ArticleImageLightbox articleContentId={articleContentId} />
-      {enableAiChat ? (
-        <PrivateFeatureGate>
-          <ArticleAiChat
-            articleContentId={articleContentId}
-            excerpt={excerpt ?? ""}
-            headings={headings}
-            slug={slug}
-            title={title}
-          />
-        </PrivateFeatureGate>
-      ) : null}
     </>
   );
 }

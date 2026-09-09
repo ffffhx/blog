@@ -37,8 +37,6 @@ export const CONFIG = {
   get SNAPSHOTS_FILE() {
     return process.env.GARDEN_SNAPSHOTS_FILE || path.join(this.DATA_DIR, "snapshots.json");
   },
-  KIMI_API_KEY: process.env.KIMI_API_KEY || process.env.MOONSHOT_API_KEY || "",
-  KIMI_BASE_URL: (process.env.KIMI_BASE_URL || "https://api.moonshot.cn/v1").replace(/\/+$/, ""),
   SESSION_COOKIE_NAME: "garden_session",
   SESSION_TTL_SECONDS: positiveNumber(process.env.GARDEN_SESSION_TTL_SECONDS, 30 * 24 * 60 * 60),
 };
