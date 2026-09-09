@@ -13,6 +13,7 @@ let baseUrl: string;
 let testDataDir: string;
 
 beforeAll(async () => {
+  CONFIG.SITE_URL = "http://localhost:3000/garden-lab";
   CONFIG.PORT = 8999;
   CONFIG.HOST = "127.0.0.1";
   testDataDir = await fs.mkdtemp(path.join(os.tmpdir(), "garden-api-test-"));
@@ -27,11 +28,6 @@ beforeAll(async () => {
       dateText: "2026-08-21",
       contentHtml: "<!DOCTYPE html><html><body><h1>面试准备：冯鸿鑫</h1></body></html>",
     }),
-    "utf8"
-  );
-  await fs.writeFile(
-    path.join(CONFIG.PRIVATE_BLOG_DIR, "internship-defense.html"),
-    "<!DOCTYPE html><html><body><h1>面试准备：冯鸿鑫</h1></body></html>",
     "utf8"
   );
 
@@ -65,49 +61,33 @@ describe("Garden Lab API", () => {
     expect(body.authenticated).toBe(false);
   });
 
-  it("GET /api/blog/:slug redirects unauthenticated user to GitHub login", async () => {
-    const res = await fetch(`${baseUrl}/api/blog/internship-defense`, {
-      redirect: "manual",
+  it.each([undefined, "ffffhx", "random-user"])(
+    "redirects the old article URL to the same reader for %s", async (login) => {
+      const token = login ? createWebSessionToken({
+        userId: "github:12345", displayName: "Test", githubLogin: login,
+      }) : "";
+      const res = await fetch(`${baseUrl}/api/blog/internship-defense?garden_token=secret&returnTo=https://untrusted.invalid`, {
+        redirect: "manual",
+        headers: token ? { Cookie: `${CONFIG.SESSION_COOKIE_NAME}=${token}` } : {},
+      });
+      expect(res.status).toBe(302);
+      expect(res.headers.get("location")).toBe(
+        "http://localhost:3000/garden-lab/private-post/?slug=internship-defense"
+      );
+      expect(res.headers.get("cache-control")).toBe("no-store");
+      expect(await res.text()).toBe("");
+    }
+  );
+
+  it.each([undefined, "random-user"])("protects article JSON for %s", async (login) => {
+    const token = login ? createWebSessionToken({
+      userId: "github:99999", displayName: "Test", githubLogin: login,
+    }) : "";
+    const res = await fetch(`${baseUrl}/api/private-posts/internship-defense`, {
+      headers: token ? { Cookie: `${CONFIG.SESSION_COOKIE_NAME}=${token}` } : {},
     });
-    expect(res.status).toBe(302);
-    const location = res.headers.get("location");
-    expect(location).toContain("/api/auth/github/start?returnTo=");
-  });
-
-  it("GET /api/blog/:slug serves private post for authorized owner", async () => {
-    const ownerToken = createWebSessionToken({
-      userId: "github:12345",
-      displayName: "冯鸿鑫",
-      githubLogin: "ffffhx",
-    });
-
-    const res = await fetch(`${baseUrl}/api/blog/internship-defense`, {
-      headers: {
-        Cookie: `${CONFIG.SESSION_COOKIE_NAME}=${ownerToken}`,
-      },
-    });
-
-    expect(res.status).toBe(200);
-    const html = await res.text();
-    expect(html).toContain("冯鸿鑫");
-  });
-
-  it("GET /api/blog/:slug returns 403 for unauthorized login", async () => {
-    const strangerToken = createWebSessionToken({
-      userId: "github:99999",
-      displayName: "Stranger",
-      githubLogin: "random-user",
-    });
-
-    const res = await fetch(`${baseUrl}/api/blog/internship-defense`, {
-      headers: {
-        Cookie: `${CONFIG.SESSION_COOKIE_NAME}=${strangerToken}`,
-      },
-    });
-
     expect(res.status).toBe(403);
-    const html = await res.text();
-    expect(html).toContain("仅作者本人可见");
+    expect(await res.text()).not.toContain("contentHtml");
   });
 
   it("GET /api/private-posts lists private posts for authorized owner", async () => {

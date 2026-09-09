@@ -41,6 +41,8 @@ export type Post = PostSummary & {
   sourcePath: string;
 };
 
+export type PrivatePostData = Omit<Post, "date" | "content" | "sourcePath">;
+
 export type PageContent = {
   title: string;
   date: Date | null;

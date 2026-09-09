@@ -12,6 +12,7 @@ services:
       - GARDEN_API_HOST=0.0.0.0
       - GARDEN_API_PORT=8787
       - GARDEN_API_PUBLIC_URL=${GARDEN_API_PUBLIC_URL:-https://124-221-36-36.anyip.dev:8443/garden-api}
+      - GARDEN_SITE_URL=${GARDEN_SITE_URL:-https://ffffhx.github.io/garden-lab}
       - GARDEN_ALLOWED_ORIGINS=${GARDEN_ALLOWED_ORIGINS:-https://ffffhx.github.io,http://localhost:3000}
       - GARDEN_AUTH_SECRET=${GARDEN_AUTH_SECRET}
       - GARDEN_ALLOWED_GITHUB_LOGINS=${GARDEN_ALLOWED_GITHUB_LOGINS:-ffffhx}

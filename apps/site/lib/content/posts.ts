@@ -233,3 +233,7 @@ export function getAllPostSlugs() {
 export function getPostBySlug(slug: string) {
   return getPostRecords().find((post) => post.slug === slug) ?? null;
 }
+
+export function getPrivatePosts() {
+  return getPostRecords().filter((post) => post.hidden);
+}

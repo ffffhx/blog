@@ -57,7 +57,9 @@ try {
 
   console.log("Syncing private-blog files to remote server...");
   const localDataDir = path.resolve("apps/garden-api/data/private-blog");
-  const files = fs.readdirSync(localDataDir);
+  const files = fs.readdirSync(localDataDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+    .map((entry) => entry.name);
 
   for (const file of files) {
     const localFile = path.join(localDataDir, file);

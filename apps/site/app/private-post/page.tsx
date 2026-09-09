@@ -15,25 +15,8 @@ import {
   usePrivateFeatureAccess,
 } from "@/components/private-feature-access";
 import { TOC_MIN_HEADINGS } from "@/lib/content/config";
-import type { CategoryKey, ContentImageSize, Heading } from "@/lib/content/types";
+import type { PrivatePostData } from "@/lib/content/types";
 import { withBasePath } from "@/lib/utils/site-path";
-
-type PrivatePostData = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  categories: CategoryKey[];
-  tags: string[];
-  dateText: string;
-  readingTimeText: string;
-  assetBasePath: string;
-  cover: string | null;
-  coverPosition: "above-title" | "below-title";
-  hidden: boolean;
-  contentHtml: string;
-  contentImageSize: ContentImageSize;
-  headings: Heading[];
-};
 
 function PrivatePostContent() {
   const searchParams = useSearchParams();

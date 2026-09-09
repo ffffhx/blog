@@ -5,11 +5,19 @@ import {
   getArticlePosts,
   getDailyNewsPosts,
   getPostBySlug,
+  getPrivatePosts,
 } from "../../lib/content/posts";
 
 const POST_SCAN_TIMEOUT_MS = 45_000;
 
 describe("getAllPosts", () => {
+  it("discovers hidden posts separately from public articles", () => {
+    const privatePosts = getPrivatePosts();
+    expect(privatePosts.length).toBeGreaterThan(0);
+    expect(privatePosts.every((post) => post.hidden)).toBe(true);
+    const publicSlugs = new Set(getAllPosts().map((post) => post.slug));
+    expect(privatePosts.every((post) => !publicSlugs.has(post.slug))).toBe(true);
+  }, POST_SCAN_TIMEOUT_MS);
   it("loads and sorts posts by date descending", () => {
     const posts = getAllPosts();
 

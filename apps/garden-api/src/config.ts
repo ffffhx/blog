@@ -19,6 +19,7 @@ export const CONFIG = {
   PORT: positiveNumber(process.env.GARDEN_API_PORT, 8787),
   HOST: process.env.GARDEN_API_HOST || "0.0.0.0",
   PUBLIC_URL: (process.env.GARDEN_API_PUBLIC_URL || "").trim().replace(/\/+$/, ""),
+  SITE_URL: (process.env.GARDEN_SITE_URL || "https://ffffhx.github.io/garden-lab").trim().replace(/\/+$/, ""),
   ALLOWED_ORIGINS: parseCsv(process.env.GARDEN_ALLOWED_ORIGINS, [
     "https://ffffhx.github.io",
     "http://localhost:3000",

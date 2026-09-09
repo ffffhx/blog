@@ -18,7 +18,7 @@ import { CONFIG } from "./config.js";
 import {
   handleGetPrivatePostJson,
   handleListPrivatePosts,
-  handlePrivateBlog,
+  handlePrivateBlogRedirect,
 } from "./private-blog.js";
 
 function getPublicBaseUrl(req: IncomingMessage): string {
@@ -195,11 +195,11 @@ async function routeRequest(req: IncomingMessage, res: ServerResponse): Promise<
     return;
   }
 
-  // 6. Private Blog: /api/blog/:slug (HTML)
+  // 6. Legacy private article URL: redirect to the shared site renderer
   const blogMatch = pathname.match(/^\/api\/blog\/([a-z0-9-]+)$/);
   if (method === "GET" && blogMatch) {
     const slug = blogMatch[1];
-    await handlePrivateBlog(req, res, slug, publicBaseUrl);
+    handlePrivateBlogRedirect(res, slug);
     return;
   }
 
