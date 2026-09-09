@@ -58,11 +58,7 @@ pnpm test
 pnpm build
 ```
 
-`pnpm build` 会准备公开资源、同步文章图片；它不会读取本机 Codex 日志。需要显式刷新本机 token 静态快照时再运行：
-
-```bash
-pnpm build:with-local-tokens
-```
+`pnpm build` 会准备公开资源、同步文章图片并生成静态站点。
 
 启动生产服务：
 
@@ -100,70 +96,9 @@ pnpm new:daily-news -- "2026-04-24 AI 与前端热点速览"
 pnpm prepare:public
 ```
 
-## Token 使用量静态快照
+## 独立 Token 排行榜
 
-首页不再展示个人 Token 消耗。仓库仍保留 `apps/site/public/stats/token-usage.json` 和 `.github/workflows/token-usage-sync.yml`，用于手动生成本地静态快照或调试 token-board 数据。这个工作流不再定时运行；需要刷新静态快照时，可以在 GitHub Actions 页面手动触发。
-
-旧兜底工作流会读取 self-hosted runner 用户的本机 Codex 日志：
-
-首次启用时需要在 GitHub 仓库里添加一台 macOS self-hosted runner：
-
-1. 打开仓库 `Settings > Actions > Runners`
-2. 选择 `New self-hosted runner`，按页面命令在 Mac 上下载并配置 runner
-3. 确认 runner 带有默认标签 `self-hosted`、`macOS`，并额外添加 `garden-lab-token-usage`
-4. 用拥有 Codex 日志的同一个 macOS 用户启动 runner
-
-如果 runner 运行用户不是平时使用 Codex 的用户，可以在仓库 `Settings > Secrets and variables > Actions > Variables` 里新增变量：
-
-```text
-CODEX_HOME=/Users/你的用户名/.codex
-```
-
-## 朋友 Token 排行榜
-
-排行榜页面：`https://ffffhx.github.io/open-token-board/`
-
-朋友不需要 clone 仓库。首次安装后台同步时，在自己的 macOS 终端或 Windows PowerShell 里执行：
-
-```bash
-npx --yes --package https://ffffhx.github.io/open-token-board/token-board-agent.tgz?v=0.4.11 -- token-board-agent install
-```
-
-这条命令会先引导 GitHub Device Login，授权成功后在 macOS 上安装 LaunchAgent，在 Windows 上安装隐藏的 Task Scheduler 任务。之后终端关闭也会每 5 分钟读取本机 AI 编码工具 token 记录并上传到排行榜后端。
-
-查看后台同步状态：
-
-```bash
-npx --yes --package https://ffffhx.github.io/open-token-board/token-board-agent.tgz?v=0.4.11 -- token-board-agent status
-```
-
-如果后端数据被清空或迁移，且页面只显示最近少量记录，可以强制重传最近 30 天可采集到的记录：
-
-```bash
-npx --yes --package https://ffffhx.github.io/open-token-board/token-board-agent.tgz?v=0.4.11 -- token-board-agent resync
-```
-
-如果需要把自己线上的旧记录清掉，并用本机当前能采集到的记录整体替换：
-
-```bash
-npx --yes --package https://ffffhx.github.io/open-token-board/token-board-agent.tgz?v=0.4.11 -- token-board-agent replace
-```
-
-卸载后台同步：
-
-```bash
-npx --yes --package https://ffffhx.github.io/open-token-board/token-board-agent.tgz?v=0.4.11 -- token-board-agent uninstall
-```
-
-轻量 npx agent 默认读取本机 Codex、Claude Code、Cursor、Trae 的本地 token 记录；Codex 会覆盖 `~/.codex/sessions`、`~/.codex/archived_sessions` 和 `~/.codex/projects`，并允许 Codex JSONL 会话日志最大到 256 MiB。也可以通过 `TOKEN_BOARD_USAGE_PATHS` 或配置文件里的 `usagePaths` 补充自定义 JSON / JSONL / CSV 路径。上传内容只包含 token 数、模型、工具、项目 basename 和匿名 session hash，不上传 prompt 文本。
-
-排行榜的总消耗 Token 口径为输入上下文加输出：`inputTokens + outputTokens`；`cachedInputTokens` 是输入上下文里的缓存命中子集，只作为副指标和费用拆分使用。推理 token 只在个人视图作为副指标展开，缺少明细的历史记录才使用 `totalTokens` 兜底。
-
-### Token Board 后端存储
-
-Token Board 后端、PostgreSQL Docker Compose 部署包、core 聚合逻辑和 agent 发布现在都由 `open-token-board` 仓库维护。后端存储和 JSON 导入说明见：`https://github.com/ffffhx/open-token-board`。
-
-导入使用事件 `id` 主键去重，可以重复执行。确认数据库已有历史数据后，再让朋友们执行一次 `token-board-agent resync` 补齐本机还能采集到的最近记录。
+Token 用量采集、统计、后台同步和部署统一由 [Open Token Board](https://ffffhx.github.io/open-token-board/) 维护。Garden 只保留排行榜入口，不再采集本机用量或发布用量数据。安装和运维说明请查阅[独立仓库](https://github.com/ffffhx/open-token-board)。
 
 ## 部署到 GitHub Pages
 
