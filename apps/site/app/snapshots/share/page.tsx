@@ -12,7 +12,7 @@ export default function SnapshotSharePage() {
     <CodexSnapshotCloudShare
       apiBaseUrl={
         process.env.NEXT_PUBLIC_SNAPSHOT_SHARE_API_URL ||
-        process.env.NEXT_PUBLIC_TOKEN_BOARD_API_URL
+        process.env.NEXT_PUBLIC_GARDEN_API_URL
       }
     />
   );

@@ -360,13 +360,6 @@ window.COVERS = (function () {
       kw: ["Local State", "ps / lsof", "固定 CDP", "原子替换 + 回滚", "Electron"],
     },
     {
-      slug: "resume-interview-handbook", dir: "2026/07/14/我的-2027-届前端校招项目自我介绍与面试追问手册",
-      scene: "interview", cat: "校招", en: "FRONTEND INTERVIEW PLAYBOOK", accent: "red",
-      titleSize: 78, title: `把一页简历<br>讲成<span class="hr">项目故事</span>`,
-      sub: "从 90 秒开场白到项目追问：背景、行动、结果、复盘和数字口径，整理成一套能按面试节奏展开的口述手册。",
-      kw: ["90 秒开场", "30 秒项目版", "常见追问", "数字口径", "表达边界"],
-    },
-    {
       slug: "internship-defense", dir: "2026/08/21/面试准备",
       scene: "flow", cat: "实习答辩", en: "INTERNSHIP DEFENSE · COZE", accent: "teal",
       titleSize: 78, title: `把一段实习<br>写成<span class="ht">可答辩的系统</span>`,

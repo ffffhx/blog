@@ -27,7 +27,6 @@ const NAV_LINKS: NavItem[] = [
     href: "/daily-news",
     label: CATEGORY_DEFINITIONS.dailyNews.label,
   },
-  { href: "/pet", label: "桌宠", private: true },
 ];
 
 type SiteHeaderProps = {

@@ -31,8 +31,7 @@ http://localhost:3000
 仓库按 `pnpm-workspace.yaml` 管理几个边界清晰的 workspace 包：
 
 - 根目录：monorepo 编排、CI、文档和统一命令代理
-- `apps/site`：Next.js 静态站点、Tauri 桌宠、内容编译、页面和站点内领域逻辑
-- `tools/codex-pet-aloha-cash-buddy`：Codex pet 安装包
+- `apps/site`：Next.js 静态站点、内容编译、页面和站点内领域逻辑
 
 Token 排行榜的前端、后端、core、Docker 部署包和 agent 发布已经迁移到独立公开仓库：`https://github.com/ffffhx/open-token-board`。
 
@@ -56,7 +55,7 @@ pnpm test
 pnpm build
 ```
 
-`pnpm build` 会准备公开资源、构建农场小游戏、同步文章图片和桌宠公开快照；它不会读取本机 Codex 日志。需要显式刷新本机 token 静态快照时再运行：
+`pnpm build` 会准备公开资源、同步文章图片；它不会读取本机 Codex 日志。需要显式刷新本机 token 静态快照时再运行：
 
 ```bash
 pnpm build:with-local-tokens
@@ -184,3 +183,9 @@ https://ffffhx.github.io/garden-lab/
 ```
 
 如果后续绑定了自定义域名，GitHub Pages 会给工作流注入新的站点基路径，当前配置不需要再手动改代码。
+
+## 独立游戏站
+
+游戏源码、素材、测试和房间服务由同级 `games` 仓库维护。博客保留 `/games/` 入口，并将旧的 `/farm-life-mvp/`、`/forest-shuffle/`、`/texas-holdem/` 及 `/games/farm-life/index.html` 跳转到独立站对应游戏。跳转保留房间号、座位和页内锚点。
+
+博客构建不再编译游戏。游戏开发与部署请参阅 `games/README.md`。迁移差异与素材归档见 [核对记录](docs/game-migration-cleanup.md)。

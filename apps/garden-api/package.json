@@ -10,7 +10,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "sanitize-html": "^2.14.0"
+    "sanitize-html": "^2.14.0",
+    "@garden-lab/snapshot-contract": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",

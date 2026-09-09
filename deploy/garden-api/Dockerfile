@@ -8,6 +8,7 @@ RUN corepack enable && corepack prepare pnpm@10.20.0 --activate
 # Copy workspace configuration and dependencies
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc* ./
 COPY apps/garden-api/package.json ./apps/garden-api/
+COPY packages/snapshot-contract ./packages/snapshot-contract/
 
 RUN pnpm --filter @garden-lab/api install --frozen-lockfile=false
 

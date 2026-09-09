@@ -38,9 +38,25 @@ pnpm snapshot:daemon:logs
 pnpm snapshot:uninstall-daemon
 ```
 
-Cloud publish reads the API token from `SNAPSHOT_SHARE_TOKEN`,
-`TOKEN_BOARD_AGENT_TOKEN`, `TOKEN_BOARD_UPLOAD_TOKEN`, or
-`~/.token-board-agent.json`. The LaunchAgent plist does not store the token.
+Cloud publish uses Garden API. It reads a Garden session token or snapshot upload
+token from `SNAPSHOT_SHARE_TOKEN`, `GARDEN_SNAPSHOT_UPLOAD_TOKEN`, or the `token`
+field in `~/.garden-snapshot.json` (override the file with `GARDEN_SNAPSHOT_CONFIG_FILE`).
+The upload token must match the server's `GARDEN_SNAPSHOT_UPLOAD_TOKEN`.
+The LaunchAgent plist does not store the token. Existing agents must be reinstalled
+with `pnpm snapshot:install-daemon` to replace their old API URL.
+
+The config file also accepts `apiUrl` and `siteUrl`. CLI flags and environment
+variables take precedence over these saved defaults.
+Without saved configuration, the CLI defaults to `http://127.0.0.1:8787`; the daemon defaults to the production
+Garden API. Override either with `SNAPSHOT_SHARE_API_URL` or `GARDEN_API_URL`.
+Share pages use `SNAPSHOT_SHARE_SITE_URL` / `--site-url`; this is the website URL,
+not the API URL. The server validates it against its configured site and origins.
+
+```bash
+pnpm snapshot publish <session-id> --api-url https://124-221-36-36.anyip.dev:8443/garden-api
+```
+
+Protocol and deployment settings: [Garden snapshot contract](../../docs/snapshot-contract.md).
 
 ## Trae Local Recorder
 

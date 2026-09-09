@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ArticleBody } from "@/components/article-body";
-import { BlogPetFeedBadge } from "@/components/blog-pet-feed-badge";
 import { BuildStamp } from "@/components/build-stamp";
 import { PostMeta } from "@/components/post-meta";
 import { PostToc } from "@/components/post-toc";
@@ -78,7 +77,6 @@ export default async function PostPage({ params }: PostPageProps) {
             readingTimeText={post.readingTimeText}
             tags={post.tags}
           />
-          <BlogPetFeedBadge post={post} />
         </div>
         <div className="mt-10">
           <ArticleBody

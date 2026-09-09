@@ -127,7 +127,7 @@ function readHtmlClassName() {
   return "";
 }
 
-const KNOWN_PRIVATE_SLUGS = ["internship-defense", "resume-interview-handbook"];
+const KNOWN_PRIVATE_SLUGS = ["internship-defense"];
 
 const slugsToExport =
   argSlug === "all"

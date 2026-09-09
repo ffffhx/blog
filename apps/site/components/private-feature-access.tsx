@@ -346,8 +346,7 @@ function isOwnerViewer(viewer: PrivateFeatureViewer, ownerLogins: string[]) {
 
 function getPrivateFeatureApiBaseUrl() {
   const gardenUrl = process.env.NEXT_PUBLIC_GARDEN_API_URL?.trim();
-  const tokenBoardUrl = process.env.NEXT_PUBLIC_TOKEN_BOARD_API_URL?.trim();
-  return normalizeApiBaseUrl(gardenUrl || tokenBoardUrl);
+  return normalizeApiBaseUrl(gardenUrl);
 }
 
 function isLocalPrivateFeaturePreview() {

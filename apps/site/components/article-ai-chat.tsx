@@ -90,8 +90,7 @@ function getArticleChatEndpoint() {
   }
 
   const gardenApi = process.env.NEXT_PUBLIC_GARDEN_API_URL?.trim();
-  const tokenBoardApi = process.env.NEXT_PUBLIC_TOKEN_BOARD_API_URL?.trim();
-  const fallbackBase = gardenApi || tokenBoardApi;
+  const fallbackBase = gardenApi;
 
   if (!fallbackBase) {
     return "";

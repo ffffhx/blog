@@ -23,13 +23,10 @@ deploy/lark-codex-bot/.env
 node_modules/
 .next/
 out/
-apps/*/src-tauri/target/
 coverage/
 tmp/
 /public/
-apps/site/public/games/
 apps/site/public/images/
-apps/site/public/pet/
 apps/site/public/post-assets/
 db.json
 .vercel/

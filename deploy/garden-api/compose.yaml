@@ -20,5 +20,7 @@ services:
       - KIMI_API_KEY=${KIMI_API_KEY:-}
       - KIMI_BASE_URL=${KIMI_BASE_URL:-https://api.moonshot.cn/v1}
       - GARDEN_DATA_DIR=/data
+      - GARDEN_SITE_URL=${GARDEN_SITE_URL:-https://ffffhx.github.io/garden-lab}
+      - GARDEN_SNAPSHOT_UPLOAD_TOKEN=${GARDEN_SNAPSHOT_UPLOAD_TOKEN:-}
     volumes:
       - ../../apps/garden-api/data:/data

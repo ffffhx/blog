@@ -18,11 +18,6 @@ type RootChromeProps = {
 
 const PRIVATE_FEATURE_ROUTES = [
   "/category/fitness",
-  "/desktop-pet",
-  "/farm-life-mvp",
-  "/forest-shuffle",
-  "/pet",
-  "/texas-holdem",
 ];
 
 function normalizeAppPathname(pathname: string | null) {
@@ -37,29 +32,6 @@ function normalizeAppPathname(pathname: string | null) {
   }
 
   return normalizedPathname;
-}
-
-function isDesktopPetRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return normalizedPathname === "/desktop-pet" || normalizedPathname.startsWith("/desktop-pet/");
-}
-
-function isGameTableRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return normalizedPathname === "/texas-holdem" || normalizedPathname.startsWith("/texas-holdem/");
-}
-
-function isFocusedToolRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return (
-    normalizedPathname === "/snapshots/share" ||
-    normalizedPathname.startsWith("/snapshots/share/") ||
-    normalizedPathname === "/snapshots/viewer" ||
-    normalizedPathname.startsWith("/snapshots/viewer/")
-  );
 }
 
 function isSnapshotIndexRoute(pathname: string | null) {
@@ -104,19 +76,6 @@ export function RootChrome({ children }: RootChromeProps) {
   const normalizedPathname = normalizeAppPathname(pathname);
   const isPrivateRoute = isPrivateFeatureRoute(pathname);
 
-  if (isDesktopPetRoute(pathname)) {
-    return (
-      <PrivateFeatureAccessProvider>
-        <PrivateFeatureGate
-          fallback={<PrivateFeaturePageFallback />}
-          loadingFallback={<PrivateFeaturePageFallback />}
-        >
-          {children}
-        </PrivateFeatureGate>
-      </PrivateFeatureAccessProvider>
-    );
-  }
-
   if (isSnapshotStandaloneRoute(pathname)) {
     return (
       <PrivateFeatureAccessProvider>
@@ -133,10 +92,7 @@ export function RootChrome({ children }: RootChromeProps) {
   return (
     <PrivateFeatureAccessProvider>
       <WebMcpTools />
-      <SiteShell
-        currentPathname={normalizedPathname}
-        showPet={!isGameTableRoute(pathname) && !isFocusedToolRoute(pathname)}
-      >
+      <SiteShell currentPathname={normalizedPathname}>
         {isPrivateRoute ? (
           <PrivateFeatureGate
             fallback={<PrivateFeaturePageFallback />}

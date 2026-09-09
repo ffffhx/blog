@@ -1,4 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { SNAPSHOT_ID_PATTERN } from "@garden-lab/snapshot-contract";
 
 import {
   appendTokenToUrl,
@@ -277,8 +278,8 @@ async function routeRequest(req: IncomingMessage, res: ServerResponse): Promise<
   }
 
   // 10. Snapshots: Get or Delete by ID
-  const snapshotMatch = pathname.match(/^\/api\/snapshots\/([a-z0-9-]+)$/);
-  if (snapshotMatch) {
+  const snapshotMatch = pathname.match(/^\/api\/snapshots\/([^/]+)$/);
+  if (snapshotMatch && SNAPSHOT_ID_PATTERN.test(snapshotMatch[1])) {
     const id = snapshotMatch[1];
     if (method === "GET") {
       await handleGetSnapshot(req, res, id);

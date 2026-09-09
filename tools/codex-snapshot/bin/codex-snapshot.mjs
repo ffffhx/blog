@@ -13,6 +13,8 @@ import { fileURLToPath } from "node:url";
 import hljs from "highlight.js";
 import markdownit from "markdown-it";
 
+import { SNAPSHOT_SCHEMA_VERSION, parseCreateSnapshotRequest, parsePublishSnapshotResponse } from "@garden-lab/snapshot-contract";
+
 const VERSION = "0.1.0";
 const DEFAULT_LIMIT = 40;
 const DEFAULT_SERVER_LIMIT = 80;
@@ -342,27 +344,27 @@ function readNonNegativeInteger(value, label) {
 }
 
 async function publishSnapshot(snapshot, { apiUrl, token, siteUrl, expiresInDays, shareId }) {
+  const config = readDefaultShareConfig();
   const normalizedApiUrl = normalizeUrl(
     apiUrl ||
       process.env.SNAPSHOT_SHARE_API_URL ||
-      process.env.TOKEN_BOARD_API_URL ||
-      process.env.NEXT_PUBLIC_TOKEN_BOARD_API_URL ||
+      process.env.GARDEN_API_URL ||
+      config.apiUrl ||
       DEFAULT_SNAPSHOT_SHARE_API_URL
   );
   const shareToken =
     token ||
     process.env.SNAPSHOT_SHARE_TOKEN ||
-    process.env.TOKEN_BOARD_AGENT_TOKEN ||
-    process.env.TOKEN_BOARD_UPLOAD_TOKEN ||
-    readDefaultShareToken() ||
+    process.env.GARDEN_SNAPSHOT_UPLOAD_TOKEN ||
+    config.token ||
     "";
-  const normalizedSiteUrl = normalizeUrl(siteUrl || process.env.SNAPSHOT_SHARE_SITE_URL || DEFAULT_SNAPSHOT_SHARE_SITE_URL);
+  const normalizedSiteUrl = normalizeUrl(siteUrl || process.env.SNAPSHOT_SHARE_SITE_URL || config.siteUrl || DEFAULT_SNAPSHOT_SHARE_SITE_URL);
 
   if (!normalizedApiUrl) {
     throw new Error("Missing share API URL. Set SNAPSHOT_SHARE_API_URL or pass --api-url.");
   }
   if (!shareToken) {
-    throw new Error("Missing share API token. Set SNAPSHOT_SHARE_TOKEN, TOKEN_BOARD_AGENT_TOKEN, TOKEN_BOARD_UPLOAD_TOKEN, pass --share-token, or create ~/.token-board-agent.json.");
+    throw new Error("Missing share API token. Set SNAPSHOT_SHARE_TOKEN, GARDEN_SNAPSHOT_UPLOAD_TOKEN, pass --share-token, or create ~/.garden-snapshot.json.");
   }
 
   const response = await fetch(`${normalizedApiUrl}/api/snapshots`, {
@@ -372,12 +374,13 @@ async function publishSnapshot(snapshot, { apiUrl, token, siteUrl, expiresInDays
       "Content-Type": "application/json",
       "User-Agent": `codex-snapshot/${VERSION}`,
     },
-    body: JSON.stringify({
+    body: JSON.stringify(parseCreateSnapshotRequest({
+      schemaVersion: SNAPSHOT_SCHEMA_VERSION,
       snapshot: prepareSnapshotForCloud(snapshot),
       siteUrl: normalizedSiteUrl,
       expiresInDays: expiresInDays || undefined,
       shareId: shareId || undefined,
-    }),
+    })),
   });
   const text = await response.text();
   let payload;
@@ -395,7 +398,7 @@ async function publishSnapshot(snapshot, { apiUrl, token, siteUrl, expiresInDays
     throw new Error("Publish response did not include a share id and URL");
   }
 
-  return payload;
+  return parsePublishSnapshotResponse(payload);
 }
 
 async function publishAllSnapshots({
@@ -491,13 +494,13 @@ function stableSnapshotShareId(snapshot) {
   return `snap_${digest}`;
 }
 
-function readDefaultShareToken() {
-  const filePath = process.env.TOKEN_BOARD_AGENT_FILE || path.join(os.homedir(), ".token-board-agent.json");
+function readDefaultShareConfig() {
+  const filePath = process.env.GARDEN_SNAPSHOT_CONFIG_FILE || path.join(os.homedir(), ".garden-snapshot.json");
   try {
     const payload = JSON.parse(readFileSync(filePath, "utf8"));
-    return payload.agentToken || payload.token || payload.uploadToken || "";
+    return payload && typeof payload === "object" && !Array.isArray(payload) ? payload : {};
   } catch {
-    return "";
+    return {};
   }
 }
 
@@ -6290,9 +6293,9 @@ Options:
   --no-redact              Disable automatic redaction
   --allow-unredacted       For publish only: allow publishing a --no-redact snapshot
   --with-safety            For publish only: include local safety review rows in the cloud snapshot
-  --api-url URL            For publish only: cloud API base. Defaults to $SNAPSHOT_SHARE_API_URL, $TOKEN_BOARD_API_URL, or http://127.0.0.1:8787
+  --api-url URL            For publish only: cloud API base. Defaults to $SNAPSHOT_SHARE_API_URL, $GARDEN_API_URL, or http://127.0.0.1:8787
   --site-url URL           For publish only: public site base used to print the share link
-  --share-token TOKEN      For publish only: API token. Defaults to $SNAPSHOT_SHARE_TOKEN, $TOKEN_BOARD_AGENT_TOKEN, or $TOKEN_BOARD_UPLOAD_TOKEN
+  --share-token TOKEN      For publish only: API token. Defaults to $SNAPSHOT_SHARE_TOKEN, $GARDEN_SNAPSHOT_UPLOAD_TOKEN
   --expires-in-days N      For publish only: ask the server to expire the share after N days
   --live-only              Ignore archived_sessions when listing
   --record-sensitive-context
@@ -6302,7 +6305,7 @@ Options:
 Examples:
   codex-snapshot list --limit 20
   codex-snapshot export 019e457b --html -o snapshot.html
-  codex-snapshot publish 019e457b --api-url https://124-221-36-36.anyip.dev:8443/token-board
+  codex-snapshot publish 019e457b --api-url https://124-221-36-36.anyip.dev:8443/garden-api
   codex-snapshot serve --port 4321
   codex-snapshot record-trae --port 4732`);
 }

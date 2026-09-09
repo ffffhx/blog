@@ -1,54 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { parseSnapshotResponse, type SnapshotResponse as SnapshotShareResponse, type SnapshotPayload, type SnapshotTurn, type SnapshotImage } from "@garden-lab/snapshot-contract";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
-
-type SnapshotShareResponse = {
-  share?: {
-    id: string;
-    title: string;
-    engine?: string;
-    engineLabel?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    expiresAt?: string | null;
-    redacted?: boolean;
-    turnCount?: number;
-  };
-  snapshot?: SnapshotPayload;
-  error?: string;
-};
-
-type SnapshotPayload = {
-  id?: string;
-  title?: string;
-  engineLabel?: string;
-  displayCwd?: string;
-  generatedAt?: string;
-  redacted?: boolean;
-  includeTools?: boolean;
-  includeToolOutput?: boolean;
-  turns?: SnapshotTurn[];
-};
-
-type SnapshotTurn = {
-  kind?: string;
-  role?: string;
-  name?: string;
-  text?: string;
-  html?: string;
-  images?: SnapshotImage[];
-};
-
-type SnapshotImage = {
-  alt?: string;
-  mimeType?: string;
-  size?: string;
-  src?: string;
-  unavailableReason?: string;
-};
 
 type CodexSnapshotCloudShareProps = {
   apiBaseUrl?: string;
@@ -75,7 +31,7 @@ export function CodexSnapshotCloudShare({ apiBaseUrl }: CodexSnapshotCloudShareP
 
     if (!resolvedApiBaseUrl) {
       setState("error");
-      setError("缺少云端 Snapshot API 地址。请配置 NEXT_PUBLIC_SNAPSHOT_SHARE_API_URL 或 NEXT_PUBLIC_TOKEN_BOARD_API_URL。");
+      setError("缺少云端 Snapshot API 地址。请配置 NEXT_PUBLIC_SNAPSHOT_SHARE_API_URL 或 NEXT_PUBLIC_GARDEN_API_URL。");
       return;
     }
 
@@ -91,13 +47,13 @@ export function CodexSnapshotCloudShare({ apiBaseUrl }: CodexSnapshotCloudShareP
       signal: controller.signal,
     })
       .then(async (response) => {
-        const data = (await response.json()) as SnapshotShareResponse;
+        const data = await response.json();
 
         if (!response.ok) {
           throw new Error(data.error || `HTTP ${response.status}`);
         }
 
-        return data;
+        return parseSnapshotResponse(data);
       })
       .then((data) => {
         if (!active) {
@@ -173,7 +129,7 @@ export function CodexSnapshotCloudShare({ apiBaseUrl }: CodexSnapshotCloudShareP
           {state === "idle" ? <EmptyState apiBaseUrl={resolvedApiBaseUrl} /> : null}
           {state === "loading" ? <LoadingState /> : null}
           {state === "error" ? <ErrorState message={error} /> : null}
-          {state === "ready" && snapshot ? (
+          {state === "ready" && snapshot && share ? (
             <>
               <MetaBar share={share} snapshot={snapshot} apiBaseUrl={resolvedApiBaseUrl} />
               <Transcript turns={turns} />
