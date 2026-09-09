@@ -6,7 +6,7 @@
  * 所有路径基于 registration scope 解析，兼容 GitHub Pages 的 basePath。
  */
 
-const VERSION = "v3";
+const VERSION = "v4";
 const PAGE_CACHE = `gl-pages-${VERSION}`;
 const STATIC_CACHE = `gl-static-${VERSION}`;
 const ASSET_CACHE = `gl-assets-${VERSION}`;
