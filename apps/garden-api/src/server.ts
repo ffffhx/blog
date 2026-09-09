@@ -1,5 +1,4 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { SNAPSHOT_ID_PATTERN } from "@garden-lab/snapshot-contract";
 
 import {
   appendTokenToUrl,
@@ -21,11 +20,6 @@ import {
   handleListPrivatePosts,
   handlePrivateBlog,
 } from "./private-blog.js";
-import {
-  handleCreateSnapshot,
-  handleDeleteSnapshot,
-  handleGetSnapshot,
-} from "./snapshot-storage.js";
 
 function getPublicBaseUrl(req: IncomingMessage): string {
   if (CONFIG.PUBLIC_URL) {
@@ -64,38 +58,6 @@ function applyCors(req: IncomingMessage, res: ServerResponse): boolean {
   }
 
   return false;
-}
-
-async function readJsonBody<T = any>(req: IncomingMessage, maxBytes = 4 * 1024 * 1024): Promise<T> {
-  return new Promise((resolve, reject) => {
-    let bytes = 0;
-    const chunks: Buffer[] = [];
-
-    req.on("data", (chunk: Buffer) => {
-      bytes += chunk.length;
-      if (bytes > maxBytes) {
-        req.destroy();
-        reject(new Error(`Payload too large (max ${maxBytes} bytes)`));
-        return;
-      }
-      chunks.push(chunk);
-    });
-
-    req.on("end", () => {
-      if (chunks.length === 0) {
-        resolve({} as T);
-        return;
-      }
-      try {
-        const text = Buffer.concat(chunks).toString("utf8");
-        resolve(JSON.parse(text) as T);
-      } catch (err) {
-        reject(new Error("Invalid JSON payload"));
-      }
-    });
-
-    req.on("error", reject);
-  });
 }
 
 function sendJson(res: ServerResponse, statusCode: number, data: any): void {
@@ -253,27 +215,6 @@ async function routeRequest(req: IncomingMessage, res: ServerResponse): Promise<
     const slug = privatePostMatch[1];
     await handleGetPrivatePostJson(req, res, slug);
     return;
-  }
-
-  // 9. Snapshots: Create
-  if (method === "POST" && pathname === "/api/snapshots") {
-    const body = await readJsonBody(req);
-    await handleCreateSnapshot(req, res, body);
-    return;
-  }
-
-  // 10. Snapshots: Get or Delete by ID
-  const snapshotMatch = pathname.match(/^\/api\/snapshots\/([^/]+)$/);
-  if (snapshotMatch && SNAPSHOT_ID_PATTERN.test(snapshotMatch[1])) {
-    const id = snapshotMatch[1];
-    if (method === "GET") {
-      await handleGetSnapshot(req, res, id);
-      return;
-    }
-    if (method === "DELETE") {
-      await handleDeleteSnapshot(req, res, id);
-      return;
-    }
   }
 
   // 404 Fallback

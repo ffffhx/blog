@@ -42,8 +42,7 @@
     "tailwind-merge": "^3.6.0",
     "tsx": "^4.22.4",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
-    "@garden-lab/snapshot-contract": "workspace:*"
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",

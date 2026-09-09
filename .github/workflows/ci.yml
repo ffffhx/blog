@@ -28,7 +28,7 @@ jobs:
       - name: Run tests
         run: pnpm test
 
-      - name: Typecheck Garden API and snapshot contract
+      - name: Typecheck Garden API
         run: pnpm api:build
 
       - name: Build app

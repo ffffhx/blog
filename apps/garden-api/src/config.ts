@@ -19,8 +19,6 @@ export const CONFIG = {
   PORT: positiveNumber(process.env.GARDEN_API_PORT, 8787),
   HOST: process.env.GARDEN_API_HOST || "0.0.0.0",
   PUBLIC_URL: (process.env.GARDEN_API_PUBLIC_URL || "").trim().replace(/\/+$/, ""),
-  SITE_URL: (process.env.GARDEN_SITE_URL || "https://ffffhx.github.io/garden-lab").trim().replace(/\/+$/, ""),
-  SNAPSHOT_UPLOAD_TOKEN: process.env.GARDEN_SNAPSHOT_UPLOAD_TOKEN || "",
   ALLOWED_ORIGINS: parseCsv(process.env.GARDEN_ALLOWED_ORIGINS, [
     "https://ffffhx.github.io",
     "http://localhost:3000",
@@ -33,9 +31,6 @@ export const CONFIG = {
   DATA_DIR: process.env.GARDEN_DATA_DIR || path.join(process.cwd(), "data"),
   get PRIVATE_BLOG_DIR() {
     return process.env.GARDEN_PRIVATE_BLOG_DIR || path.join(this.DATA_DIR, "private-blog");
-  },
-  get SNAPSHOTS_FILE() {
-    return process.env.GARDEN_SNAPSHOTS_FILE || path.join(this.DATA_DIR, "snapshots.json");
   },
   SESSION_COOKIE_NAME: "garden_session",
   SESSION_TTL_SECONDS: positiveNumber(process.env.GARDEN_SESSION_TTL_SECONDS, 30 * 24 * 60 * 60),

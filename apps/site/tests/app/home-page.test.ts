@@ -12,7 +12,7 @@ describe("HomePage", () => {
 
     expect(markup).toContain("已独立维护的项目");
     expect(markup).toContain(">会话快照</h3>");
-    expect(markup).toContain('href="https://ffffhx.github.io/codex-snapshots/"');
+    expect(markup).toContain('href="https://ffffhx.github.io/agent-snapshots/"');
     expect(markup).toContain(">Token榜</h3>");
     expect(markup).toContain('href="https://ffffhx.github.io/open-token-board/"');
     expect(markup).toContain(">浏览器档案控制台</h3>");

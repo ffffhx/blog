@@ -34,36 +34,7 @@ function normalizeAppPathname(pathname: string | null) {
   return normalizedPathname;
 }
 
-function isSnapshotIndexRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return normalizedPathname === "/snapshots" || normalizedPathname === "/snapshots/";
-}
-
-function isSnapshotShareRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return normalizedPathname === "/snapshots/share" || normalizedPathname.startsWith("/snapshots/share/");
-}
-
-function isSnapshotStandaloneRoute(pathname: string | null) {
-  const normalizedPathname = normalizeAppPathname(pathname);
-
-  return (
-    normalizedPathname === "/snapshots/viewer" ||
-    normalizedPathname.startsWith("/snapshots/viewer/")
-  );
-}
-
 function isPrivateFeatureRoute(pathname: string | null) {
-  if (isSnapshotShareRoute(pathname) || isSnapshotIndexRoute(pathname)) {
-    return false;
-  }
-
-  if (isSnapshotStandaloneRoute(pathname)) {
-    return true;
-  }
-
   const normalizedPathname = normalizeAppPathname(pathname);
 
   return PRIVATE_FEATURE_ROUTES.some(
@@ -75,19 +46,6 @@ export function RootChrome({ children }: RootChromeProps) {
   const pathname = usePathname();
   const normalizedPathname = normalizeAppPathname(pathname);
   const isPrivateRoute = isPrivateFeatureRoute(pathname);
-
-  if (isSnapshotStandaloneRoute(pathname)) {
-    return (
-      <PrivateFeatureAccessProvider>
-        <PrivateFeatureGate
-          fallback={<PrivateFeaturePageFallback />}
-          loadingFallback={<PrivateFeaturePageFallback />}
-        >
-          {children}
-        </PrivateFeatureGate>
-      </PrivateFeatureAccessProvider>
-    );
-  }
 
   return (
     <PrivateFeatureAccessProvider>

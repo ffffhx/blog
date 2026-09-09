@@ -19,7 +19,7 @@ describe("SiteHeader", () => {
 
     expect(markup).not.toContain('href="/games"');
     expect(markup).not.toContain(">游戏入口</a>");
-    expect(markup).not.toContain('href="https://ffffhx.github.io/codex-snapshots/"');
+    expect(markup).not.toContain('href="https://ffffhx.github.io/agent-snapshots/"');
     expect(markup).not.toContain(">会话快照</a>");
     expect(markup).not.toContain('href="https://ffffhx.github.io/open-token-board/"');
     expect(markup).not.toContain(">Token榜</a>");

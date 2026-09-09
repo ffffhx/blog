@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-import { CODEX_SNAPSHOTS_URL } from "@/lib/standalone-projects";
+import { AGENT_SNAPSHOTS_URL } from "@/lib/standalone-projects";
 
 export const metadata: Metadata = {
-  title: "Codex Snapshots",
+  title: "Agent Snapshots",
   description: "会话快照独立项目入口。",
 };
 
@@ -15,14 +15,14 @@ export default function SnapshotsPage() {
           Standalone project
         </p>
         <h1 className="mt-3 text-4xl font-semibold leading-none tracking-normal text-slate-950 sm:text-6xl">
-          Codex Snapshots
+          Agent Snapshots
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">
           会话快照已经拆成独立项目。Garden Lab 保留入口，实际审阅台、文档和分享页都放到新站点维护。
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <a
-            href={CODEX_SNAPSHOTS_URL}
+            href={AGENT_SNAPSHOTS_URL}
             target="_blank"
             rel="noreferrer"
             className="inline-flex min-h-11 items-center justify-center rounded-lg bg-slate-950 px-5 font-mono text-xs font-black uppercase text-white transition hover:bg-[#8f3f18] focus:outline-none focus:ring-4 focus:ring-[#245d83]/15"

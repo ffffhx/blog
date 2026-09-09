@@ -32,6 +32,9 @@ http://localhost:3000
 
 - 根目录：monorepo 编排、CI、文档和统一命令代理
 - `apps/site`：Next.js 静态站点、内容编译、页面和站点内领域逻辑
+- `apps/garden-api`：博客登录和私有文章服务
+
+会话快照已完整迁移至 [Agent Snapshots](https://ffffhx.github.io/agent-snapshots/)。Garden 仅保留项目入口和旧分享地址跳转，不再维护快照工具、查看器或存储。数据与部署核对记录见 [快照迁移说明](docs/snapshot-migration.md)。
 
 Token 排行榜的前端、后端、core、Docker 部署包和 agent 发布已经迁移到独立公开仓库：`https://github.com/ffffhx/open-token-board`。
 

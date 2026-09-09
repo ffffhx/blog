@@ -1,5 +1,5 @@
-export const CODEX_SNAPSHOTS_URL =
-  process.env.NEXT_PUBLIC_CODEX_SNAPSHOTS_URL || "https://ffffhx.github.io/codex-snapshots/";
+export const AGENT_SNAPSHOTS_URL =
+  process.env.NEXT_PUBLIC_AGENT_SNAPSHOTS_URL || "https://ffffhx.github.io/agent-snapshots/";
 
 export const OPEN_TOKEN_BOARD_URL =
   process.env.NEXT_PUBLIC_OPEN_TOKEN_BOARD_URL || "https://ffffhx.github.io/open-token-board/";
@@ -24,11 +24,11 @@ export type StandaloneProject = {
 
 export const STANDALONE_PROJECTS: StandaloneProject[] = [
   {
-    slug: "codex-snapshots",
+    slug: "agent-snapshots",
     title: "会话快照",
-    productName: "Codex Snapshots",
-    href: CODEX_SNAPSHOTS_URL,
-    displayUrl: "ffffhx.github.io/codex-snapshots",
+    productName: "Agent Snapshots",
+    href: AGENT_SNAPSHOTS_URL,
+    displayUrl: "ffffhx.github.io/agent-snapshots",
     badge: "会话沉淀",
     description:
       "把本地 Agent 会话整理成可浏览、可分享的只读快照，适合复盘推理过程、保留上下文和沉淀案例。",
