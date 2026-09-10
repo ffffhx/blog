@@ -1,10 +1,6 @@
 import React from "react";
 
-import { ArticleImageLightbox } from "@/components/article-image-lightbox";
-import { ArticleQuizEnhancer } from "@/components/article-quiz-enhancer";
-import { BenchHeatmapTooltip } from "@/components/bench-heatmap-tooltip";
-import { BenchReveal } from "@/components/bench-reveal";
-import { RequestGatesLab } from "@/components/request-gates-lab";
+import { ArticleEnhancements } from "@/components/article-enhancements";
 import type { ContentImageSize } from "@/lib/content/types";
 
 type ArticleBodyProps = {
@@ -34,11 +30,14 @@ export function ArticleBody({
         dangerouslySetInnerHTML={{ __html: html }}
         id={articleContentId}
       />
-      <ArticleQuizEnhancer articleContentId={articleContentId} />
-      <BenchHeatmapTooltip articleContentId={articleContentId} />
-      <BenchReveal articleContentId={articleContentId} />
-      <RequestGatesLab articleContentId={articleContentId} />
-      <ArticleImageLightbox articleContentId={articleContentId} />
+      <ArticleEnhancements key={contentRevision(html)} articleContentId={articleContentId} />
     </>
   );
+}
+
+// Remount DOM enhancements when a body changes without changing its slug.
+function contentRevision(html: string) {
+  let hash = 2166136261;
+  for (let i = 0; i < html.length; i++) hash = Math.imul(hash ^ html.charCodeAt(i), 16777619);
+  return hash >>> 0;
 }

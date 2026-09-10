@@ -41,7 +41,10 @@ export type Post = PostSummary & {
   sourcePath: string;
 };
 
-export type PrivatePostData = Omit<Post, "date" | "content" | "sourcePath">;
+export type PrivatePostData = Omit<Post, "date" | "content" | "sourcePath"> & {
+  /** Older private JSON records may only contain rendered HTML. */
+  content?: string;
+};
 
 export type PageContent = {
   title: string;

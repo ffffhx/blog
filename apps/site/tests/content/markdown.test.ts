@@ -39,3 +39,9 @@ describe("compileMarkdown", () => {
     expect(result.contentHtml).toContain('fetchpriority="low"');
   });
 });
+
+it("uses rendered heading IDs after duplicate H1/H5 headings and inline formatting", () => {
+  const result = compileMarkdown("# Repeat\n\n## Repeat\n\n##### Extra\n\n## Extra\n\n### **Extra**", "/post-assets/test");
+  expect(result.headings.map((h) => h.id)).toEqual(["repeat-1", "extra-1", "extra-2"]);
+  for (const heading of result.headings) expect(result.contentHtml).toContain(`<h${heading.depth} id="${heading.id}">`);
+});

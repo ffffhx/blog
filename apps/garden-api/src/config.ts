@@ -1,5 +1,15 @@
 import path from "node:path";
 
+const DEV_AUTH_SECRET = "dev-only-garden-auth-secret-change-in-prod-32chars";
+
+export function resolveAuthSecret(env: NodeJS.ProcessEnv): string {
+  const secret = env.GARDEN_AUTH_SECRET?.trim();
+  if (env.NODE_ENV === "production" && (!secret || secret === DEV_AUTH_SECRET || secret.length < 32)) {
+    throw new Error("GARDEN_AUTH_SECRET must be a private secret of at least 32 characters in production");
+  }
+  return secret || DEV_AUTH_SECRET;
+}
+
 function parseCsv(value: string | undefined, fallback: string[] = []): string[] {
   if (!value?.trim()) {
     return fallback;
@@ -25,7 +35,7 @@ export const CONFIG = {
     "http://localhost:3000",
     "http://127.0.0.1:3000",
   ]),
-  AUTH_SECRET: process.env.GARDEN_AUTH_SECRET || "dev-only-garden-auth-secret-change-in-prod-32chars",
+  AUTH_SECRET: resolveAuthSecret(process.env),
   ALLOWED_GITHUB_LOGINS: parseCsv(process.env.GARDEN_ALLOWED_GITHUB_LOGINS, ["ffffhx"]),
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || "",
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || "",

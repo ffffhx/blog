@@ -50,6 +50,10 @@ export function resolvePostAssetUrl(assetBasePath: string, assetPath: unknown) {
     return null;
   }
 
+  if (ABSOLUTE_URL_RE.test(normalized) || normalized.startsWith("data:")) {
+    return normalized;
+  }
+
   if (normalized.startsWith("/")) {
     return encodeLocalUrlPath(withBasePath(normalized));
   }

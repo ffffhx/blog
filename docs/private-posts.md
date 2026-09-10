@@ -3,12 +3,15 @@
 私有文章只维护一种数据产物：JSON。`/private-post/?slug=...` 使用站内的
 `ArticleBody`、目录、图片灯箱和主题组件展示，导出脚本不再生成独立 HTML、CSS 或交互脚本。
 旧 `/api/blog/:slug` 地址跳转到同一页面，正文 JSON 仍由 Garden API 鉴权后提供。
+文章页支持复制 Markdown 和下载 `.md` 文件。新导出的 JSON 同时保留 Markdown 正文，
+本地图片也内联其中；历史 JSON 仅有 HTML 时在浏览器中转换，仍可复制和下载。
+完整正文只由鉴权后的详情接口返回，文章列表不包含 Markdown 正文。
 旧地址中的查询参数（包括凭证）不会转发；需要登录时由站点登录入口处理。
 
 ## 新增与更新
 
 1. 在 `apps/site/source/_posts/` 的文章 frontmatter 中设置 `hidden: true`，并设置稳定的 ASCII `slug`。
-2. 在仓库根目录执行 `pnpm sync:assets`，然后执行 `pnpm export:private`。
+2. 在仓库根目录执行 `pnpm export:private`，无需先同步公开附件。
    默认自动发现所有隐藏文章；指定一篇可用 `pnpm export:private <slug>`。
 3. 产物直接写入 `apps/garden-api/data/private-blog/<slug>.json`。将 JSON 部署到后端数据目录。
 
@@ -26,4 +29,9 @@
 
 线上 `GARDEN_SITE_URL` 默认是 `https://ffffhx.github.io/garden-lab`，包含 Pages 子路径。
 已有 HTML 备份不再被服务读取，可以在确认 JSON 完整并备份后清理。
-`hidden` 的公开附件隔离和远端删除同步属于另外的发布流程问题，本次没有改变这两项行为。
+公开附件同步会排除 `hidden: true` 文章的同名附件目录，并清除上次同步残留的公开副本。
+私密导出直接读取 `source` 原始图片；WebP 路径缺少源文件时，会回溯对应 PNG/JPEG 图片。
+私密附件应放在文章的同名目录中；`source/images` 是全站共享的公开资源目录。
+隔离在重新构建、部署后生效，不会撤回 Git 历史或浏览器已缓存的文件；远端 JSON 删除仍需单独处理。
+
+生产环境必须提供至少 32 字符的私有 `GARDEN_AUTH_SECRET`，缺失、过短或使用开发默认值时 API 拒绝启动。

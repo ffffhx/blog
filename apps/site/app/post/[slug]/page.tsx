@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ArticleBody } from "@/components/article-body";
-import { BuildStamp } from "@/components/build-stamp";
-import { PostMeta } from "@/components/post-meta";
-import { PostToc } from "@/components/post-toc";
-import { TOC_MIN_HEADINGS } from "@/lib/content/config";
+import { ArticleLayout } from "@/components/article-layout";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/content/posts";
 
 type PostPageProps = {
@@ -42,53 +38,5 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
-  const showToc = post.headings.length >= TOC_MIN_HEADINGS;
-  const coverImage = post.cover ? (
-    <div className="overflow-hidden rounded-2xl border-[1.5px] border-ink/70 bg-paper-deep">
-      <img
-        src={post.cover}
-        alt={`${post.title} 封面`}
-        loading="eager"
-        decoding="async"
-        fetchPriority="high"
-        className="block h-auto w-full"
-      />
-    </div>
-  ) : null;
-
-  return (
-    <main className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_20rem] 2xl:grid-cols-[minmax(0,1fr)_22rem] 2xl:gap-8">
-      <article className="riso-card riso-card--teal min-w-0 p-6 sm:p-10 2xl:p-12">
-        <div className="space-y-5">
-          {post.coverPosition === "above-title" ? coverImage : null}
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="riso-sticker riso-sticker--terra">Post · 文章</span>
-              <BuildStamp />
-            </div>
-            <h1 className="font-display max-w-[72rem] break-words text-balance text-3xl font-semibold leading-[1.06] tracking-[-0.02em] text-ink [overflow-wrap:anywhere] sm:text-5xl lg:text-6xl">
-              {post.title}
-            </h1>
-          </div>
-          {post.coverPosition === "below-title" ? coverImage : null}
-          <PostMeta
-            categories={post.categories}
-            dateText={post.dateText}
-            readingTimeText={post.readingTimeText}
-            tags={post.tags}
-          />
-        </div>
-        <div className="mt-10">
-          <ArticleBody
-            contentImageSize={post.contentImageSize}
-            html={post.contentHtml}
-            slug={post.slug}
-          />
-        </div>
-      </article>
-      <div className="xl:sticky xl:top-24 xl:h-fit">
-        {showToc ? <PostToc headings={post.headings} /> : null}
-      </div>
-    </main>
-  );
+  return <ArticleLayout post={post} />;
 }

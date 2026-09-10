@@ -1,6 +1,4 @@
 import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
-import GithubSlugger from "github-slugger";
-import { toString } from "mdast-util-to-string";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
@@ -62,6 +60,8 @@ const RELATIVE_MARKDOWN_IMAGE_RE =
   /!\[([^\]]*)\]\((?!https?:\/\/|\/|data:)([^)\s]+)(?:\s+"([^"]*)")?\)/g;
 
 type HastElement = {
+  value?: string;
+  children?: HastElement[];
   type: string;
   tagName?: string;
   properties?: Record<string, unknown>;
@@ -107,34 +107,31 @@ export function transformHexoAssetTags(source: string, assetBasePath: string) {
   return transformed;
 }
 
-export function extractHeadings(source: string) {
-  const tree = unified().use(remarkParse).use(remarkGfm).parse(source);
-  const slugger = new GithubSlugger();
-  const headings: Heading[] = [];
-
-  visit(tree, "heading", (node) => {
-    if (node.depth < 2 || node.depth > 4) {
-      return;
-    }
-
-    const text = toString(node).trim();
-    if (!text) {
-      return;
-    }
-
-    headings.push({
-      id: slugger.slug(text),
-      text,
-      depth: node.depth as 2 | 3 | 4,
+// Read the IDs assigned to the rendered nodes, so TOC and HTML cannot drift.
+function collectHeadings(headings: Heading[]) {
+  return () => (tree: UnistTree) => {
+    const textContent = (node: HastElement): string =>
+      node.type === "text" ? node.value || "" : (node.children || []).map(textContent).join("");
+    visit(tree, "element", (rawNode) => {
+      const node = rawNode as HastElement;
+      if (!node.tagName || !/^h[2-4]$/.test(node.tagName)) return;
+      const text = textContent(node).trim();
+      if (text) headings.push({ id: String(node.properties?.id), text, depth: Number(node.tagName[1]) as 2 | 3 | 4 });
     });
-  });
+  };
+}
 
+export function extractHeadings(source: string) {
+  const headings: Heading[] = [];
+  const processor = unified().use(remarkParse).use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true }).use(rehypeSlug).use(collectHeadings(headings));
+  processor.runSync(processor.parse(source));
   return headings;
 }
 
 export function compileMarkdown(source: string, assetBasePath: string) {
   const content = transformHexoAssetTags(source, assetBasePath);
-  const headings = extractHeadings(content);
+  const headings: Heading[] = [];
   const contentHtml = String(
     unified()
       .use(remarkParse)
@@ -146,6 +143,7 @@ export function compileMarkdown(source: string, assetBasePath: string) {
       // Posts are first-party trusted content, so no sanitizer is needed.
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeSlug)
+      .use(collectHeadings(headings))
       .use(rehypeImageAttributes)
       .use(
         rehypeShikiFromHighlighter,

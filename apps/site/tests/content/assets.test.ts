@@ -100,3 +100,8 @@ describe("resolveOptimizedPostAssetUrl", () => {
     );
   });
 });
+
+it.each(["https://example.com/cover.png?size=2#hero", "//cdn.example.com/cover.jpg", "data:image/png;base64,abc"])("preserves external cover through the complete resolver: %s", (url) => {
+  process.env.NEXT_PUBLIC_BASE_PATH = "/garden-lab";
+  expect(resolveOptimizedPostAssetUrl("/post-assets/demo", url)).toBe(url);
+});

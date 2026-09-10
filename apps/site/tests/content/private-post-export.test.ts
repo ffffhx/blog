@@ -34,7 +34,7 @@ describe("private article export", () => {
     const data = JSON.parse(fs.readFileSync(path.join(outputDir, "new-private.json"), "utf8"));
     expect(data.contentHtml).toBe("<h1>Test</h1>");
     expect(data).not.toHaveProperty("sourcePath");
-    expect(data).not.toHaveProperty("content");
+    expect(data.content).toBe("# Test\n");
     expect(data).not.toHaveProperty("date");
   });
 
@@ -43,12 +43,13 @@ describe("private article export", () => {
     fs.mkdirSync(imageDir, { recursive: true });
     fs.writeFileSync(path.join(imageDir, "cover.svg"), "<svg/>");
     const url = "/garden-lab/post-assets/test/cover.svg";
-    exportPrivatePosts([post("images", { cover: url, contentHtml: `<img src="${url}">` })], {
+    exportPrivatePosts([post("images", { cover: url, content: `![封面](${url})`, contentHtml: `<img src="${url}">` })], {
       siteRoot: root, outputDir, basePath: "/garden-lab",
     });
     const data = JSON.parse(fs.readFileSync(path.join(outputDir, "images.json"), "utf8"));
     expect(data.cover).toBe(`data:image/svg+xml;base64,${Buffer.from("<svg/>").toString("base64")}`);
     expect(data.contentHtml).toBe(`<img src="${data.cover}">`);
+    expect(data.content).toContain(`![封面](${data.cover})`);
   });
 
   it("preserves records whose Markdown is no longer present", () => {
@@ -78,4 +79,14 @@ describe("private article export", () => {
   it("rejects slugs that the private article API cannot serve", () => {
     expect(() => exportPrivatePosts([post("中文")], { siteRoot: root, outputDir })).toThrow("ASCII slug");
   });
+});
+
+it("exports hidden WebP URLs from original source images without public copies", () => {
+  const source = path.join(root, "source/_posts/test");
+  fs.mkdirSync(source, { recursive: true });
+  fs.writeFileSync(path.join(source, "cover.png"), "source-image");
+  exportPrivatePosts([post("hidden", { cover: "/post-assets/test/cover.webp" })], { siteRoot: root, outputDir });
+  const data = JSON.parse(fs.readFileSync(path.join(outputDir, "hidden.json"), "utf8"));
+  expect(data.cover).toBe(`data:image/png;base64,${Buffer.from("source-image").toString("base64")}`);
+  expect(fs.existsSync(path.join(root, "public"))).toBe(false);
 });

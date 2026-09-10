@@ -12,7 +12,7 @@ import {
   getPostAssetBasePath,
   resolveOptimizedPostAssetUrl,
 } from "@/lib/content/assets";
-import { compileMarkdown } from "@/lib/content/markdown";
+import { compileMarkdown, transformHexoAssetTags } from "@/lib/content/markdown";
 import { ensureUniqueSlug, slugifyPostStem } from "@/lib/content/slug";
 import type {
   CategoryKey,
@@ -30,6 +30,8 @@ const ARTICLE_CATEGORY_KEYS = new Set<CategoryKey>([
 ]);
 
 let cachedPosts: Post[] | null = null;
+let cachedSignature = "";
+const recordCache = new Map<string, { raw: string; post: Post }>();
 
 function walkMarkdownFiles(dir: string, files: string[] = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -143,8 +145,7 @@ export function isDailyNewsPost(post: Pick<PostSummary, "categories">) {
   return hasDailyNewsCategory(post);
 }
 
-function loadPosts() {
-  const markdownFiles = walkMarkdownFiles(POSTS_ROOT);
+function loadPosts(markdownFiles: string[]) {
   const takenSlugs = new Set<string>();
 
   return markdownFiles
@@ -154,7 +155,7 @@ function loadPosts() {
       const relativePath = path.relative(POSTS_ROOT, filePath);
       const date = parseDateInput(parsed.data.date);
       const assetBasePath = getPostAssetBasePath(relativePath);
-      const compiled = compileMarkdown(parsed.content, assetBasePath);
+      const content = transformHexoAssetTags(parsed.content, assetBasePath);
       // Allow an explicit `slug:` in front-matter (sanitized). Falls back to the
       // file-name stem. Needed because pure-CJK file names slugify to non-ASCII
       // slugs that GitHub Pages / static-export routing can't serve.
@@ -165,18 +166,22 @@ function loadPosts() {
         relativePath,
         takenSlugs
       );
+      const previous = recordCache.get(filePath);
+      if (previous?.raw === raw && previous.post.slug === slug && previous.post.assetBasePath === assetBasePath) return previous.post;
+      let compiled: ReturnType<typeof compileMarkdown> | undefined;
+      const body = () => compiled ??= compileMarkdown(parsed.content, assetBasePath);
       const categories = normalizeCategories(parsed.data.categories);
       const tags = normalizeTags(parsed.data.tags);
       const cover = resolveOptimizedPostAssetUrl(assetBasePath, parsed.data.cover);
       const coverPosition = normalizeCoverPosition(parsed.data.coverPosition);
       const contentImageSize = normalizeContentImageSize(parsed.data.contentImageSize);
-      const reading = readingTime(decodeContentForReadingTime(compiled.content));
+      const reading = readingTime(decodeContentForReadingTime(content));
       const hidden = parsed.data.hidden === true;
 
-      return {
+      const post = {
         slug,
         title: String(parsed.data.title || path.parse(filePath).name),
-        excerpt: deriveExcerpt(parsed.data.excerpt, compiled.content),
+        excerpt: deriveExcerpt(parsed.data.excerpt, content),
         categories: categories.length ? categories : [CATEGORY_DEFINITIONS.tech.key],
         tags,
         date,
@@ -186,19 +191,30 @@ function loadPosts() {
         cover,
         coverPosition,
         hidden,
-        content: compiled.content,
-        contentHtml: compiled.contentHtml,
+        content,
+        get contentHtml() { return body().contentHtml; },
         contentImageSize,
-        headings: compiled.headings,
+        get headings() { return body().headings; },
         sourcePath: relativePath,
       } satisfies Post;
+      recordCache.set(filePath, { raw, post });
+      return post;
     })
     .sort((left, right) => right.date.getTime() - left.date.getTime());
 }
 
 function getPostRecords() {
-  if (!cachedPosts) {
-    cachedPosts = loadPosts();
+  if (cachedPosts && process.env.NODE_ENV !== "development") return cachedPosts;
+  const files = walkMarkdownFiles(POSTS_ROOT).sort();
+  const signature = files.map((file) => {
+    const stat = fs.statSync(file);
+    return `${file}:${stat.mtimeMs}:${stat.ctimeMs}:${stat.size}`;
+  }).join("\n");
+  if (!cachedPosts || signature !== cachedSignature) {
+    cachedPosts = loadPosts(files);
+    cachedSignature = signature;
+    const existing = new Set(files);
+    for (const file of recordCache.keys()) if (!existing.has(file)) recordCache.delete(file);
   }
 
   return cachedPosts;

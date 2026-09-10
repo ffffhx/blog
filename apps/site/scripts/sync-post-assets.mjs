@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import sharp from "sharp";
+import matter from "gray-matter";
 
 const cwd = process.cwd();
 const sourceImagesRoot = path.join(cwd, "source", "images");
@@ -57,6 +58,24 @@ function walk(dir, visitor) {
   }
 }
 
+// Discover ownership before copying; hidden companion directories never publish.
+const hiddenAssetRoots = [];
+walk(postsRoot, (filePath) => {
+  if (filePath.endsWith(".md") && matter(fs.readFileSync(filePath, "utf8")).data.hidden === true) {
+    hiddenAssetRoots.push(path.join(path.dirname(filePath), path.parse(filePath).name));
+  }
+});
+function isPrivateAsset(filePath) {
+  return hiddenAssetRoots.some((root) => {
+    const relative = path.relative(root, filePath);
+    return relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== ".." && !path.isAbsolute(relative));
+  });
+}
+// Only generated directories inside this site's public directory may be cleared.
+for (const target of [publicImagesRoot, publicPostAssetsRoot]) {
+  const relative = path.relative(path.resolve(publicRoot), path.resolve(target));
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) throw new Error(`Unsafe output path: ${target}`);
+}
 fs.rmSync(publicImagesRoot, { recursive: true, force: true });
 fs.rmSync(publicPostAssetsRoot, { recursive: true, force: true });
 ensureDir(publicImagesRoot);
@@ -72,7 +91,7 @@ walk(sourceImagesRoot, (filePath) => {
 });
 
 walk(postsRoot, (filePath) => {
-  if (filePath.endsWith(".md")) {
+  if (filePath.endsWith(".md") || isPrivateAsset(filePath)) {
     return;
   }
 

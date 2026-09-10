@@ -19,7 +19,8 @@
     "new:post": "node scripts/new-entry.mjs tech",
     "new:tech": "node scripts/new-entry.mjs tech",
     "new:fitness": "node scripts/new-entry.mjs fitness",
-    "new:daily-news": "node scripts/new-entry.mjs daily-news"
+    "new:daily-news": "node scripts/new-entry.mjs daily-news",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@shikijs/rehype": "^4.3.0",
@@ -36,9 +37,12 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "remark-stringify": "^11.0.0",
     "shiki": "^4.3.0",
     "tailwind-merge": "^3.6.0",
     "tsx": "^4.22.4",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"
   },
@@ -47,6 +51,7 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.1.2",
+    "@types/turndown": "^5.0.6",
     "postcss": "^8.5.16",
     "sharp": "0.35.2",
     "tailwindcss": "^4.3.2",

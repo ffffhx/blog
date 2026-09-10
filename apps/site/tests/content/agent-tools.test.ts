@@ -14,6 +14,7 @@ import {
 
 const posts: AgentPostIndexSource[] = [
   {
+    hidden: false,
     slug: "openai-codex-source",
     title: "OpenAI Codex 源码解析",
     excerpt: "本地 Agent harness 如何组织工具调用。",
@@ -27,6 +28,7 @@ const posts: AgentPostIndexSource[] = [
     coverPosition: "above-title",
   },
   {
+    hidden: false,
     slug: "bench-press",
     title: "卧推怎么练",
     excerpt: "从握距、触胸到腿驱。",
@@ -40,6 +42,7 @@ const posts: AgentPostIndexSource[] = [
     coverPosition: "above-title",
   },
   {
+    hidden: false,
     slug: "daily-ai-news",
     title: "每日新闻：2026-04-24 AI 与前端热点速览",
     excerpt: "每日新闻与工程圈观察。",
@@ -53,6 +56,7 @@ const posts: AgentPostIndexSource[] = [
     coverPosition: "above-title",
   },
   {
+    hidden: false,
     slug: "codex-monthly-update",
     title: "Codex 和 Claude Code 最近一个月更新了什么",
     excerpt: "月度工作台观察。",

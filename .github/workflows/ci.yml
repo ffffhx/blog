@@ -28,6 +28,9 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      - name: Typecheck site
+        run: pnpm --filter @garden-lab/site typecheck
+
       - name: Typecheck Garden API
         run: pnpm api:build
 

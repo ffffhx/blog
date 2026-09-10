@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ArticleBody } from "@/components/article-body";
+import { ArticleMarkdownActions } from "@/components/article-markdown-actions";
 import { BuildStamp } from "@/components/build-stamp";
 import { PostMeta } from "@/components/post-meta";
 import { PostToc } from "@/components/post-toc";
@@ -368,6 +369,7 @@ export function DailyNewsModule({ entries, post }: DailyNewsModuleProps) {
               showTags={false}
               tags={post.tags}
             />
+            <ArticleMarkdownActions key={post.slug} title={post.title} content={post.content} />
           </header>
 
           <div className="mt-7">

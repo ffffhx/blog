@@ -3,6 +3,7 @@ import path from "node:path";
 
 import type { Post, PrivatePostData } from "./types";
 import { normalizeBasePath } from "../utils/site-path";
+import { rewriteMarkdownUrls } from "./markdown-export";
 
 const MIME_TYPES: Record<string, string> = {
   ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
@@ -23,11 +24,14 @@ function inlineAsset(url: string, options: ExportOptions): string {
   if (!match) return url;
   const [, folder, relativeUrl] = match;
   const relativePath = decodeURIComponent(relativeUrl);
-  for (const root of [
-    path.join(options.siteRoot, "public", folder),
-    path.join(options.siteRoot, "source", folder === "post-assets" ? "_posts" : "images"),
-  ]) {
-    const candidate = path.resolve(root, relativePath);
+  const root = path.join(options.siteRoot, "source", folder === "post-assets" ? "_posts" : "images");
+  // Hidden images have no public WebP derivative. Resolve back to the source.
+  const requested = path.resolve(root, relativePath);
+  const candidates = [requested];
+  if (/\.webp$/i.test(requested)) {
+    candidates.push(...[".png", ".jpg", ".jpeg", ".PNG", ".JPG", ".JPEG"].map((ext) => requested.replace(/\.webp$/i, ext)));
+  }
+  for (const candidate of candidates) {
     const relative = path.relative(root, candidate);
     if (relative.startsWith("..") || path.isAbsolute(relative)) {
       throw new Error(`Asset is outside its source directory: ${url}`);
@@ -38,7 +42,7 @@ function inlineAsset(url: string, options: ExportOptions): string {
       return `data:${mime};base64,${readFileSync(candidate).toString("base64")}`;
     }
   }
-  throw new Error(`Missing private article image: ${url}. Run pnpm sync:assets first.`);
+  throw new Error(`Missing private article image: ${url}. Check the source image path.`);
 }
 
 export function exportPrivatePosts(posts: Post[], options: ExportOptions): string[] {
@@ -56,6 +60,7 @@ export function exportPrivatePosts(posts: Post[], options: ExportOptions): strin
     const { date, content, sourcePath, ...data } = post;
     const record: PrivatePostData = {
       ...data,
+      content: rewriteMarkdownUrls(content, (url) => inlineAsset(url, options)),
       cover: post.cover ? inlineAsset(post.cover, options) : null,
       contentHtml: post.contentHtml.replace(/(\bsrc=["'])([^"']+)(["'])/g,
         (_, prefix, url, suffix) => `${prefix}${inlineAsset(url, options)}${suffix}`),

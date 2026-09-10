@@ -26,6 +26,7 @@ beforeAll(async () => {
       slug: "internship-defense",
       title: "面试准备：冯鸿鑫",
       dateText: "2026-08-21",
+      content: "# Private Markdown\n\nAuthor only.",
       contentHtml: "<!DOCTYPE html><html><body><h1>面试准备：冯鸿鑫</h1></body></html>",
     }),
     "utf8"
@@ -107,6 +108,8 @@ describe("Garden Lab API", () => {
     const body = await res.json();
     expect(Array.isArray(body.posts)).toBe(true);
     expect(body.posts.some((p: any) => p.slug === "internship-defense")).toBe(true);
+    expect(body.posts[0]).not.toHaveProperty("content");
+    expect(body.posts[0]).not.toHaveProperty("contentHtml");
   });
 
   it("GET /api/private-posts/:slug returns full post JSON for authorized owner", async () => {
@@ -127,6 +130,7 @@ describe("Garden Lab API", () => {
     expect(body.slug).toBe("internship-defense");
     expect(body.title).toContain("冯鸿鑫");
     expect(body.contentHtml).toBeDefined();
+    expect(body.content).toBe("# Private Markdown\n\nAuthor only.");
   });
 
   it("GET /api/private-posts returns 403 for unauthorized users", async () => {

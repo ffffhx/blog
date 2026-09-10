@@ -175,6 +175,7 @@ export function isGithubLoginAllowed(login: string | undefined): boolean {
 export function sanitizeReturnTo(returnTo: string | null | undefined, requestHost: string): string {
   if (!returnTo) return "/";
   const trimmed = returnTo.trim();
+  if (/[\u0000-\u0020\u007f\\]/.test(trimmed)) return "/";
 
   // If it is a safe relative path (starts with / and not // or /\)
   if (trimmed.startsWith("/") && !trimmed.startsWith("//") && !trimmed.startsWith("/\\")) {
@@ -187,8 +188,9 @@ export function sanitizeReturnTo(returnTo: string | null | undefined, requestHos
     const origin = url.origin.toLowerCase();
     const isAllowed =
       CONFIG.ALLOWED_ORIGINS.some((allowed) => allowed.toLowerCase() === origin) ||
-      origin.includes(requestHost.toLowerCase());
-    if (isAllowed) {
+      (["http:", "https:"].includes(url.protocol) &&
+        url.host.toLowerCase() === requestHost.toLowerCase());
+    if (isAllowed && ["http:", "https:"].includes(url.protocol) && !url.username && !url.password) {
       return trimmed;
     }
   } catch {

@@ -31,8 +31,8 @@ export async function handleListPrivatePosts(
         const filePath = path.join(CONFIG.PRIVATE_BLOG_DIR, file.name);
         const raw = await fs.readFile(filePath, "utf8");
         const data = JSON.parse(raw);
-        // Exclude contentHtml from list payload to keep response lightweight
-        const { contentHtml, ...summary } = data;
+        // Keep full article bodies in the authenticated detail response only.
+        const { contentHtml, content, ...summary } = data;
         posts.push(summary);
       } catch {
         // skip malformed JSON files

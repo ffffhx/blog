@@ -6,6 +6,7 @@ import { PostCard } from "../../components/post-card";
 import type { PostSummary } from "../../lib/content/types";
 
 const basePost: PostSummary = {
+  hidden: false,
   slug: "cover-post",
   title: "封面文章标题",
   excerpt: "这是一段摘要。",
