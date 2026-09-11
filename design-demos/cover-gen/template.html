@@ -275,6 +275,7 @@
 <script>
   var __cb = new URLSearchParams(location.search).get("cb") || "0";
   document.write('<scr'+'ipt src="./covers.js?cb=' + __cb + '"></scr'+'ipt>');
+  document.write('<scr'+'ipt src="./threat-report.js?cb=' + __cb + '"></scr'+'ipt>');
 </script>
 <script>
 const C = window.COVERS;
@@ -303,6 +304,7 @@ function renderFeed(){
 
 // ---- technical designs (one distinct style each) ----
 const DESIGN = {
+  "anthropic-threat-intelligence-september-2026": () => window.renderThreatReport(d),
   "browser-tools": () => leftText(d,false) + `<div class="stage">${d.stageHTML}</div>`,
 
   "browser-agent-bench": () => leftText(d,false) + `<div class="stage">${d.stageHTML}</div>`,

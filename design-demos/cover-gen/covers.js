@@ -368,5 +368,11 @@ window.COVERS = (function () {
     },
   ];
 
-  return [...N, ...T];
+  return [...N, ...T, {
+    slug: "anthropic-threat-intelligence-september-2026",
+    dir: "2026/09/11/anthropic-threat-intelligence-september-2026",
+    scene: "threat-report", cat: "技术", accent: "blue",
+    subtitle: "中文摘要与开发者解读",
+    sub: "从一份威胁报告，检查 Agent 的行动边界。",
+  }];
 })();
